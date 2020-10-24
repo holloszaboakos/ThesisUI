@@ -1,0 +1,90 @@
+
+
+html, body, div {
+  margin: 0;
+  padding: 0;
+}
+html, body, main, .app, .main, #root {
+width: 100%;
+height: 100%;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  background: rgba(200, 160, 160, 255);
+}
+input.base, button.base {
+font-family: inherit;
+font-size: inherit;
+line-height: inherit;
+}
+p.base {
+margin: 0 0 6px 0;
+}
+input.base {
+padding: 10px 30px 10px 6px;
+background: rgba(255, 200, 200, 255);
+border-radius:20px;
+}
+button.base {
+padding: 6px 12px;
+background-color: #00A5C6;
+color: white;
+font-weight: 600;
+border: none;
+border-radius: 2px;
+}
+button.long{
+  width: 100%;
+  padding: 6px 12px 6px 12px;
+
+  border: none;
+  border-radius: 50px;
+
+  font-weight: 600;
+  font-size: inherit;
+  
+  color: white;
+  background: rgba(255, 100, 0, 255);
+}
+button:hover {
+background-color: #00BBE0;
+}
+.row {
+display: flex;
+}
+.row>* {
+min-width: 0;
+flex: 1;
+}
+.column {
+display: flex;
+flex-direction: column;
+}
+.column>* {
+min-height: 0;
+flex: 1;
+}
+.login {
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 12px;
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center;
+}
+.left-pane {
+height: 100%;
+flex: 0 0 300px;
+}
+.my-tag {
+padding: 6px 10px;
+font-weight: 500;
+}
+.text-input-and-button {
+display: flex;
+align-items: center;
+}
+.text-input-and-button>*:first-child {
+flex: 1;
+}
