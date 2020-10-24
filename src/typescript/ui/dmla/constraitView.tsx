@@ -1,38 +1,39 @@
 import { Component } from "react";
 import React from "react";
 import { SlotView } from "./slotView";
-import { Constrait } from "../../model/data/dmla/Constrait";
-import  '../../../css/model.css';
+import { Constrait } from "../../data/dmla/Constrait";
+import '../../../css/model.css';
 
-export class ConstraitView extends Component<{constrait:Constrait,owner:SlotView},{}>{
+export class ConstraitView extends Component<{ constrait: Constrait, owner: SlotView }, {}>{
     state = {
-        constrait: this.props.constrait, 
-        typeSize: this.props.constrait.type? this.props.constrait.type.length : 4, 
-        valueSize: this.props.constrait.value? this.props.constrait.value.length : 5};
+        constrait: this.props.constrait,
+        typeSize: this.props.constrait.type ? this.props.constrait.type.length : 4,
+        valueSize: this.props.constrait.value ? this.props.constrait.value.length : 5
+    };
 
     render() {
         return (
             <tr className="spacer">
                 <td className="backgroundstart"><div className="inputround">
                     <input className="model"
-                        onChange={e=>this.typeChange(e)}
-                        onBlur={e=>this.onBlure()}
-                        placeholder= "type"
+                        onChange={e => this.typeChange(e)}
+                        onBlur={e => this.onBlure()}
+                        placeholder="type"
                         size={this.state.typeSize}
-                        value= {this.state.constrait.type} />
+                        value={this.state.constrait.type} />
                 </div></td>
                 <td className="backgroundmiddle">
                     <input className="model"
-                        onChange={e=>this.valueChange(e)}
-                        onBlur={e=>this.onBlure()}
+                        onChange={e => this.valueChange(e)}
+                        onBlur={e => this.onBlure()}
                         placeholder="value"
-                        size={this.state.valueSize} 
-                        value= {this.state.constrait.value} />
+                        size={this.state.valueSize}
+                        value={this.state.constrait.value} />
                 </td>
                 {!this.state.constrait.isOperationsOpen &&
                     <td><table id="modelmenu"><tr>
                         <td className="backgroundend">
-                            <button className="btnround" onClick={e=>this.onSwitchOptions()}>
+                            <button className="btnround" onClick={e => this.onSwitchOptions()}>
                                 <i className="fa fa-ellipsis-h"></i>
                             </button>
                         </td>
@@ -42,22 +43,22 @@ export class ConstraitView extends Component<{constrait:Constrait,owner:SlotView
                 {this.state.constrait.isOperationsOpen && <>
                     <td className="backgroundend"><table id="modelmenu"><tr>
                         <td>
-                            <button className="btnround" onClick={e=>this.onSwitchOptions()}>
+                            <button className="btnround" onClick={e => this.onSwitchOptions()}>
                                 <i className="fa fa-ellipsis-h"></i>
                             </button>
                         </td>
                         <td><div className="btnstart">
-                            <button className="btnround" onClick={e=>this.moveConstraitUp()}>
+                            <button className="btnround" onClick={e => this.moveConstraitUp()}>
                                 <i className="fa fa-arrow-up"></i>
                             </button>
                         </div></td>
                         <td><div className="btnmiddle">
-                            <button className="btnround" onClick={e=>this.moveConstraitDown()}>
+                            <button className="btnround" onClick={e => this.moveConstraitDown()}>
                                 <i className="fa fa-arrow-down"></i>
                             </button>
                         </div></td>
                         <td><div className="btnend">
-                            <button className="btnround" onClick={e=>this.deleteConstrait()}>
+                            <button className="btnround" onClick={e => this.deleteConstrait()}>
                                 <i className="fa fa-trash"></i>
                             </button>
                         </div></td>
@@ -85,19 +86,19 @@ export class ConstraitView extends Component<{constrait:Constrait,owner:SlotView
         this.props.owner.setConstrait(constrait)
     }
 
-    typeChange(e){
+    typeChange(e) {
         let constrait = this.state.constrait
-        constrait.type=e.target.value
-        this.setState({constrait:constrait,typeSize : e.target.value.length> 4? e.target.value.length:4})   
+        constrait.type = e.target.value
+        this.setState({ constrait: constrait, typeSize: e.target.value.length > 4 ? e.target.value.length : 4 })
     }
 
-    valueChange(e){
+    valueChange(e) {
         let constrait = this.state.constrait
-        constrait.value=e.target.value
-        this.setState({constrait:constrait,valueSize : e.target.value.length> 5? e.target.value.length:5})        
+        constrait.value = e.target.value
+        this.setState({ constrait: constrait, valueSize: e.target.value.length > 5 ? e.target.value.length : 5 })
     }
 
-    onBlure(){
+    onBlure() {
         this.props.owner.setConstrait(this.state.constrait)
     }
 }

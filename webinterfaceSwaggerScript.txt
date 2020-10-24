@@ -1,0 +1,500 @@
+swagger: "2.0"
+info:
+  description: "This is the main server of QLM's DRP system"
+  version: "1.0.0"
+  title: "DRP"
+  contact:
+    email: "akos.hollo-szabo@qlndc.hu"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "waprom.drp"
+tags:
+- name: "options"
+  description: "Setup and options of optimisation"
+  externalDocs:
+    description: "Find out more"
+    url: "http://drp.io"
+schemes:
+- "https"
+
+paths:
+  /setup/salesman:
+    post:
+      tags:
+        - "setup"
+      summary: "Send salesman"
+      description: "Give salesman of volume, weight, time with position for next optimisation runs"
+      operationId: "addSalesman"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Setup parameters"
+        required: true
+        schema:
+          $ref: "#/definitions/Salesman"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "string"
+    delete:
+      tags:
+        - "setup"
+      summary: "Delete salesman"
+      description: "delete salesman specified by name"
+      operationId: "removeSalesman"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "identifier"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+            
+  /setup/objective:
+    post:
+      tags:
+        - "setup"
+      summary: "Send objectives"
+      description: "Give objectives of volume, weight, time with position for next optimisation runs"
+      operationId: "addObjective"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Setup parameters"
+        required: true
+        schema:
+          $ref: "#/definitions/Objective"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "string"
+    delete:
+      tags:
+        - "setup"
+      summary: "Delete objective"
+      description: "delete objective specified by name"
+      operationId: "removeObjective"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "identifier"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+                
+  /setup/setup:
+    post:
+      tags:
+        - "setup"
+      summary: "Define setup"
+      description: "Define setup parameters for next optimisation run"
+      operationId: "defineSetup"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Setup parameters"
+        required: true
+        schema:
+          $ref: "#/definitions/Setup"
+      responses:
+        "405":
+          description: "Invalid setup"
+        "200":
+          description: "successful operation"
+          schema:
+            type: "string"
+    get:
+      tags:
+        - "setup"
+      summary: "Define setup"
+      description: "Defune setup parameters for next optimisation run"
+      operationId: "loadSetup"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Setup parameters"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "405":
+          description: "Invalid setup"
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Setup"
+  /setup/save:
+    post:
+      tags:
+        - "setup"
+      summary: "Save setup"
+      description: "Save defined setup by name"
+      operationId: "saveSetup"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Name"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          
+  /setup/state:
+    get:
+      tags:
+        - "setup"
+      summary: "get state"
+      description: "Give salesman of volume, weight, time with position for next optimisation runs"
+      operationId: "getState"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "string"
+  /state/{name}:
+    get:
+      tags:
+        - "setup"
+      summary: "get state"
+      description: "Give salesman of volume, weight, time with position for next optimisation runs"
+      operationId: "loadState"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "name"
+        description: "Name"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/State"
+          
+  /lifecycle/prepare:
+    post:
+      tags:
+      - "lifecicle"
+      summary: "prepare optimisation"
+      description: "prepare seted up optimisation"
+      operationId: "prepare"
+      responses:
+        "200":
+          description: "successfull prepare"
+        "405":
+          description: "invalid in current state"
+              
+  /lifecycle/start:
+    post:
+      tags:
+      - "lifecicle"
+      summary: "start optimisation"
+      description: "start prepared optimisation"
+      operationId: "start"
+      responses:
+        "200":
+          description: "successfull start"
+        "405":
+          description: "invalid in current state"
+              
+  /lifecycle/resume:
+    post:
+      tags:
+      - "lifecicle"
+      summary: "resume optimisation"
+      description: "resume started optimisation"
+      operationId: "resume"
+      responses:
+        "200":
+          description: "successfull resume"
+        "405":
+          description: "invalid in current state"
+              
+  /lifecycle/pause:
+    post:
+      tags:
+      - "lifecicle"
+      summary: "pause optimisation"
+      description: "pause automated optimisation"
+      operationId: "pause"
+      responses:
+        "200":
+          description: "successfull pause"
+        "405":
+          description: "invalid in current state"
+              
+  /lifecycle/stop:
+    post:
+      tags:
+      - "lifecicle"
+      summary: "stop optimisation"
+      description: "stop running optimisation"
+      operationId: "stop"
+      responses:
+        "200":
+          description: "successfull stop"
+        "405":
+          description: "invalid in current state"
+              
+  /lifecycle/clean:
+    post:
+      tags:
+      - "lifecicle"
+      summary: "clean generated data"
+      description: "clean data generated to prepare for the optimisation"
+      operationId: "clean"
+      responses:
+        "200":
+          description: "successfull clean"
+        "405":
+          description: "invalid in current state"
+          
+  /optimisation/root/{fromLat}/{fromLong}/{toLat}/{toLong}:
+    get:
+      tags:
+        - "update"
+      summary: "get root between locations"
+      description: "get best plan for actual transport"
+      operationId: "getRootBetween"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "fromLat"
+        required: true
+        description: "lattitude of GPS coords of source location"
+        type: "number"
+      - in: "path"
+        name: "fromLong"
+        required: true
+        description: "longitude of GPS coords of source location"
+        type: "number"
+      - in: "path"
+        name: "toLat"
+        required: true
+        description: "lattitude of GPS coords of target location"
+        type: "number"
+      - in: "path"
+        name: "toLong"
+        required: true
+        description: "longitude of GPS coords of target location"
+        type: "number"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              type: "array"
+              items:
+                type: "number"
+              minItems: 2
+              maxItems: 2
+          
+  /optimisation/bestCost:
+    get:
+      tags:
+        - "update"
+      summary: "get time of best result"
+      description: "get time of best plan for actual transport"
+      operationId: "getBestCost"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "number"
+          
+  /optimisation/best:
+    get:
+      tags:
+        - "update"
+      summary: "get best result"
+      description: "get best plan for actual transport"
+      operationId: "getBestResult"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Transport"
+    
+    
+    
+definitions:
+  State:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      name:
+        type: "string"
+      maxCost_Euro:
+        type: "string"
+      minCost_Euro:
+        type: "string"
+      iteration:
+        type: "string"
+      runtime_Second:
+        type: "string"
+      setup:
+          $ref: "#/definitions/Setup"
+      bestRout:
+        type: "array"
+        items:
+          $ref: "#/definitions/GPS"
+    required: 
+      - id
+      - maxCost_Euro
+      - minCost_Euro
+      - iteration
+      - runtime_Second
+      - bestTransport
+  
+  Setup:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      name:
+        type: "string"
+      iterLimit:
+        type: "number"
+      iterLimit_Second:
+        type: "number"
+      center:
+          $ref: "#/definitions/GPS"
+      objectives:
+        type: "array"
+        items:
+          $ref: "#/definitions/Objective"
+      salesmen:
+        type: "array"
+        items:
+          $ref: "#/definitions/Salesman"
+    required: 
+      - id
+      - name
+      - iterLimit
+      - iterLimit_Second
+      - objectives
+      - salesmen
+  
+  Salesman:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      name:
+        type: "string"
+      workTime_SecondPerDay:
+        type: "number"
+      volumeCapacity_Stere:
+        type: "number"
+      weightCapacity_Gramm:
+        type: "number"
+      vechicleSpeed_MeterPerSecond:
+        type: "number"
+      payment_EuroPerSecond:
+        type: "number"
+      fuelConsuption_LiterPerMeter:
+        type: "number"
+      fuelPrice_EuroPerLiter:
+        type: "number"
+      basePrice_Euro:
+        type: "number"
+    required: 
+      - id
+      - name
+      - workTime_SecondPerDay
+      - volumeCapacity_Stere
+      - weightCapacity_Gramm
+      - vechicleSpeed_MeterPerSecond
+      - payment_EuroPerSecond
+      - fuelConsuption_LiterPerMeter
+      - fuelPrice_EuroPerLiter
+      - basePrice_Euro
+  
+  Objective:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      name:
+        type: "string"
+      location:
+          $ref: "#/definitions/GPS"
+      time_Second:
+        type: "number"
+      volume_Stere:
+        type: "number"
+      weight_Gramm:
+        type: "number"
+    required: 
+      - id
+      - name
+      - location
+      - time_Second
+      - volume_Stere
+      - weight_Gramm
+        
+  GPS:
+    type: "object"
+    properties:
+      lattitude: 
+        type: "number"
+      longitude: 
+        type: "number"
+    required: 
+      - lattitude
+      - longitude
+      
+      

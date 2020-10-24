@@ -1,12 +1,12 @@
 import { Component } from "react";
 import React from "react";
-import { TreeNode } from "../../model/data/dmla/TreeNode";
+import { TreeNode } from "../../data/dmla/TreeNode";
 import { EntityView } from "./entityView";
-import  '../../../css/model.css';
+import '../../../css/model.css';
 
-export class TreeNodeView extends Component<{treeNode:TreeNode},{}>
+export class TreeNodeView extends Component<{ treeNode: TreeNode }, {}>
 {
-    state={treeNode:this.props.treeNode}
+    state = { treeNode: this.props.treeNode }
     /*
     componentDidMount() {
         proxy.addEventListener("entityUpdated", (entity) => {
@@ -48,20 +48,20 @@ export class TreeNodeView extends Component<{treeNode:TreeNode},{}>
     }
 */
 
-    render(){
-        return(
+    render() {
+        return (
             <table id="fa">
                 <tbody>
                     <tr>
                         <td colSpan={1}>
-                            <EntityView entity={this.state.treeNode.entity}/>
+                            <EntityView entity={this.state.treeNode.entity} />
                         </td>
                         <td className="spacer" colSpan={this.state.treeNode.children.length}></td>
                     </tr>
                     <tr className="spacer">
-                        {this.state.treeNode.children.map((item,index) =>
+                        {this.state.treeNode.children.map((item, index) =>
                             <td key={index}>
-                                <TreeNodeView treeNode={item}/>
+                                <TreeNodeView treeNode={item} />
                             </td>
                         )}
                         <td className="spacer"></td>
