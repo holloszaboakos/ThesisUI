@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Login } from './ui/auth/login';
-import { proxy } from './network/proxy';
 import { ModelHandlerView } from './ui/handler/modelHandlerView';
 import { ModelView } from './ui/dmla/modelView';
 import { Model } from './data/dmla/Model';
@@ -42,10 +41,10 @@ export default class App extends Component {
     }
   };
   componentDidMount() {
-    proxy.addEventListener("login", () => this.setState({ showLogin: false }));
-    proxy.addEventListener("modelDetail", (model: Model) => {
+    //proxy.addEventListener("login", () => this.setState({ showLogin: false }));
+    /*proxy.addEventListener("modelDetail", (model: Model) => {
       this.setState({ showLogin: false, showModelHandler: false, model: model })
-    });
+    });*/
   }
 
   render() {

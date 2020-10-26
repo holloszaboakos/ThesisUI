@@ -365,11 +365,14 @@ paths:
         "200":
           description: "successful operation"
           schema:
-            $ref: "#/definitions/Transport"
+            type: "array"
+            items:
+              $ref: "#/definitions/GPS"
     
     
     
 definitions:
+
   State:
     type: "object"
     properties:
@@ -393,11 +396,54 @@ definitions:
           $ref: "#/definitions/GPS"
     required: 
       - id
+      - name
       - maxCost_Euro
       - minCost_Euro
       - iteration
       - runtime_Second
-      - bestTransport
+      - setup
+      - bestRout
+      
+  Graph:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      name:
+        type: "string"
+      objectives:
+        type: "array"
+        items:
+          $ref: "#/definitions/Objective"
+      edges:
+        type: "array"
+        items:
+          type: "array"
+          items:
+            $ref: "#/definitions/Edge"
+    required: 
+      - id
+      - name
+      - edges
+      
+  Edge:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      name:
+        type: "string"
+      length_Meter:
+        type: "number"
+      root:
+        type: "array"
+        items:
+          $ref: "#/definitions/GPS"
+    required: 
+      - id
+      - name
+      - length_Meter
+      - root
   
   Setup:
     type: "object"
