@@ -381,13 +381,13 @@ definitions:
       name:
         type: "string"
       maxCost_Euro:
-        type: "string"
+        type: "number"
       minCost_Euro:
-        type: "string"
+        type: "number"
       iteration:
-        type: "string"
+        type: "number"
       runtime_Second:
-        type: "string"
+        type: "number"
       setup:
           $ref: "#/definitions/Setup"
       bestRout:
@@ -454,7 +454,7 @@ definitions:
         type: "string"
       iterLimit:
         type: "number"
-      iterLimit_Second:
+      timeLimit_Second:
         type: "number"
       center:
           $ref: "#/definitions/GPS"
@@ -470,7 +470,8 @@ definitions:
       - id
       - name
       - iterLimit
-      - iterLimit_Second
+      - timeLimit_Second
+      - center
       - objectives
       - salesmen
   
