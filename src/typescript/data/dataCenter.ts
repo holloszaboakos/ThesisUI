@@ -103,3 +103,6 @@ export function getState(): State {
     }
 }
 export let isStateActive = false
+
+export const publicKey ="pk.eyJ1IjoiaG9sbG8wMDciLCJhIjoiY2tjMjc2OHFoMDFwazMxcXRxczVrYmUxciJ9.aXkMyO-37U4gaScXDnzwnw"
+export const style = "mapbox://styles/hollo007/ckc23mj4c10vf1ioabsb1cq9t"
