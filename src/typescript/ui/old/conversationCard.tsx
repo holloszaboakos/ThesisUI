@@ -1,9 +1,8 @@
 import { Component } from "react";
 //import { ConversationDto } from "../../model/chat";
 import React from "react";
-import { proxy } from "../../network/proxy";
 
-export class ConversationCard extends Component {}
+export class ConversationCard extends Component { }
 
 /*<{
     conversation: ConversationDto,
@@ -18,11 +17,11 @@ export class ConversationCard extends Component {}
                 this.forceUpdate();
         }, this);
     }
-    
+
     componentWillUnmount() {
         proxy.removeAllEventListener(this);
     }
-    
+
     render() {
         let lastMessage = this.props.conversation.lastMessages.length > 0 ?
             this.props.conversation.lastMessages[this.props.conversation.lastMessages.length - 1] : null;
