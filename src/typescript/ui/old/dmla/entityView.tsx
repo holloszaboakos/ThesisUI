@@ -1,11 +1,7 @@
 import { Component } from "react";
-import { SlotView } from "./slotView";
 import React from "react";
-import { Entity } from "../../data/dmla/Entity";
-import { proxy } from "../../network/proxy";
-import { Slot } from "../../data/dmla/Slot";
 import '../../../css/model.css';
-
+/*
 export class EntityView extends Component<{ entity: Entity }, {}>{
 
     state = {
@@ -284,3 +280,4 @@ export class EntityView extends Component<{ entity: Entity }, {}>{
         )
     }
 }
+*/

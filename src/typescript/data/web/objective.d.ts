@@ -1,3 +1,5 @@
+import { GPS } from "./gps"
+
 /**
  * 
  * @export

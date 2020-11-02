@@ -1,21 +1,21 @@
 import * as React from "react"
+import * as Framer from "framer"
 
-export function displayDataLine(
+export function DisplayDataLine(props: {
     label: string,
     value: string
-) {
-    return (
-        <>
-            <label>
-                {label}
+}) {
+
+    return (<>
+        <label>
+            {props.label}
+        </label>
+        <label>
+            ": "
             </label>
-            <label>
-                ":"
-            </label>
-            <label>
-                {value}
-            </label>
-        </>
-    )
+        <label>
+            {props.value}
+        </label>
+    </>)
 }
 

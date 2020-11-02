@@ -1,9 +1,7 @@
 import { Component } from "react";
 import React from "react";
-import { SlotView } from "./slotView";
-import { Constrait } from "../../data/dmla/Constrait";
 import '../../../css/model.css';
-
+/*
 export class ConstraitView extends Component<{ constrait: Constrait, owner: SlotView }, {}>{
     state = {
         constrait: this.props.constrait,
@@ -102,3 +100,4 @@ export class ConstraitView extends Component<{ constrait: Constrait, owner: Slot
         this.props.owner.setConstrait(this.state.constrait)
     }
 }
+*/

@@ -6,25 +6,32 @@ import { getState, publicKey, style } from "../../data/dataCenter"
 let mapContainer: HTMLDivElement | null
 let map
 
-export function Map(text, tint, onTap, width, height, rest) {
+export function Map(props: { width: string, height: string, radius: number, margin: number }) {
 
     const [routes, setRoutes] = React.useState(getState().bestRout)
     const [latitude, setLatitude] = React.useState(47.462851)
     const [longitude, setLongitude] = React.useState(19.088509)
-    const [zoom, setZoom] = React.useState(10)
+    const [zoom, setZoom] = React.useState(7)
     const [active, setActive] = React.useState(true)
 
     let result = (
         <Framer.Frame
-            width={width}
-            height={height}
-            style={{
-                width: "100%",
-                height: "100%",
-            }}
-            ref={(el) => (mapContainer = el)}
-            className="mapContainer"
-        > </Framer.Frame>
+            height={props.height}
+            width={props.width}
+            radius={props.radius}
+            margin={props.margin}
+            background="#00000000"
+        >
+            <div
+                style={{
+                    height: "95%",
+                    margin: "16px",
+                    border: "none",
+                }}
+                ref={(el) => (mapContainer = el)}
+                className="mapContainer"
+            > </div>
+        </Framer.Frame>
     )
 
     //ComponentDidMount
@@ -33,16 +40,18 @@ export function Map(text, tint, onTap, width, height, rest) {
         map = new mapboxgl.Map({
             container: mapContainer,
             style: style,
-            height: height,
-            width: width,
+            height: props.height,
+            width: props.width,
             center: [longitude, latitude],
             zoom: zoom,
         })
+
         map.on("move", () => {
             setLatitude(map.getCenter().lat.toFixed(4))
             setLongitude(map.getCenter().lng.toFixed(4))
             setZoom(map.getZoom().toFixed(2))
         })
+
         map.on("load", function () {
             getState().bestRout.forEach((rout, index) => {
                 map.addSource("route" + index, {
@@ -53,8 +62,8 @@ export function Map(text, tint, onTap, width, height, rest) {
                         geometry: {
                             type: "LineString",
                             coordinates: rout,
-                        },
-                    },
+                        }
+                    }
                 })
                 map.addLayer({
                     id: "route" + index,
@@ -63,11 +72,12 @@ export function Map(text, tint, onTap, width, height, rest) {
                     layout: {
                         "line-join": "round",
                         "line-cap": "round",
-                    },
-                    paint: {
-                        "line-color": "#E71A80",
-                        "line-width": 4,
-                    },
+
+                        t: {
+                            "line-color": "#E71A80",
+                            "line-width": 4,
+                        }
+                    }
                 })
             })
         })
@@ -77,8 +87,8 @@ export function Map(text, tint, onTap, width, height, rest) {
     React.useEffect(() => {
         map.center = [longitude, latitude]
         map.zoom = zoom
-        map.width = width
-        map.height = height
+        map.width = props.width
+        map.height = props.height
         if (!active) setActive(true)
     }, [active])
 

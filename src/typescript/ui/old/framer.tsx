@@ -2,7 +2,7 @@ import *as  React from "react"
 import *as Framer from "framer"
 
 //multywindow:
-
+/*
 const state = Framer.Data({
     viewIndex: 0,
     viewIds: ["IconMap", "IconTimeLine", "IconTable"],
@@ -954,4 +954,4 @@ export function LimitLine({
         </Framer.Stack>
     )
 }
-
+*/

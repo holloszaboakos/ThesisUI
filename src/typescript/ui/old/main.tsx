@@ -1,6 +1,5 @@
 //import { ConversationDto } from "../../model/chat";
 import React, { Component } from "react";
-import { proxy } from "../../network/proxy";
 import { RightPane } from "./rightPane";
 import { LeftPane } from "./leftPane";
 

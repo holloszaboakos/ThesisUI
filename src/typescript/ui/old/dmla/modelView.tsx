@@ -1,10 +1,7 @@
 import { Component } from "react";
 import React from "react";
-import { TreeNodeView } from "./treeNodeView";
-import { Model } from "../../data/dmla/Model";
 import '../../../css/model.css';
-import { proxy } from "../../network/proxy";
-
+/*
 export class ModelView extends Component<{ model: Model }, {}>{
     state = { model: this.props.model, showRoot: true }
 
@@ -39,3 +36,4 @@ export class ModelView extends Component<{ model: Model }, {}>{
         )
     }
 }
+*/
