@@ -30,20 +30,8 @@ export interface Setup {
     timeLimitSecond: number;
     /**
      * 
-     * @type {GPS}
+     * @type {string}
      * @memberof Setup
      */
-    center: GPS;
-    /**
-     * 
-     * @type {Array<Objective>}
-     * @memberof Setup
-     */
-    objectives: Array<Objective>;
-    /**
-     * 
-     * @type {Array<Salesman>}
-     * @memberof Setup
-     */
-    salesmen: Array<Salesman>;
+    algorithm: string;
 }

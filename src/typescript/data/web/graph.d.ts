@@ -21,7 +21,7 @@ export interface Graph {
      * @type {Array<Objective>}
      * @memberof Graph
      */
-    objectives?: Array<Objective>;
+    objectives: Array<Objective>;
     /**
      * 
      * @type {Array<Array<Edge>>}

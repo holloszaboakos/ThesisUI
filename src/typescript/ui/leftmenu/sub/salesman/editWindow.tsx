@@ -1,11 +1,8 @@
 import * as React from "react"
 import * as Framer from "framer"
-import { CheckBoxLine } from "../lines/CheckBoxLine"
 import { ButtonLine } from "../lines/ButtonLine"
-import { LabelAndIconButtons } from "../lines/LabelAndIconButtons"
 import * as DataCenter from "../../../../data/dataCenter"
 import { SetDataLine } from "../lines/SetDataLine"
-import { Objective } from "../../../../data/web/objective"
 import { Salesman } from "../../../../data/web/salesman"
 
 export function EditWindow(props: { name: string, setSalesmanName: (text) => void, onEnded: () => void }) {
@@ -57,7 +54,7 @@ export function EditWindow(props: { name: string, setSalesmanName: (text) => voi
                     label="name"
                     startText={salesman.name}
                     placefolder="name"
-                    validate={(text) => true}
+                    validate={() => true}
                     sendValue={(text) => {
                         salesman.name = text
                     }}
@@ -66,7 +63,7 @@ export function EditWindow(props: { name: string, setSalesmanName: (text) => voi
                     label="base price (€)"
                     startText={salesman.basePriceEuro.toString()}
                     placefolder="basePriceEuro"
-                    validate={(text) => true}
+                    validate={() => true}
                     sendValue={(text) => {
                         salesman.basePriceEuro = JSON.parse(text)
                         console.log(JSON.stringify(salesman))
@@ -78,7 +75,7 @@ export function EditWindow(props: { name: string, setSalesmanName: (text) => voi
                     label="fuel consuption (l/m)"
                     startText={salesman.fuelConsuptionLiterPerMeter.toString()}
                     placefolder="fuelConsuption"
-                    validate={(text) => true}
+                    validate={() => true}
                     sendValue={(text) => {
                         salesman.fuelConsuptionLiterPerMeter = JSON.parse(text)
                     }}
@@ -87,7 +84,7 @@ export function EditWindow(props: { name: string, setSalesmanName: (text) => voi
                     label="fuel price (€/l)"
                     startText={salesman.fuelPriceEuroPerLiter.toString()}
                     placefolder="fuelPrice"
-                    validate={(text) => true}
+                    validate={() => true}
                     sendValue={(text) => {
                         salesman.fuelPriceEuroPerLiter = JSON.parse(text)
                     }}
@@ -96,7 +93,7 @@ export function EditWindow(props: { name: string, setSalesmanName: (text) => voi
                     label="payment (€/s)"
                     startText={salesman.paymentEuroPerSecond.toString()}
                     placefolder="payment"
-                    validate={(text) => true}
+                    validate={() => true}
                     sendValue={(text) => {
                         salesman.paymentEuroPerSecond = JSON.parse(text)
                     }}
@@ -105,7 +102,7 @@ export function EditWindow(props: { name: string, setSalesmanName: (text) => voi
                     label="vechicle speed (m/s)"
                     startText={salesman.vechicleSpeedMeterPerSecond.toString()}
                     placefolder="vechicleSpeed"
-                    validate={(text) => true}
+                    validate={() => true}
                     sendValue={(text) => {
                         salesman.vechicleSpeedMeterPerSecond = JSON.parse(text)
                     }}
@@ -114,7 +111,7 @@ export function EditWindow(props: { name: string, setSalesmanName: (text) => voi
                     label="volume capacity (m^3)"
                     startText={salesman.volumeCapacityStere.toString()}
                     placefolder="volumeCapacity"
-                    validate={(text) => true}
+                    validate={() => true}
                     sendValue={(text) => {
                         salesman.volumeCapacityStere = JSON.parse(text)
                     }}
@@ -123,7 +120,7 @@ export function EditWindow(props: { name: string, setSalesmanName: (text) => voi
                     label="weight capacity (g)"
                     startText={salesman.weightCapacityGramm.toString()}
                     placefolder="weightCapacity"
-                    validate={(text) => true}
+                    validate={() => true}
                     sendValue={(text) => {
                         salesman.weightCapacityGramm = JSON.parse(text)
                     }}
@@ -132,7 +129,7 @@ export function EditWindow(props: { name: string, setSalesmanName: (text) => voi
                     label="work time (s/d)"
                     startText={salesman.workTimeSecondPerDay.toString()}
                     placefolder="workTime"
-                    validate={(text) => true}
+                    validate={() => true}
                     sendValue={(text) => {
                         salesman.workTimeSecondPerDay = JSON.parse(text)
                     }}

@@ -16,13 +16,15 @@
 import * as url from "url";
 import * as portableFetch from "portable-fetch";
 import { Configuration } from "./configuration";
-import { GPS } from "../data/web/gps";
+import { Progress } from "../data/web/progress";
 import { Objective } from "../data/web/objective";
 import { Salesman } from "../data/web/salesman";
 import { Setup } from "../data/web/setup";
-import { State } from "../data/web/state";
+import { Task } from "../data/web/task";
+import { GPS } from "../data/web/gps";
+import { Run } from "../data/web/run";
 
-export const BASE_PATH = "https://waprom.drp".replace(/\/+$/, "");
+const BASE_PATH = "https://waprom.drp".replace(/\/+$/, "");
 
 /**
  *
@@ -77,11 +79,12 @@ export class BaseAPI {
  * @extends {Error}
  */
 export class RequiredError extends Error {
-    name = "RequiredError"
+    name!: "RequiredError";
     constructor(public field: string, msg?: string) {
         super(msg);
     }
 }
+
 
 /**
  * LifecicleApi - fetch parameter creator
@@ -97,6 +100,29 @@ export const LifecicleApiFetchParamCreator = function (configuration?: Configura
          */
         clean(options: any = {}): FetchArgs {
             const localVarPath = `/lifecycle/clean`;
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * make one cycle of already started algorithm
+         * @summary make one cycle
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cycle(options: any = {}): FetchArgs {
+            const localVarPath = `/lifecycle/cycle`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
             const localVarHeaderParameter = {} as any;
@@ -205,6 +231,29 @@ export const LifecicleApiFetchParamCreator = function (configuration?: Configura
             };
         },
         /**
+         * make one iteration of already started algorithm
+         * @summary make one iteration
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        step(options: any = {}): FetchArgs {
+            const localVarPath = `/lifecycle/step`;
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * stop running optimisation
          * @summary stop optimisation
          * @param {*} [options] Override http request option.
@@ -248,6 +297,24 @@ export const LifecicleApiFp = function (configuration?: Configuration) {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
                         return response;
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
+         * make one cycle of already started algorithm
+         * @summary make one cycle
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cycle(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Progress> {
+            const localVarFetchArgs = LifecicleApiFetchParamCreator(configuration).cycle(options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
                     } else {
                         throw response;
                     }
@@ -327,6 +394,24 @@ export const LifecicleApiFp = function (configuration?: Configuration) {
             };
         },
         /**
+         * make one iteration of already started algorithm
+         * @summary make one iteration
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        step(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Progress> {
+            const localVarFetchArgs = LifecicleApiFetchParamCreator(configuration).step(options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
          * stop running optimisation
          * @summary stop optimisation
          * @param {*} [options] Override http request option.
@@ -361,6 +446,15 @@ export const LifecicleApiFactory = function (configuration?: Configuration, fetc
          */
         clean(options?: any) {
             return LifecicleApiFp(configuration).clean(options)(fetch, basePath);
+        },
+        /**
+         * make one cycle of already started algorithm
+         * @summary make one cycle
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cycle(options?: any) {
+            return LifecicleApiFp(configuration).cycle(options)(fetch, basePath);
         },
         /**
          * pause automated optimisation
@@ -399,6 +493,15 @@ export const LifecicleApiFactory = function (configuration?: Configuration, fetc
             return LifecicleApiFp(configuration).start(options)(fetch, basePath);
         },
         /**
+         * make one iteration of already started algorithm
+         * @summary make one iteration
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        step(options?: any) {
+            return LifecicleApiFp(configuration).step(options)(fetch, basePath);
+        },
+        /**
          * stop running optimisation
          * @summary stop optimisation
          * @param {*} [options] Override http request option.
@@ -426,6 +529,17 @@ export class LifecicleApi extends BaseAPI {
      */
     public clean(options?: any) {
         return LifecicleApiFp(this.configuration).clean(options)(this.fetch, this.basePath);
+    }
+
+    /**
+     * make one cycle of already started algorithm
+     * @summary make one cycle
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof LifecicleApi
+     */
+    public cycle(options?: any) {
+        return LifecicleApiFp(this.configuration).cycle(options)(this.fetch, this.basePath);
     }
 
     /**
@@ -470,6 +584,17 @@ export class LifecicleApi extends BaseAPI {
      */
     public start(options?: any) {
         return LifecicleApiFp(this.configuration).start(options)(this.fetch, this.basePath);
+    }
+
+    /**
+     * make one iteration of already started algorithm
+     * @summary make one iteration
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof LifecicleApi
+     */
+    public step(options?: any) {
+        return LifecicleApiFp(this.configuration).step(options)(this.fetch, this.basePath);
     }
 
     /**
@@ -556,18 +681,18 @@ export const SetupApiFetchParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Define setup parameters for next optimisation run
-         * @summary Define setup
-         * @param {Setup} body Setup parameters
+         * Define algorithm parameters for next optimisation run
+         * @summary Define algorithm
+         * @param {Setup} body Algorithm parameters
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        defineSetup(body: Setup, options: any = {}): FetchArgs {
+        defineAlgorithm(body: Setup, options: any = {}): FetchArgs {
             // verify required parameter 'body' is not null or undefined
             if (body === null || body === undefined) {
-                throw new RequiredError('body', 'Required parameter body was null or undefined when calling defineSetup.');
+                throw new RequiredError('body', 'Required parameter body was null or undefined when calling defineAlgorithm.');
             }
-            const localVarPath = `/setup/setup`;
+            const localVarPath = `/setup/algorithm`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
             const localVarHeaderParameter = {} as any;
@@ -579,7 +704,7 @@ export const SetupApiFetchParamCreator = function (configuration?: Configuration
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
 
             localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-            const needsSerialization = (<any>"Setup" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            const needsSerialization = (<any>"Algotihm" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
             localVarRequestOptions.body = needsSerialization ? JSON.stringify(body || {}) : (body || "");
 
             return {
@@ -588,22 +713,31 @@ export const SetupApiFetchParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Give salesman of volume, weight, time with position for next optimisation runs
-         * @summary get state
+         * Define task parameters for next optimisation run
+         * @summary Define task
+         * @param {Task} body Task parameters
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getState(options: any = {}): FetchArgs {
-            const localVarPath = `/setup/state`;
+        defineTask(body: Task, options: any = {}): FetchArgs {
+            // verify required parameter 'body' is not null or undefined
+            if (body === null || body === undefined) {
+                throw new RequiredError('body', 'Required parameter body was null or undefined when calling defineTask.');
+            }
+            const localVarPath = `/setup/task`;
             const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+            const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
 
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
 
             localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+            const needsSerialization = (<any>"Task" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.body = needsSerialization ? JSON.stringify(body || {}) : (body || "");
 
             return {
                 url: url.format(localVarUrlObj),
@@ -611,18 +745,18 @@ export const SetupApiFetchParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Defune setup parameters for next optimisation run
-         * @summary Define setup
-         * @param {string} body Setup parameters
+         * Load algorithm with a name maching the parameter
+         * @summary Load algorithm
+         * @param {string} body Algorithm name
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        loadSetup(body: string, options: any = {}): FetchArgs {
+        loadAlgorithm(body: string, options: any = {}): FetchArgs {
             // verify required parameter 'body' is not null or undefined
             if (body === null || body === undefined) {
-                throw new RequiredError('body', 'Required parameter body was null or undefined when calling loadSetup.');
+                throw new RequiredError('body', 'Required parameter body was null or undefined when calling loadAlgorithm.');
             }
-            const localVarPath = `/setup/setup`;
+            const localVarPath = `/setup/algorithm`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
             const localVarHeaderParameter = {} as any;
@@ -643,28 +777,31 @@ export const SetupApiFetchParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Give salesman of volume, weight, time with position for next optimisation runs
-         * @summary get state
-         * @param {string} name Name
+         * Load task with a name maching the parameter
+         * @summary Load task
+         * @param {string} body Task name
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        loadState(name: string, options: any = {}): FetchArgs {
-            // verify required parameter 'name' is not null or undefined
-            if (name === null || name === undefined) {
-                throw new RequiredError('name', 'Required parameter name was null or undefined when calling loadState.');
+        loadTask(body: string, options: any = {}): FetchArgs {
+            // verify required parameter 'body' is not null or undefined
+            if (body === null || body === undefined) {
+                throw new RequiredError('body', 'Required parameter body was null or undefined when calling loadTask.');
             }
-            const localVarPath = `/state/{name}`
-                .replace(`{${"name"}}`, encodeURIComponent(String(name)));
+            const localVarPath = `/setup/task`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
 
             localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+            const needsSerialization = (<any>"string" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.body = needsSerialization ? JSON.stringify(body || {}) : (body || "");
 
             return {
                 url: url.format(localVarUrlObj),
@@ -736,20 +873,52 @@ export const SetupApiFetchParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Save defined setup by name
-         * @summary Save setup
+         * Save defined algorithm by name
+         * @summary Save algorithm
          * @param {string} body Name
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        saveSetup(body: string, options: any = {}): FetchArgs {
+        saveAlgorithm(body: string, options: any = {}): FetchArgs {
             // verify required parameter 'body' is not null or undefined
             if (body === null || body === undefined) {
-                throw new RequiredError('body', 'Required parameter body was null or undefined when calling saveSetup.');
+                throw new RequiredError('body', 'Required parameter body was null or undefined when calling saveAlgorithm.');
             }
-            const localVarPath = `/setup/save`;
+            const localVarPath = `/setup/algorithm`;
             const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
+            const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+            const needsSerialization = (<any>"string" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.body = needsSerialization ? JSON.stringify(body || {}) : (body || "");
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Save defined task by name
+         * @summary Save task
+         * @param {string} body Task name
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        saveTask(body: string, options: any = {}): FetchArgs {
+            // verify required parameter 'body' is not null or undefined
+            if (body === null || body === undefined) {
+                throw new RequiredError('body', 'Required parameter body was null or undefined when calling saveTask.');
+            }
+            const localVarPath = `/setup/task`;
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -815,14 +984,14 @@ export const SetupApiFp = function (configuration?: Configuration) {
             };
         },
         /**
-         * Define setup parameters for next optimisation run
-         * @summary Define setup
-         * @param {Setup} body Setup parameters
+         * Define algorithm parameters for next optimisation run
+         * @summary Define algorithm
+         * @param {Setup} body Algorithm parameters
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        defineSetup(body: Setup, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<string> {
-            const localVarFetchArgs = SetupApiFetchParamCreator(configuration).defineSetup(body, options);
+        defineAlgorithm(body: Setup, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<string> {
+            const localVarFetchArgs = SetupApiFetchParamCreator(configuration).defineAlgorithm(body, options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -834,13 +1003,14 @@ export const SetupApiFp = function (configuration?: Configuration) {
             };
         },
         /**
-         * Give salesman of volume, weight, time with position for next optimisation runs
-         * @summary get state
+         * Define task parameters for next optimisation run
+         * @summary Define task
+         * @param {Task} body Task parameters
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getState(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<string> {
-            const localVarFetchArgs = SetupApiFetchParamCreator(configuration).getState(options);
+        defineTask(body: Task, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<string> {
+            const localVarFetchArgs = SetupApiFetchParamCreator(configuration).defineTask(body, options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -852,14 +1022,14 @@ export const SetupApiFp = function (configuration?: Configuration) {
             };
         },
         /**
-         * Defune setup parameters for next optimisation run
-         * @summary Define setup
-         * @param {string} body Setup parameters
+         * Load algorithm with a name maching the parameter
+         * @summary Load algorithm
+         * @param {string} body Algorithm name
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        loadSetup(body: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Setup> {
-            const localVarFetchArgs = SetupApiFetchParamCreator(configuration).loadSetup(body, options);
+        loadAlgorithm(body: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Setup> {
+            const localVarFetchArgs = SetupApiFetchParamCreator(configuration).loadAlgorithm(body, options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -871,14 +1041,14 @@ export const SetupApiFp = function (configuration?: Configuration) {
             };
         },
         /**
-         * Give salesman of volume, weight, time with position for next optimisation runs
-         * @summary get state
-         * @param {string} name Name
+         * Load task with a name maching the parameter
+         * @summary Load task
+         * @param {string} body Task name
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        loadState(name: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<State> {
-            const localVarFetchArgs = SetupApiFetchParamCreator(configuration).loadState(name, options);
+        loadTask(body: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Task> {
+            const localVarFetchArgs = SetupApiFetchParamCreator(configuration).loadTask(body, options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -928,14 +1098,33 @@ export const SetupApiFp = function (configuration?: Configuration) {
             };
         },
         /**
-         * Save defined setup by name
-         * @summary Save setup
+         * Save defined algorithm by name
+         * @summary Save algorithm
          * @param {string} body Name
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        saveSetup(body: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Response> {
-            const localVarFetchArgs = SetupApiFetchParamCreator(configuration).saveSetup(body, options);
+        saveAlgorithm(body: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Response> {
+            const localVarFetchArgs = SetupApiFetchParamCreator(configuration).saveAlgorithm(body, options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response;
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
+         * Save defined task by name
+         * @summary Save task
+         * @param {string} body Task name
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        saveTask(body: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Response> {
+            const localVarFetchArgs = SetupApiFetchParamCreator(configuration).saveTask(body, options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -976,43 +1165,44 @@ export const SetupApiFactory = function (configuration?: Configuration, fetch?: 
             return SetupApiFp(configuration).addSalesman(body, options)(fetch, basePath);
         },
         /**
-         * Define setup parameters for next optimisation run
-         * @summary Define setup
-         * @param {Setup} body Setup parameters
+         * Define algorithm parameters for next optimisation run
+         * @summary Define algorithm
+         * @param {Setup} body Algorithm parameters
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        defineSetup(body: Setup, options?: any) {
-            return SetupApiFp(configuration).defineSetup(body, options)(fetch, basePath);
+        defineAlgorithm(body: Setup, options?: any) {
+            return SetupApiFp(configuration).defineAlgorithm(body, options)(fetch, basePath);
         },
         /**
-         * Give salesman of volume, weight, time with position for next optimisation runs
-         * @summary get state
+         * Define task parameters for next optimisation run
+         * @summary Define task
+         * @param {Task} body Task parameters
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getState(options?: any) {
-            return SetupApiFp(configuration).getState(options)(fetch, basePath);
+        defineTask(body: Task, options?: any) {
+            return SetupApiFp(configuration).defineTask(body, options)(fetch, basePath);
         },
         /**
-         * Defune setup parameters for next optimisation run
-         * @summary Define setup
-         * @param {string} body Setup parameters
+         * Load algorithm with a name maching the parameter
+         * @summary Load algorithm
+         * @param {string} body Algorithm name
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        loadSetup(body: string, options?: any) {
-            return SetupApiFp(configuration).loadSetup(body, options)(fetch, basePath);
+        loadAlgorithm(body: string, options?: any) {
+            return SetupApiFp(configuration).loadAlgorithm(body, options)(fetch, basePath);
         },
         /**
-         * Give salesman of volume, weight, time with position for next optimisation runs
-         * @summary get state
-         * @param {string} name Name
+         * Load task with a name maching the parameter
+         * @summary Load task
+         * @param {string} body Task name
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        loadState(name: string, options?: any) {
-            return SetupApiFp(configuration).loadState(name, options)(fetch, basePath);
+        loadTask(body: string, options?: any) {
+            return SetupApiFp(configuration).loadTask(body, options)(fetch, basePath);
         },
         /**
          * delete objective specified by name
@@ -1035,14 +1225,24 @@ export const SetupApiFactory = function (configuration?: Configuration, fetch?: 
             return SetupApiFp(configuration).removeSalesman(body, options)(fetch, basePath);
         },
         /**
-         * Save defined setup by name
-         * @summary Save setup
+         * Save defined algorithm by name
+         * @summary Save algorithm
          * @param {string} body Name
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        saveSetup(body: string, options?: any) {
-            return SetupApiFp(configuration).saveSetup(body, options)(fetch, basePath);
+        saveAlgorithm(body: string, options?: any) {
+            return SetupApiFp(configuration).saveAlgorithm(body, options)(fetch, basePath);
+        },
+        /**
+         * Save defined task by name
+         * @summary Save task
+         * @param {string} body Task name
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        saveTask(body: string, options?: any) {
+            return SetupApiFp(configuration).saveTask(body, options)(fetch, basePath);
         },
     };
 };
@@ -1079,50 +1279,51 @@ export class SetupApi extends BaseAPI {
     }
 
     /**
-     * Define setup parameters for next optimisation run
-     * @summary Define setup
-     * @param {Setup} body Setup parameters
+     * Define algorithm parameters for next optimisation run
+     * @summary Define algorithm
+     * @param {Setup} body Algorithm parameters
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SetupApi
      */
-    public defineSetup(body: Setup, options?: any) {
-        return SetupApiFp(this.configuration).defineSetup(body, options)(this.fetch, this.basePath);
+    public defineAlgorithm(body: Setup, options?: any) {
+        return SetupApiFp(this.configuration).defineAlgorithm(body, options)(this.fetch, this.basePath);
     }
 
     /**
-     * Give salesman of volume, weight, time with position for next optimisation runs
-     * @summary get state
+     * Define task parameters for next optimisation run
+     * @summary Define task
+     * @param {Task} body Task parameters
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SetupApi
      */
-    public getState(options?: any) {
-        return SetupApiFp(this.configuration).getState(options)(this.fetch, this.basePath);
+    public defineTask(body: Task, options?: any) {
+        return SetupApiFp(this.configuration).defineTask(body, options)(this.fetch, this.basePath);
     }
 
     /**
-     * Defune setup parameters for next optimisation run
-     * @summary Define setup
-     * @param {string} body Setup parameters
+     * Load algorithm with a name maching the parameter
+     * @summary Load algorithm
+     * @param {string} body Algorithm name
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SetupApi
      */
-    public loadSetup(body: string, options?: any) {
-        return SetupApiFp(this.configuration).loadSetup(body, options)(this.fetch, this.basePath);
+    public loadAlgorithm(body: string, options?: any) {
+        return SetupApiFp(this.configuration).loadAlgorithm(body, options)(this.fetch, this.basePath);
     }
 
     /**
-     * Give salesman of volume, weight, time with position for next optimisation runs
-     * @summary get state
-     * @param {string} name Name
+     * Load task with a name maching the parameter
+     * @summary Load task
+     * @param {string} body Task name
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SetupApi
      */
-    public loadState(name: string, options?: any) {
-        return SetupApiFp(this.configuration).loadState(name, options)(this.fetch, this.basePath);
+    public loadTask(body: string, options?: any) {
+        return SetupApiFp(this.configuration).loadTask(body, options)(this.fetch, this.basePath);
     }
 
     /**
@@ -1150,15 +1351,27 @@ export class SetupApi extends BaseAPI {
     }
 
     /**
-     * Save defined setup by name
-     * @summary Save setup
+     * Save defined algorithm by name
+     * @summary Save algorithm
      * @param {string} body Name
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SetupApi
      */
-    public saveSetup(body: string, options?: any) {
-        return SetupApiFp(this.configuration).saveSetup(body, options)(this.fetch, this.basePath);
+    public saveAlgorithm(body: string, options?: any) {
+        return SetupApiFp(this.configuration).saveAlgorithm(body, options)(this.fetch, this.basePath);
+    }
+
+    /**
+     * Save defined task by name
+     * @summary Save task
+     * @param {string} body Task name
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SetupApi
+     */
+    public saveTask(body: string, options?: any) {
+        return SetupApiFp(this.configuration).saveTask(body, options)(this.fetch, this.basePath);
     }
 
 }
@@ -1170,36 +1383,13 @@ export class SetupApi extends BaseAPI {
 export const UpdateApiFetchParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * get time of best plan for actual transport
-         * @summary get time of best result
+         * get progress of results
+         * @summary get progress
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getBestCost(options: any = {}): FetchArgs {
-            const localVarPath = `/optimisation/bestCost`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * get best plan for actual transport
-         * @summary get best result
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getBestResult(options: any = {}): FetchArgs {
-            const localVarPath = `/optimisation/best`;
+        getProgress(options: any = {}): FetchArgs {
+            const localVarPath = `/optimisation/progress`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
             const localVarHeaderParameter = {} as any;
@@ -1254,6 +1444,30 @@ export const UpdateApiFetchParamCreator = function (configuration?: Configuratio
 
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * get runtime and iteration of running algorithm
+         * @summary get run values of running algorithm
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getRun(options: any = {}): FetchArgs {
+            const localVarPath = `/optimisation/run`;
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+
             localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
 
             return {
@@ -1271,31 +1485,13 @@ export const UpdateApiFetchParamCreator = function (configuration?: Configuratio
 export const UpdateApiFp = function (configuration?: Configuration) {
     return {
         /**
-         * get time of best plan for actual transport
-         * @summary get time of best result
+         * get progress of results
+         * @summary get progress
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getBestCost(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<number> {
-            const localVarFetchArgs = UpdateApiFetchParamCreator(configuration).getBestCost(options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * get best plan for actual transport
-         * @summary get best result
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getBestResult(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<GPS>> {
-            const localVarFetchArgs = UpdateApiFetchParamCreator(configuration).getBestResult(options);
+        getProgress(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Progress> {
+            const localVarFetchArgs = UpdateApiFetchParamCreator(configuration).getProgress(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -1316,8 +1512,26 @@ export const UpdateApiFp = function (configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getRootBetween(fromLat: number, fromLong: number, toLat: number, toLong: number, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<Array<number>>> {
+        getRootBetween(fromLat: number, fromLong: number, toLat: number, toLong: number, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<GPS>> {
             const localVarFetchArgs = UpdateApiFetchParamCreator(configuration).getRootBetween(fromLat, fromLong, toLat, toLong, options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
+         * get runtime and iteration of running algorithm
+         * @summary get run values of running algorithm
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getRun(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Run> {
+            const localVarFetchArgs = UpdateApiFetchParamCreator(configuration).getRun(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -1338,22 +1552,13 @@ export const UpdateApiFp = function (configuration?: Configuration) {
 export const UpdateApiFactory = function (configuration?: Configuration, fetch?: FetchAPI, basePath?: string) {
     return {
         /**
-         * get time of best plan for actual transport
-         * @summary get time of best result
+         * get progress of results
+         * @summary get progress
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getBestCost(options?: any) {
-            return UpdateApiFp(configuration).getBestCost(options)(fetch, basePath);
-        },
-        /**
-         * get best plan for actual transport
-         * @summary get best result
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getBestResult(options?: any) {
-            return UpdateApiFp(configuration).getBestResult(options)(fetch, basePath);
+        getProgress(options?: any) {
+            return UpdateApiFp(configuration).getProgress(options)(fetch, basePath);
         },
         /**
          * get best plan for actual transport
@@ -1368,6 +1573,15 @@ export const UpdateApiFactory = function (configuration?: Configuration, fetch?:
         getRootBetween(fromLat: number, fromLong: number, toLat: number, toLong: number, options?: any) {
             return UpdateApiFp(configuration).getRootBetween(fromLat, fromLong, toLat, toLong, options)(fetch, basePath);
         },
+        /**
+         * get runtime and iteration of running algorithm
+         * @summary get run values of running algorithm
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getRun(options?: any) {
+            return UpdateApiFp(configuration).getRun(options)(fetch, basePath);
+        },
     };
 };
 
@@ -1379,25 +1593,14 @@ export const UpdateApiFactory = function (configuration?: Configuration, fetch?:
  */
 export class UpdateApi extends BaseAPI {
     /**
-     * get time of best plan for actual transport
-     * @summary get time of best result
+     * get progress of results
+     * @summary get progress
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UpdateApi
      */
-    public getBestCost(options?: any) {
-        return UpdateApiFp(this.configuration).getBestCost(options)(this.fetch, this.basePath);
-    }
-
-    /**
-     * get best plan for actual transport
-     * @summary get best result
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof UpdateApi
-     */
-    public getBestResult(options?: any) {
-        return UpdateApiFp(this.configuration).getBestResult(options)(this.fetch, this.basePath);
+    public getProgress(options?: any) {
+        return UpdateApiFp(this.configuration).getProgress(options)(this.fetch, this.basePath);
     }
 
     /**
@@ -1415,5 +1618,15 @@ export class UpdateApi extends BaseAPI {
         return UpdateApiFp(this.configuration).getRootBetween(fromLat, fromLong, toLat, toLong, options)(this.fetch, this.basePath);
     }
 
-}
+    /**
+     * get runtime and iteration of running algorithm
+     * @summary get run values of running algorithm
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UpdateApi
+     */
+    public getRun(options?: any) {
+        return UpdateApiFp(this.configuration).getRun(options)(this.fetch, this.basePath);
+    }
 
+}

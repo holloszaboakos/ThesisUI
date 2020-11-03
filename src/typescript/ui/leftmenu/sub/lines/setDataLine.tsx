@@ -25,7 +25,10 @@ export function SetDataLine(props: { label: string, startText: string, placefold
                 width="1fr"
                 height={32}
                 radius={16}
-                padding={4}
+                paddingBottom={4}
+                paddingLeft={8}
+                paddingRight={8}
+                paddingTop={4}
                 background="#FFFFFF">
                 <input
                     style={{

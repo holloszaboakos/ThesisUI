@@ -1,11 +1,13 @@
 import * as Framer from 'framer'
 import * as React from 'react'
-import { Setted } from './ui/leftmenu/Setted'
-import { Started } from './ui/leftmenu/Started'
-import { Running } from './ui/leftmenu/Running'
-import { Setup } from './ui/leftmenu/Setup';
+import { SettedWindow } from './ui/leftmenu/SettedWindow'
+import { StartedWindow } from './ui/leftmenu/StartedWindow'
+import { RunningWindow } from './ui/leftmenu/RunningWindow'
+import { SetupWindow } from './ui/leftmenu/SetupWindow';
 import { Map } from "./ui/map/Map"
 import '../css/index.css';
+import * as DataCenter from "./data/dataCenter"
+import * as WebInterface from "./web/webinterface"
 
 export default function App() {
   enum States {
@@ -14,7 +16,11 @@ export default function App() {
     started,
     resumed
   }
-  const [state, setstate] = React.useState(0)
+  const [state, setState] = React.useState(0)
+
+  React.useEffect(() => {
+    WebInterface.clean()
+  }, [])
 
   return (
     < Framer.Stack
@@ -28,7 +34,7 @@ export default function App() {
       style={{
         fontWeight: "bold",
         color: "#000",
-        fontSize: 24,
+        fontSize: 20,
       }}
     >
       <Framer.Frame
@@ -38,15 +44,42 @@ export default function App() {
         radius={32}
       >
         {(state === States.created) ? (
-          <Setup
-            setStateSatted={() => { setstate(States.prepared) }}
+          <SetupWindow
+            set={() =>
+              WebInterface.defineTask(DataCenter.getTask())
+                .then(id => {
+                  let task = DataCenter.getTask()
+                  task.id = id
+                  DataCenter.updateTask(task)
+                  WebInterface.prepare()
+                    .then(response => setState(States.prepared))
+                })
+            }
           />
         ) : (state === States.prepared) ? (
-          <Setted />
+          <SettedWindow
+            clean={() =>
+              WebInterface.clean().then(response => setState(States.created))
+            }
+            start={() =>
+              WebInterface.start().then(response => setState(States.started))
+            }
+          />
         ) : (state === States.started) ? (
-          <Started />
+          <StartedWindow
+            stop={() =>
+              WebInterface.stop().then(response => setState(States.prepared))
+            }
+            run={() =>
+              WebInterface.resume().then(response => setState(States.resumed))
+            }
+          />
         ) : (state === States.resumed) && (
-          <Running />
+          <RunningWindow
+            pause={() =>
+              WebInterface.pause().then(response => setState(States.started))
+            }
+          />
         )
         }
       </Framer.Frame>

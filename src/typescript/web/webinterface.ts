@@ -2,7 +2,7 @@ import { gzipSync } from "zlib"
 import { GPS } from "../data/web/gps"
 import * as Api from "./api"
 import { Configuration } from "./configuration"
-let basePath = ""
+let basePath = "http://localhost:1234/".replace(/\/+$/, "")
 export function setBasepath(data: string) {
     basePath = data
 }
@@ -19,6 +19,8 @@ export let resume = lifecicleApi.resume
 export let pause = lifecicleApi.pause
 export let stop = lifecicleApi.stop
 export let clean = lifecicleApi.clean
+export let step = lifecicleApi.step
+export let cycle = lifecicleApi.cycle
 
 
 
@@ -27,27 +29,18 @@ export let removeObjective = setupApi.removeObjective
 export let addSalesman = setupApi.addSalesman
 export let removeSalesman = setupApi.removeSalesman
 
-export let loadSetup = setupApi.loadSetup
-export let defineSetup = setupApi.defineSetup
-export let getState = setupApi.getState
+export let loadTask = setupApi.loadTask
+export let defineTask = setupApi.defineTask
+export let saveTask = setupApi.saveTask
 
-export let loadState = setupApi.loadState
-export let saveSetup = setupApi.saveSetup
+export let loadAlgorithm = setupApi.loadAlgorithm
+export let defineAlgorithm = setupApi.defineAlgorithm
+export let saveAlgorithm = setupApi.saveAlgorithm
 
-export let getBestCost = updateApi.getBestCost
-export let getBestResult = updateApi.getBestResult
+export let getProgress = updateApi.getProgress
+export let getRun = updateApi.getRun
 export let getRootBetween = async function getRootBetween(from: GPS, to: GPS): Promise<GPS[]> {
     return await updateApi
         .getRootBetween(from.lattitude, from.longitude, to.lattitude, to.longitude)
-        .then(
-            (response) => {
-                return response.map((it) => {
-                    return {
-                        lattitude: it[1],
-                        longitude: it[0]
-                    } as GPS
-                })
-
-            }
-        )
+        .then(response => { return response })
 }

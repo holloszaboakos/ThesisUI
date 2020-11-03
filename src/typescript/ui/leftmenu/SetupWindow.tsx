@@ -4,7 +4,7 @@ import { SetDataLine } from "./sub/lines/SetDataLine"
 import { LabelAndIconButtons } from "./sub/lines/LabelAndIconButtons"
 import { ButtonLine } from "./sub/lines/ButtonLine"
 import { EditWindow as SalesmanEditWindow } from "./sub/salesman/EditWindow"
-import { DeleteWindow, DeleteWindow as SalesmanDeleteWindow } from "./sub/salesman/DeleteWindow"
+import { DeleteWindow as SalesmanDeleteWindow } from "./sub/salesman/DeleteWindow"
 import { ListWindow as SalesmanListWindow } from "./sub/salesman/ListWindow"
 import { EditWindow as ObjectiveEditWindow } from "./sub/objective/EditWindow"
 import { DeleteWindow as ObjectiveDeleteWindow } from "./sub/objective/DeleteWindow"
@@ -14,9 +14,11 @@ import { SaveWindow as SetupSaveWindow } from "./sub/setup/SaveWindow"
 import { LoadWindow as StateLoadWindow } from "./sub/state/LoadWindow"
 import { SaveWindow as StateSaveWindow } from "./sub/state/SaveWindow"
 import * as DataCenter from "../../data/dataCenter"
+import * as WebInterface from "../../web/webinterface"
+import { Setup } from "../../data/web/setup"
 
 
-export function Setup(props: { setStateSatted: () => void }) {
+export function SetupWindow(props: { set: () => void }) {
     enum States {
         main,
         salesmanView,
@@ -33,12 +35,27 @@ export function Setup(props: { setStateSatted: () => void }) {
         stateSave,
     }
 
-
-
     const [salesmanName, setSalesmanName] = React.useState("")
     const [objectiveName, setObjectiveName] = React.useState("")
-
     const [state, setState] = React.useState(States.main)
+    const [timeLimit, setTimeLimit] = React.useState(DataCenter.getSetup().timeLimitSecond)
+    const [iterationLimit, setIterationLimit] = React.useState(DataCenter.getSetup().iterLimit)
+
+    function onSetupChange(setup: Setup) {
+        setTimeLimit(setup.timeLimitSecond)
+        setIterationLimit(setup.iterLimit)
+    }
+
+    //onAttach
+    React.useEffect(() => {
+        DataCenter.addAlgorithmChangeCallBack(onSetupChange)
+    }, [])
+    //onDetach
+    React.useEffect(() => {
+        return () => {
+            DataCenter.removeAlgorithmChangeCallBack(onSetupChange)
+        }
+    }, [])
 
     return (<>
         {
@@ -96,7 +113,7 @@ export function Setup(props: { setStateSatted: () => void }) {
                         />
                         <SetDataLine
                             label="run time limit (s)"
-                            startText="0"
+                            startText={timeLimit.toString()}
                             placefolder="number in seconds"
                             validate={(text) => { return true }}
                             sendValue={(text) => {
@@ -107,7 +124,7 @@ export function Setup(props: { setStateSatted: () => void }) {
                         />
                         <SetDataLine
                             label="iterations limit"
-                            startText="0"
+                            startText={iterationLimit.toString()}
                             placefolder="number in seconds"
                             validate={(text) => { return true }}
                             sendValue={(text) => {
@@ -143,7 +160,7 @@ export function Setup(props: { setStateSatted: () => void }) {
                             ]}
                         />
                     </Framer.Stack>
-                    <ButtonLine label="Set" functionality={() => { console.log("setup") }} />
+                    <ButtonLine label="Set" functionality={props.set} />
                 </Framer.Stack>
                 )
                 : state === States.salesmanView ? (

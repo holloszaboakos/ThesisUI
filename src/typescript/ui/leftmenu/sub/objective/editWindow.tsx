@@ -1,8 +1,6 @@
 import * as React from "react"
 import * as Framer from "framer"
-import { CheckBoxLine } from "../lines/CheckBoxLine"
 import { ButtonLine } from "../lines/ButtonLine"
-import { LabelAndIconButtons } from "../lines/LabelAndIconButtons"
 import * as DataCenter from "../../../../data/dataCenter"
 import { SetDataLine } from "../lines/SetDataLine"
 import { Objective } from "../../../../data/web/objective"
@@ -53,7 +51,7 @@ export function EditWindow(props: { name: string, setObjectiveName: (text) => vo
                 label="name"
                 startText={objective.name}
                 placefolder="name"
-                validate={(text) => true}
+                validate={() => true}
                 sendValue={(text) => {
                     objective.name = text
                 }}
@@ -62,7 +60,7 @@ export function EditWindow(props: { name: string, setObjectiveName: (text) => vo
                 label="location longitude"
                 startText={objective.location.longitude.toString()}
                 placefolder="longitude"
-                validate={(text) => true}
+                validate={() => true}
                 sendValue={(text) => {
                     objective.location.longitude = JSON.parse(text)
                 }}
@@ -71,7 +69,7 @@ export function EditWindow(props: { name: string, setObjectiveName: (text) => vo
                 label="location lattitude"
                 startText={objective.location.lattitude.toString()}
                 placefolder="lattitude"
-                validate={(text) => true}
+                validate={() => true}
                 sendValue={(text) => {
                     objective.location.lattitude = JSON.parse(text)
                 }}
@@ -80,7 +78,7 @@ export function EditWindow(props: { name: string, setObjectiveName: (text) => vo
                 label="time (s)"
                 startText={objective.timeSecond.toString()}
                 placefolder="time"
-                validate={(text) => true}
+                validate={() => true}
                 sendValue={(text) => {
                     objective.timeSecond = JSON.parse(text)
                 }}
@@ -89,7 +87,7 @@ export function EditWindow(props: { name: string, setObjectiveName: (text) => vo
                 label="volume (m^3)"
                 startText={objective.volumeStere.toString()}
                 placefolder="volume"
-                validate={(text) => true}
+                validate={() => true}
                 sendValue={(text) => {
                     objective.volumeStere = JSON.parse(text)
                 }}
@@ -98,7 +96,7 @@ export function EditWindow(props: { name: string, setObjectiveName: (text) => vo
                 label="weight (g)"
                 startText={objective.weightGramm.toString()}
                 placefolder="weight"
-                validate={(text) => true}
+                validate={() => true}
                 sendValue={(text) => {
                     objective.weightGramm = JSON.parse(text)
                 }}

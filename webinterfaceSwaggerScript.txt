@@ -10,7 +10,7 @@ info:
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
 host: "waprom.drp"
 tags:
-- name: "options"
+- name: "setup"
   description: "Setup and options of optimisation"
   externalDocs:
     description: "Find out more"
@@ -107,13 +107,13 @@ paths:
         "200":
           description: "successful operation"
                 
-  /setup/setup:
+  /setup/task:
     post:
       tags:
         - "setup"
-      summary: "Define setup"
-      description: "Define setup parameters for next optimisation run"
-      operationId: "defineSetup"
+      summary: "Define task"
+      description: "Define task parameters for next optimisation run"
+      operationId: "defineTask"
       consumes:
       - "application/json"
       produces:
@@ -121,10 +121,10 @@ paths:
       parameters:
       - in: "body"
         name: "body"
-        description: "Setup parameters"
+        description: "Task parameters"
         required: true
         schema:
-          $ref: "#/definitions/Setup"
+          $ref: '#/definitions/Task'
       responses:
         "405":
           description: "Invalid setup"
@@ -135,9 +135,9 @@ paths:
     get:
       tags:
         - "setup"
-      summary: "Define setup"
-      description: "Defune setup parameters for next optimisation run"
-      operationId: "loadSetup"
+      summary: "Load task"
+      description: "Load task with a name maching the parameter"
+      operationId: "loadTask"
       consumes:
       - "application/json"
       produces:
@@ -145,24 +145,23 @@ paths:
       parameters:
       - in: "body"
         name: "body"
-        description: "Setup parameters"
+        description: "Task name"
         required: true
         schema:
           type: "string"
       responses:
         "405":
-          description: "Invalid setup"
+          description: "Invalid task"
         "200":
           description: "successful operation"
           schema:
-            $ref: "#/definitions/Setup"
-  /setup/save:
-    post:
+            $ref: '#/definitions/Task'
+    put:
       tags:
         - "setup"
-      summary: "Save setup"
-      description: "Save defined setup by name"
-      operationId: "saveSetup"
+      summary: "Save task"
+      description: "Save defined task by name"
+      operationId: "saveTask"
       consumes:
       - "application/json"
       produces:
@@ -170,7 +169,7 @@ paths:
       parameters:
       - in: "body"
         name: "body"
-        description: "Name"
+        description: "Task name"
         required: true
         schema:
           type: "string"
@@ -178,44 +177,75 @@ paths:
         "200":
           description: "successful operation"
           
-  /setup/state:
-    get:
+  /setup/algorithm:
+    post:
       tags:
         - "setup"
-      summary: "get state"
-      description: "Give salesman of volume, weight, time with position for next optimisation runs"
-      operationId: "getState"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      responses:
-        "200":
-          description: "successful operation"
-          schema:
-            type: "string"
-  /state/{name}:
-    get:
-      tags:
-        - "setup"
-      summary: "get state"
-      description: "Give salesman of volume, weight, time with position for next optimisation runs"
-      operationId: "loadState"
+      summary: "Define algorithm"
+      description: "Define algorithm parameters for next optimisation run"
+      operationId: "defineAlgorithm"
       consumes:
       - "application/json"
       produces:
       - "application/json"
       parameters:
-      - in: "path"
-        name: "name"
-        description: "Name"
+      - in: "body"
+        name: "body"
+        description: "Algorithm parameters"
         required: true
-        type: "string"
+        schema:
+          $ref: '#/definitions/Algotihm'
       responses:
+        "405":
+          description: "Invalid algorithm"
         "200":
           description: "successful operation"
           schema:
-            $ref: "#/definitions/State"
+            type: "string"
+    get:
+      tags:
+        - "setup"
+      summary: "Load algorithm"
+      description: "Load algorithm with a name maching the parameter"
+      operationId: "loadAlgorithm"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Algorithm name"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "405":
+          description: "Invalid algorithm"
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: '#/definitions/Algotihm'
+    put:
+      tags:
+        - "setup"
+      summary: "Save algorithm"
+      description: "Save defined algorithm by name"
+      operationId: "saveAlgorithm"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Name"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "successful operation"
           
   /lifecycle/prepare:
     post:
@@ -294,6 +324,37 @@ paths:
           description: "successfull clean"
         "405":
           description: "invalid in current state"
+              
+  /lifecycle/step:
+    post:
+      tags:
+      - "lifecicle"
+      summary: "make one iteration"
+      description: "make one iteration of already started algorithm"
+      operationId: "step"
+      responses:
+        "200":
+          description: "successfull step"
+          schema:
+            $ref: '#/definitions/Progress'
+          
+        "405":
+          description: "invalid in current state"
+              
+  /lifecycle/cycle:
+    post:
+      tags:
+      - "lifecicle"
+      summary: "make one cycle"
+      description: "make one cycle of already started algorithm"
+      operationId: "cycle"
+      responses:
+        "200":
+          description: "successfull cycle"
+          schema:
+            $ref: '#/definitions/Progress'
+        "405":
+          description: "invalid in current state"
           
   /optimisation/root/{fromLat}/{fromLong}/{toLat}/{toLong}:
     get:
@@ -331,78 +392,125 @@ paths:
           schema:
             type: "array"
             items:
-              type: "array"
-              items:
-                type: "number"
-              minItems: 2
-              maxItems: 2
-          
-  /optimisation/bestCost:
-    get:
-      tags:
-        - "update"
-      summary: "get time of best result"
-      description: "get time of best plan for actual transport"
-      operationId: "getBestCost"
-      produces:
-      - "application/json"
-      responses:
-        "200":
-          description: "successful operation"
-          schema:
-            type: "number"
-          
-  /optimisation/best:
-    get:
-      tags:
-        - "update"
-      summary: "get best result"
-      description: "get best plan for actual transport"
-      operationId: "getBestResult"
-      produces:
-      - "application/json"
-      responses:
-        "200":
-          description: "successful operation"
-          schema:
-            type: "array"
-            items:
               $ref: "#/definitions/GPS"
+          
+  /optimisation/run:
+    get:
+      tags:
+        - "update"
+      summary: "get run values of running algorithm"
+      description: "get runtime and iteration of running algorithm"
+      operationId: "getRun"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: '#/definitions/Run'
+          
+  /optimisation/progress:
+    get:
+      tags:
+        - "update"
+      summary: "get progress"
+      description: "get progress of results"
+      operationId: "getProgress"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: '#/definitions/Progress'
     
     
     
 definitions:
-
-  State:
+  Run:
     type: "object"
     properties:
       id:
         type: "string"
       name:
         type: "string"
-      maxCost_Euro:
-        type: "number"
-      minCost_Euro:
-        type: "number"
       iteration:
         type: "number"
       runtime_Second:
         type: "number"
-      setup:
-          $ref: "#/definitions/Setup"
+    required: 
+      - id
+      - name
+      - iteration
+      - runtime_Second
+      
+  Progress:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      name:
+        type: "string"
       bestRout:
         type: "array"
         items:
           $ref: "#/definitions/GPS"
+      maxCost_Euro:
+        type: "number"
+      minCost_Euro:
+        type: "number"
+      bestCost_Euro:
+        type: "number"
     required: 
       - id
       - name
+      - bestRout
       - maxCost_Euro
       - minCost_Euro
-      - iteration
-      - runtime_Second
-      - setup
-      - bestRout
+      - bestCost_Euro
+    
+      
+  Algotihm:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      name:
+        type: "string"
+      iterLimit:
+        type: "number"
+      timeLimit_Second:
+        type: "number"
+      algorithm:
+        type: "string"
+    required: 
+      - id
+      - name
+      - iterLimit
+      - timeLimit_Second
+      - algorithm
+  
+  Task:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      name:
+        type: "string"
+      center:
+          $ref: "#/definitions/GPS"
+      salesmen:
+        type: "array"
+        items:
+          $ref: "#/definitions/Salesman"
+      costGraph:
+        $ref: '#/definitions/Graph'
+    required: 
+      - id
+      - name
+      - center
+      - salesmen
+      - costGraph
       
   Graph:
     type: "object"
@@ -424,6 +532,7 @@ definitions:
     required: 
       - id
       - name
+      - objectives
       - edges
       
   Edge:
@@ -445,35 +554,39 @@ definitions:
       - length_Meter
       - root
   
-  Setup:
+  Objective:
     type: "object"
     properties:
       id:
         type: "string"
       name:
         type: "string"
-      iterLimit:
-        type: "number"
-      timeLimit_Second:
-        type: "number"
-      center:
+      location:
           $ref: "#/definitions/GPS"
-      objectives:
-        type: "array"
-        items:
-          $ref: "#/definitions/Objective"
-      salesmen:
-        type: "array"
-        items:
-          $ref: "#/definitions/Salesman"
+      time_Second:
+        type: "number"
+      volume_Stere:
+        type: "number"
+      weight_Gramm:
+        type: "number"
     required: 
       - id
       - name
-      - iterLimit
-      - timeLimit_Second
-      - center
-      - objectives
-      - salesmen
+      - location
+      - time_Second
+      - volume_Stere
+      - weight_Gramm
+        
+  GPS:
+    type: "object"
+    properties:
+      lattitude: 
+        type: "number"
+      longitude: 
+        type: "number"
+    required: 
+      - lattitude
+      - longitude
   
   Salesman:
     type: "object"
@@ -509,39 +622,5 @@ definitions:
       - fuelConsuption_LiterPerMeter
       - fuelPrice_EuroPerLiter
       - basePrice_Euro
-  
-  Objective:
-    type: "object"
-    properties:
-      id:
-        type: "string"
-      name:
-        type: "string"
-      location:
-          $ref: "#/definitions/GPS"
-      time_Second:
-        type: "number"
-      volume_Stere:
-        type: "number"
-      weight_Gramm:
-        type: "number"
-    required: 
-      - id
-      - name
-      - location
-      - time_Second
-      - volume_Stere
-      - weight_Gramm
-        
-  GPS:
-    type: "object"
-    properties:
-      lattitude: 
-        type: "number"
-      longitude: 
-        type: "number"
-    required: 
-      - lattitude
-      - longitude
       
       
