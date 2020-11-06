@@ -2,10 +2,10 @@ import * as WebInterface from "../web/webinterface"
 import { Objective } from "./web/objective"
 import { Salesman } from "./web/salesman"
 import { Task } from "./web/task"
+import { Result } from "./web/result"
 import { Progress } from "./web/progress"
-import { Run } from "./web/run"
 import { Edge } from "./web/edge"
-import { Setup } from "./web/setup"
+import { Setting } from "./web/setting"
 import { GPS } from "./web/gps"
 
 
@@ -26,7 +26,7 @@ export function loadTask(name: string) {
 }
 
 //ALGORITHM CONTAINER
-let savedSetups: Setup[] = []
+let savedSetups: Setting[] = []
 export function viewSetups(): string[] {
     return savedSetups.map(it => { return it.name })
 }
@@ -37,27 +37,9 @@ export function saveSetup(name: string) {
 }
 export function loadSetup(name: string) {
     let newSetup = savedSetups.find(it => { return it.name === name })
-    let tmp = newSetup ? newSetup as Setup : setup
+    let tmp = newSetup ? newSetup as Setting : setup
     updateSetup(tmp)
 }
-
-//PROGRESSCONTAINER
-let savedProgress: Progress[] = []
-export function viewProgress(): string[] {
-    return savedProgress.map(it => { return it.name })
-}
-export function saveProgress(name: string) {
-    let clone = { ...progress }
-    clone.name = name
-    savedProgress.push(clone)
-}
-export function loadProgress(name: string) {
-    let newProgress = savedProgress.find(it => { return it.name === name })
-    let tmp = newProgress ? newProgress as Progress : progress
-    updateProgress(tmp)
-}
-
-
 
 //TASK
 let task: Task = {
@@ -152,32 +134,32 @@ export function setSalesmanByOldName(oldName: string, salesman: Salesman) {
 
 
 //SETUP
-let setup: Setup = {
+let setup: Setting = {
     id: "",
     name: "",
     algorithm: "",
     iterLimit: 0,
     timeLimitSecond: 0
 }
-let setupChangedCallBacks = [] as ((data: Setup) => void)[]
-export function addSetupChangeCallBack(callBack: ((data: Setup) => void)) {
+let setupChangedCallBacks = [] as ((data: Setting) => void)[]
+export function addSetupChangeCallBack(callBack: ((data: Setting) => void)) {
     setupChangedCallBacks.push(callBack)
 }
-export function removeSetupChangeCallBack(callBack: ((data: Setup) => void)) {
+export function removeSetupChangeCallBack(callBack: ((data: Setting) => void)) {
     setupChangedCallBacks = setupChangedCallBacks.filter((it) => { return it !== callBack })
 }
-export function updateSetup(data: Setup) {
+export function updateSetup(data: Setting) {
     setup = data
     setupChangedCallBacks.forEach(it => { it(data) })
 }
-export function getSetup(): Setup {
+export function getSetup(): Setting {
     return { ...setup }
 }
 
 
 
-//PROGRESS
-let progress: Progress = {
+//RESULT
+let result: Result = {
     id: "",
     name: "",
     bestCostEuro: 0,
@@ -185,37 +167,37 @@ let progress: Progress = {
     maxCostEuro: 0,
     minCostEuro: 0,
 }
-let progressChangedCallBacks = [] as ((data: Progress) => void)[]
-export function addProgressChangeCallBack(callBack: ((data: Progress) => void)) {
-    progressChangedCallBacks.push(callBack)
+let resultChangedCallBacks = [] as ((data: Result) => void)[]
+export function addResultChangeCallBack(callBack: ((data: Result) => void)) {
+    resultChangedCallBacks.push(callBack)
 }
-export function removeProgressChangeCallBack(callBack: ((data: Progress) => void)) {
-    progressChangedCallBacks = progressChangedCallBacks.filter((it) => { return it !== callBack })
+export function removeResultChangeCallBack(callBack: ((data: Result) => void)) {
+    resultChangedCallBacks = resultChangedCallBacks.filter((it) => { return it !== callBack })
 }
-export function updateProgress(data: Progress) {
-    progress = data
-    progressChangedCallBacks.forEach(it => { it(data) })
+export function updateResult(data: Result) {
+    result = data
+    resultChangedCallBacks.forEach(it => { it(data) })
 }
-export function getProgress(): Progress {
-    return { ...progress }
+export function getResult(): Result {
+    return { ...result }
 }
 
 
 
 //RUN
-let run: Run
-let runChangedCallBacks = [] as ((data: Run) => void)[]
-export function addRunChangeCallBack(callBack: ((data: Run) => void)) {
+let run: Result
+let runChangedCallBacks = [] as ((data: Result) => void)[]
+export function addRunChangeCallBack(callBack: ((data: Result) => void)) {
     runChangedCallBacks.push(callBack)
 }
-export function removeRunChangeCallBack(callBack: ((data: Run) => void)) {
+export function removeRunChangeCallBack(callBack: ((data: Result) => void)) {
     runChangedCallBacks = runChangedCallBacks.filter((it) => { return it !== callBack })
 }
-export function updateRun(data: Run) {
+export function updateRun(data: Result) {
     run = data
     runChangedCallBacks.forEach(it => { it(data) })
 }
-export function getRun(): Run {
+export function getRun(): Result {
     return { ...run }
 }
 

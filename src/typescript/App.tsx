@@ -1,9 +1,9 @@
 import * as Framer from 'framer'
 import * as React from 'react'
-import { SettedWindow } from './ui/leftmenu/SettedWindow'
+import { SetupWindow } from './ui/leftmenu/SettingWindow'
 import { StartedWindow } from './ui/leftmenu/StartedWindow'
 import { RunningWindow } from './ui/leftmenu/RunningWindow'
-import { SetupWindow } from './ui/leftmenu/SetupWindow';
+import { TaskWindow } from './ui/leftmenu/TaskWindow';
 import { Map } from "./ui/map/Map"
 import '../css/index.css';
 import * as DataCenter from "./data/dataCenter"
@@ -44,7 +44,7 @@ export default function App() {
         radius={32}
       >
         {(state === States.created) ? (
-          <SetupWindow
+          <TaskWindow
             set={() =>
               WebInterface.defineTask(DataCenter.getTask())
                 .then(id => {
@@ -57,7 +57,7 @@ export default function App() {
             }
           />
         ) : (state === States.prepared) ? (
-          <SettedWindow
+          <SetupWindow
             clean={() =>
               WebInterface.clean().then(response => setState(States.created))
             }

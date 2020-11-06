@@ -1,37 +1,37 @@
 /**
  * 
  * @export
- * @interface Setup
+ * @interface Setting
  */
-export interface Setup {
+export interface Setting {
     /**
      * 
      * @type {string}
-     * @memberof Setup
+     * @memberof Setting
      */
     id: string;
     /**
      * 
      * @type {string}
-     * @memberof Setup
+     * @memberof Setting
      */
     name: string;
     /**
      * 
      * @type {number}
-     * @memberof Setup
+     * @memberof Setting
      */
     iterLimit: number;
     /**
      * 
      * @type {number}
-     * @memberof Setup
+     * @memberof Setting
      */
     timeLimitSecond: number;
     /**
      * 
      * @type {string}
-     * @memberof Setup
+     * @memberof Setting
      */
     algorithm: string;
 }

@@ -2,10 +2,11 @@ import * as React from "react"
 import * as Framer from "framer"
 import { ButtonLine } from "../lines/ButtonLine"
 import * as DataCenter from "../../../../data/dataCenter"
+import * as WebInterface from "../../../../web/webinterface"
 import { RadioButtonLine } from "../lines/RadioButtonLine"
 
 export function ChooseWindow(props: { onEnded: () => void }) {
-    const names = DataCenter.viewSetups()
+    const names = WebInterface.listAlgorithms()
     const [chosenName, setChosenName] = React.useState(names[0])
 
     React.useEffect(() => {

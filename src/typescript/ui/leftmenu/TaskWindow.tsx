@@ -11,16 +11,13 @@ import { DeleteWindow as ObjectiveDeleteWindow } from "./sub/objective/DeleteWin
 import { ListWindow as ObjectiveListWindow } from "./sub/objective/ListWindow"
 import { LoadWindow as TaskLoadWindow } from "./sub/task/LoadWindow"
 import { SaveWindow as TaskSaveWindow } from "./sub/task/SaveWindow"
-import { LoadWindow as SetupLoadWindow } from "./sub/setup/LoadWindow"
-import { SaveWindow as SetupSaveWindow } from "./sub/setup/SaveWindow"
-import { LoadWindow as ProgressLoadWindow } from "./sub/progress/LoadWindow"
-import { SaveWindow as ProgressSaveWindow } from "./sub/progress/SaveWindow"
+import { LoadWindow as SetupLoadWindow } from "./sub/setting/LoadWindow"
+import { SaveWindow as SetupSaveWindow } from "./sub/setting/SaveWindow"
 import * as DataCenter from "../../data/dataCenter"
-import * as WebInterface from "../../web/webinterface"
-import { Setup } from "../../data/web/setup"
+import { Setting } from "../../data/web/setting"
 
 
-export function SetupWindow(props: { set: () => void }) {
+export function TaskWindow(props: { set: () => void }) {
     enum States {
         main,
         salesmanView,
@@ -42,24 +39,6 @@ export function SetupWindow(props: { set: () => void }) {
     const [salesmanName, setSalesmanName] = React.useState("")
     const [objectiveName, setObjectiveName] = React.useState("")
     const [state, setState] = React.useState(States.main)
-    const [timeLimit, setTimeLimit] = React.useState(DataCenter.getSetup().timeLimitSecond)
-    const [iterationLimit, setIterationLimit] = React.useState(DataCenter.getSetup().iterLimit)
-
-    function onSetupChange(setup: Setup) {
-        setTimeLimit(setup.timeLimitSecond)
-        setIterationLimit(setup.iterLimit)
-    }
-
-    //onAttach
-    React.useEffect(() => {
-        DataCenter.addSetupChangeCallBack(onSetupChange)
-    }, [])
-    //onDetach
-    React.useEffect(() => {
-        return () => {
-            DataCenter.removeSetupChangeCallBack(onSetupChange)
-        }
-    }, [])
 
     return (<>
         {
@@ -115,28 +94,6 @@ export function SetupWindow(props: { set: () => void }) {
                                 },
                             ]}
                         />
-                        <SetDataLine
-                            label="run time limit (s)"
-                            startText={timeLimit.toString()}
-                            placefolder="number in seconds"
-                            validate={(text) => { return true }}
-                            sendValue={(text) => {
-                                let setup = DataCenter.getSetup()
-                                setup.timeLimitSecond = JSON.parse(text)
-                                DataCenter.updateSetup(setup)
-                            }}
-                        />
-                        <SetDataLine
-                            label="iterations limit"
-                            startText={iterationLimit.toString()}
-                            placefolder="number in seconds"
-                            validate={(text) => { return true }}
-                            sendValue={(text) => {
-                                let setup = DataCenter.getSetup()
-                                setup.iterLimit = JSON.parse(text)
-                                DataCenter.updateSetup(setup)
-                            }}
-                        />
                         <LabelAndIconButtons
                             label="state"
                             iconButtons={[
@@ -151,7 +108,7 @@ export function SetupWindow(props: { set: () => void }) {
                             ]}
                         />
                         <LabelAndIconButtons
-                            label="setup"
+                            label="setting"
                             iconButtons={[
                                 {
                                     name: "upload",
@@ -163,21 +120,8 @@ export function SetupWindow(props: { set: () => void }) {
                                 },
                             ]}
                         />
-                        <LabelAndIconButtons
-                            label="progress"
-                            iconButtons={[
-                                {
-                                    name: "upload",
-                                    function: () => { setState(States.progressLoad) }
-                                },
-                                {
-                                    name: "save",
-                                    function: () => { setState(States.progressSave) }
-                                },
-                            ]}
-                        />
                     </Framer.Stack>
-                    <ButtonLine label="Set" functionality={props.set} />
+                    <ButtonLine label="SetTask Setted" functionality={props.set} />
                 </Framer.Stack>
                 )
                 : state === States.salesmanView ? (
@@ -224,27 +168,19 @@ export function SetupWindow(props: { set: () => void }) {
                         onEnded={() => { setState(States.main) }}
                     />
                 ) : state === States.taskLoad ? (
-                    <SetupLoadWindow
+                    <TaskLoadWindow
                         onEnded={() => { setState(States.main) }}
                     />
                 ) : state === States.taskSave ? (
-                    <SetupSaveWindow
+                    <TaskSaveWindow
                         onEnded={() => { setState(States.main) }}
                     />
                 ) : state === States.setupLoad ? (
                     <SetupLoadWindow
                         onEnded={() => { setState(States.main) }}
                     />
-                ) : state === States.setupSave ? (
+                ) : state === States.setupSave && (
                     <SetupSaveWindow
-                        onEnded={() => { setState(States.main) }}
-                    />
-                ) : state === States.progressLoad ? (
-                    <ProgressLoadWindow
-                        onEnded={() => { setState(States.main) }}
-                    />
-                ) : state === States.progressSave && (
-                    <ProgressSaveWindow
                         onEnded={() => { setState(States.main) }}
                     />
                 )

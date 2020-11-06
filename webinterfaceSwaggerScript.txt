@@ -177,13 +177,13 @@ paths:
         "200":
           description: "successful operation"
           
-  /setup/algorithm:
+  /setup/setting:
     post:
       tags:
         - "setup"
-      summary: "Define algorithm"
-      description: "Define algorithm parameters for next optimisation run"
-      operationId: "defineAlgorithm"
+      summary: "Define setting"
+      description: "Define setting parameters for next optimisation run"
+      operationId: "defineSetting"
       consumes:
       - "application/json"
       produces:
@@ -191,13 +191,13 @@ paths:
       parameters:
       - in: "body"
         name: "body"
-        description: "Algorithm parameters"
+        description: "Setting parameters"
         required: true
         schema:
-          $ref: '#/definitions/Algotihm'
+          $ref: '#/definitions/Setting'
       responses:
         "405":
-          description: "Invalid algorithm"
+          description: "Invalid setting"
         "200":
           description: "successful operation"
           schema:
@@ -205,9 +205,9 @@ paths:
     get:
       tags:
         - "setup"
-      summary: "Load algorithm"
-      description: "Load algorithm with a name maching the parameter"
-      operationId: "loadAlgorithm"
+      summary: "Load setting"
+      description: "Load setting with a name maching the parameter"
+      operationId: "loadSetting"
       consumes:
       - "application/json"
       produces:
@@ -215,23 +215,23 @@ paths:
       parameters:
       - in: "body"
         name: "body"
-        description: "Algorithm name"
+        description: "Setting name"
         required: true
         schema:
           type: "string"
       responses:
         "405":
-          description: "Invalid algorithm"
+          description: "Invalid setting"
         "200":
           description: "successful operation"
           schema:
-            $ref: '#/definitions/Algotihm'
+            $ref: '#/definitions/Setting'
     put:
       tags:
         - "setup"
-      summary: "Save algorithm"
-      description: "Save defined algorithm by name"
-      operationId: "saveAlgorithm"
+      summary: "Save setting"
+      description: "Save defined setting by name"
+      operationId: "saveSetting"
       consumes:
       - "application/json"
       produces:
@@ -246,6 +246,27 @@ paths:
       responses:
         "200":
           description: "successful operation"
+          
+  /setup/setting/algorithm:
+    get:
+      tags:
+        - "setup"
+      summary: "List available algorithms"
+      description: "List available algorithms to choose from"
+      operationId: "listAlgorithms"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        "405":
+          description: "Invalid setting"
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              type: "string"
           
   /lifecycle/prepare:
     post:
@@ -336,7 +357,7 @@ paths:
         "200":
           description: "successfull step"
           schema:
-            $ref: '#/definitions/Progress'
+            $ref: '#/definitions/Result'
           
         "405":
           description: "invalid in current state"
@@ -352,11 +373,11 @@ paths:
         "200":
           description: "successfull cycle"
           schema:
-            $ref: '#/definitions/Progress'
+            $ref: '#/definitions/Result'
         "405":
           description: "invalid in current state"
           
-  /optimisation/root/{fromLat}/{fromLong}/{toLat}/{toLong}:
+  /update/root/{fromLat}/{fromLong}/{toLat}/{toLong}:
     get:
       tags:
         - "update"
@@ -394,27 +415,12 @@ paths:
             items:
               $ref: "#/definitions/GPS"
           
-  /optimisation/run:
+  /update/progress:
     get:
       tags:
         - "update"
-      summary: "get run values of running algorithm"
+      summary: "get run progress of running algorithm"
       description: "get runtime and iteration of running algorithm"
-      operationId: "getRun"
-      produces:
-      - "application/json"
-      responses:
-        "200":
-          description: "successful operation"
-          schema:
-            $ref: '#/definitions/Run'
-          
-  /optimisation/progress:
-    get:
-      tags:
-        - "update"
-      summary: "get progress"
-      description: "get progress of results"
       operationId: "getProgress"
       produces:
       - "application/json"
@@ -423,11 +429,26 @@ paths:
           description: "successful operation"
           schema:
             $ref: '#/definitions/Progress'
+          
+  /update/result:
+    get:
+      tags:
+        - "update"
+      summary: "get actual result"
+      description: "get actual result of startes algorithm"
+      operationId: "getResult"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: '#/definitions/Result'
     
     
     
 definitions:
-  Run:
+  Progress:
     type: "object"
     properties:
       id:
@@ -444,7 +465,7 @@ definitions:
       - iteration
       - runtime_Second
       
-  Progress:
+  Result:
     type: "object"
     properties:
       id:
@@ -470,7 +491,7 @@ definitions:
       - bestCost_Euro
     
       
-  Algotihm:
+  Setting:
     type: "object"
     properties:
       id:

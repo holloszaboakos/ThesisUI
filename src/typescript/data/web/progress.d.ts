@@ -1,4 +1,3 @@
-
 /**
  * 
  * @export
@@ -19,26 +18,14 @@ export interface Progress {
     name: string;
     /**
      * 
-     * @type {Array<GPS>}
+     * @type {number}
      * @memberof Progress
      */
-    bestRout: Array<GPS>;
+    iteration: number;
     /**
      * 
      * @type {number}
      * @memberof Progress
      */
-    maxCostEuro: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof Progress
-     */
-    minCostEuro: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof Progress
-     */
-    bestCostEuro: number;
+    runtimeSecond: number;
 }
