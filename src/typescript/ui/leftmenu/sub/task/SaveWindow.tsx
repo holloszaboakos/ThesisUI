@@ -9,7 +9,7 @@ export function SaveWindow(props: { onEnded: () => void }) {
     let name = ""
 
     function ok() {
-        DataCenter.saveState(name)
+        DataCenter.saveTask(name)
         props.onEnded()
     }
 

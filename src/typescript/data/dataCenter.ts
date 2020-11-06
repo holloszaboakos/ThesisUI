@@ -151,7 +151,7 @@ export function setSalesmanByOldName(oldName: string, salesman: Salesman) {
 
 
 
-//ALGORITHM
+//SETUP
 let setup: Setup = {
     id: "",
     name: "",

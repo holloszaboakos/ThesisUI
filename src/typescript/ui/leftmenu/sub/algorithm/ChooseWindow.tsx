@@ -5,7 +5,7 @@ import * as DataCenter from "../../../../data/dataCenter"
 import { RadioButtonLine } from "../lines/RadioButtonLine"
 
 export function ChooseWindow(props: { onEnded: () => void }) {
-    const names = DataCenter.ViewAlgorithms()
+    const names = DataCenter.viewSetups()
     const [chosenName, setChosenName] = React.useState(names[0])
 
     React.useEffect(() => {
@@ -13,9 +13,9 @@ export function ChooseWindow(props: { onEnded: () => void }) {
     }, [chosenName])
 
     function ok() {
-        let state = DataCenter.getState()
-        state.algorithm = chosenName
-        DataCenter.updateTask(state)
+        let setup = DataCenter.getSetup()
+        setup.algorithm = chosenName
+        DataCenter.updateSetup(setup)
         props.onEnded()
     }
 

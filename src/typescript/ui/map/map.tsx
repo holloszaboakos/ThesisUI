@@ -1,14 +1,14 @@
 import * as React from "react"
 import * as Framer from "framer"
 import * as mapboxgl from "mapbox-gl"
-import { getState, publicKey, style } from "../../data/dataCenter"
+import * as DataCenter from "../../data/dataCenter"
 
 let mapContainer: HTMLDivElement | null
 let map
 
 export function Map(props: { width: string, height: string, radius: number, margin: number }) {
 
-    const [routes, setRoutes] = React.useState(getState().bestRout)
+    const [routes, setRoutes] = React.useState(DataCenter.getProgress().bestRout)
     const [latitude, setLatitude] = React.useState(47.462851)
     const [longitude, setLongitude] = React.useState(19.088509)
     const [zoom, setZoom] = React.useState(7)
@@ -36,10 +36,10 @@ export function Map(props: { width: string, height: string, radius: number, marg
 
     //ComponentDidMount
     React.useEffect(() => {
-        mapboxgl.accessToken = publicKey
+        mapboxgl.accessToken = DataCenter.publicKey
         map = new mapboxgl.Map({
             container: mapContainer,
-            style: style,
+            style: DataCenter.style,
             height: props.height,
             width: props.width,
             center: [longitude, latitude],
@@ -53,7 +53,7 @@ export function Map(props: { width: string, height: string, radius: number, marg
         })
 
         map.on("load", function () {
-            getState().bestRout.forEach((rout, index) => {
+            DataCenter.getProgress().bestRout.forEach((rout, index) => {
                 map.addSource("route" + index, {
                     type: "geojson",
                     data: {

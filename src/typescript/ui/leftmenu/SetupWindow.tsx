@@ -9,10 +9,12 @@ import { ListWindow as SalesmanListWindow } from "./sub/salesman/ListWindow"
 import { EditWindow as ObjectiveEditWindow } from "./sub/objective/EditWindow"
 import { DeleteWindow as ObjectiveDeleteWindow } from "./sub/objective/DeleteWindow"
 import { ListWindow as ObjectiveListWindow } from "./sub/objective/ListWindow"
+import { LoadWindow as TaskLoadWindow } from "./sub/task/LoadWindow"
+import { SaveWindow as TaskSaveWindow } from "./sub/task/SaveWindow"
 import { LoadWindow as SetupLoadWindow } from "./sub/setup/LoadWindow"
 import { SaveWindow as SetupSaveWindow } from "./sub/setup/SaveWindow"
-import { LoadWindow as StateLoadWindow } from "./sub/state/LoadWindow"
-import { SaveWindow as StateSaveWindow } from "./sub/state/SaveWindow"
+import { LoadWindow as ProgressLoadWindow } from "./sub/progress/LoadWindow"
+import { SaveWindow as ProgressSaveWindow } from "./sub/progress/SaveWindow"
 import * as DataCenter from "../../data/dataCenter"
 import * as WebInterface from "../../web/webinterface"
 import { Setup } from "../../data/web/setup"
@@ -29,10 +31,12 @@ export function SetupWindow(props: { set: () => void }) {
         objectiveEdit,
         objectiveAdd,
         objectiveRemove,
+        taskLoad,
+        taskSave,
         setupLoad,
         setupSave,
-        stateLoad,
-        stateSave,
+        progressLoad,
+        progressSave,
     }
 
     const [salesmanName, setSalesmanName] = React.useState("")
@@ -48,12 +52,12 @@ export function SetupWindow(props: { set: () => void }) {
 
     //onAttach
     React.useEffect(() => {
-        DataCenter.addAlgorithmChangeCallBack(onSetupChange)
+        DataCenter.addSetupChangeCallBack(onSetupChange)
     }, [])
     //onDetach
     React.useEffect(() => {
         return () => {
-            DataCenter.removeAlgorithmChangeCallBack(onSetupChange)
+            DataCenter.removeSetupChangeCallBack(onSetupChange)
         }
     }, [])
 
@@ -134,6 +138,19 @@ export function SetupWindow(props: { set: () => void }) {
                             }}
                         />
                         <LabelAndIconButtons
+                            label="state"
+                            iconButtons={[
+                                {
+                                    name: "upload",
+                                    function: () => { setState(States.taskLoad) }
+                                },
+                                {
+                                    name: "save",
+                                    function: () => { setState(States.taskSave) }
+                                },
+                            ]}
+                        />
+                        <LabelAndIconButtons
                             label="setup"
                             iconButtons={[
                                 {
@@ -147,15 +164,15 @@ export function SetupWindow(props: { set: () => void }) {
                             ]}
                         />
                         <LabelAndIconButtons
-                            label="state"
+                            label="progress"
                             iconButtons={[
                                 {
                                     name: "upload",
-                                    function: () => { setState(States.stateLoad) }
+                                    function: () => { setState(States.progressLoad) }
                                 },
                                 {
                                     name: "save",
-                                    function: () => { setState(States.stateSave) }
+                                    function: () => { setState(States.progressSave) }
                                 },
                             ]}
                         />
@@ -206,6 +223,14 @@ export function SetupWindow(props: { set: () => void }) {
                         labels={DataCenter.viewObjectives()}
                         onEnded={() => { setState(States.main) }}
                     />
+                ) : state === States.taskLoad ? (
+                    <SetupLoadWindow
+                        onEnded={() => { setState(States.main) }}
+                    />
+                ) : state === States.taskSave ? (
+                    <SetupSaveWindow
+                        onEnded={() => { setState(States.main) }}
+                    />
                 ) : state === States.setupLoad ? (
                     <SetupLoadWindow
                         onEnded={() => { setState(States.main) }}
@@ -214,12 +239,12 @@ export function SetupWindow(props: { set: () => void }) {
                     <SetupSaveWindow
                         onEnded={() => { setState(States.main) }}
                     />
-                ) : state === States.stateLoad ? (
-                    <StateLoadWindow
+                ) : state === States.progressLoad ? (
+                    <ProgressLoadWindow
                         onEnded={() => { setState(States.main) }}
                     />
-                ) : state === States.stateSave && (
-                    <StateSaveWindow
+                ) : state === States.progressSave && (
+                    <ProgressSaveWindow
                         onEnded={() => { setState(States.main) }}
                     />
                 )

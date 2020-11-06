@@ -5,16 +5,24 @@ import * as DataCenter from "../../../../data/dataCenter"
 import { RadioButtonLine } from "../lines/RadioButtonLine"
 
 export function LoadWindow(props: { onEnded: () => void }) {
-    const names = DataCenter.viewStates()
+    const names = DataCenter.viewTasks()
     const [chosenName, setChosenName] = React.useState(names[0])
 
+    React.useEffect(() => {
+        console.log(chosenName)
+    }, [chosenName])
+
     function ok() {
-        DataCenter.loadState(chosenName)
+        DataCenter.loadTask(chosenName)
         props.onEnded()
     }
 
     function cancle() {
         props.onEnded()
+    }
+
+    function onChosen(event) {
+        setChosenName(event.target.value)
     }
 
     return (<Framer.Stack
@@ -25,7 +33,9 @@ export function LoadWindow(props: { onEnded: () => void }) {
         alignment="center"
         padding={8}
         gap={8}
-    ><Framer.Scroll>
+    ><Framer.Scroll
+        width="100%"
+        height="1fr">
             <Framer.Stack
                 width="100%"
                 height={names.length * 56}
@@ -33,6 +43,7 @@ export function LoadWindow(props: { onEnded: () => void }) {
                 distribution="start"
                 alignment="center"
                 gap={8}
+                onChange={onChosen}
             >
                 {names.map(name => (
                     <RadioButtonLine label={name} groupName="setup" />

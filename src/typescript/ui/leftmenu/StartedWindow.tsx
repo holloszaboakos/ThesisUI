@@ -4,6 +4,7 @@ import { ButtonLine } from "./sub/lines/ButtonLine"
 import { DisplayDataLine } from "./sub/lines/DisplayDataLine"
 import { LabelAndIconButtons } from "./sub/lines/LabelAndIconButtons"
 import * as WebInterface from "../../web/webinterface"
+import { GPS } from "../../data/web/gps"
 
 export function StartedWindow(props: { stop: () => void, run: () => void }) {
     return (
@@ -33,9 +34,12 @@ export function StartedWindow(props: { stop: () => void, run: () => void }) {
                         {
                             name: "skip-forward",
                             function: () => {
-                                WebInterface.step()
-                                let bestCost = WebInterface.getBestCost()
-                                let bestRoot = WebInterface.getBestResult()
+                                let bestCost: number
+                                let bestRoot: GPS[]
+                                WebInterface.step().then(progress => {
+                                    bestCost = progress.bestCostEuro
+                                    bestRoot = progress.bestRout
+                                })
                             }
                         },
                         {

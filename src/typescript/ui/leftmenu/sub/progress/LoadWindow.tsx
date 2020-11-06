@@ -5,11 +5,11 @@ import * as DataCenter from "../../../../data/dataCenter"
 import { RadioButtonLine } from "../lines/RadioButtonLine"
 
 export function LoadWindow(props: { onEnded: () => void }) {
-    const names = DataCenter.viewSetups()
+    const names = DataCenter.viewProgress()
     const [chosenName, setChosenName] = React.useState(names[0])
 
     function ok() {
-        DataCenter.loadSetup(chosenName)
+        DataCenter.loadProgress(chosenName)
         props.onEnded()
     }
 
