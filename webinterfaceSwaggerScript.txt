@@ -176,6 +176,26 @@ paths:
       responses:
         "200":
           description: "successful operation"
+  /setup/task/list:
+    get:
+      tags:
+        - "setup"
+      summary: "List names of tasks"
+      description: "List names of saved tasks"
+      operationId: "listTaskNames"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        "405":
+          description: "Invalid task"
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              type: "string"
           
   /setup/setting:
     post:
@@ -246,6 +266,26 @@ paths:
       responses:
         "200":
           description: "successful operation"
+  /setup/setting/list:
+    get:
+      tags:
+        - "setup"
+      summary: "List names of settings"
+      description: "List names of saved settings"
+      operationId: "listSettingsNames"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        "405":
+          description: "Invalid task"
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              type: "string"
           
   /setup/setting/algorithm:
     get:

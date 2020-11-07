@@ -3,8 +3,32 @@ import * as Framer from "framer"
 import { DisplayDataLine } from "./sub/lines/DisplayDataLine"
 import { ButtonLine } from "./sub/lines/ButtonLine"
 import * as WebInterface from "../../web/webinterface"
+import * as DataCenter from "../../data/dataCenter"
 
 export function RunningWindow(props: { pause: () => void }) {
+
+    const [progress, setProgress] = React.useState(DataCenter.getProgress)
+    const [result, setResult] = React.useState(DataCenter.getResult)
+
+    let interval
+
+    React.useEffect(() => {
+        DataCenter.addProgressChangeCallBack(setProgress)
+        DataCenter.addResultChangeCallBack(setResult)
+        interval = setInterval(async () => {
+            setProgress(DataCenter.getProgress())
+            setResult(DataCenter.getResult())
+        }, 1000)
+    }, [])
+
+    React.useEffect(() => {
+        return () => {
+            DataCenter.removeProgressChangeCallBack(setProgress)
+            DataCenter.removeResultChangeCallBack(setResult)
+            clearInterval(interval)
+        }
+    }, [])
+
     return (
         <Framer.Stack
             width="100%"
@@ -23,11 +47,11 @@ export function RunningWindow(props: { pause: () => void }) {
                 alignment="center"
                 gap={8}
             >
-                <DisplayDataLine label="Maximum cost (€)" value="1000" />
-                <DisplayDataLine label="Minimum cost (€)" value="0" />
-                <DisplayDataLine label="Best cost (€)" value="50" />
-                <DisplayDataLine label="Iteration" value="15" />
-                <DisplayDataLine label="Time (s)" value="1070.123" />
+                <DisplayDataLine label="Maximum cost (€)" value={result.maxCost_Euro.toString()} />
+                <DisplayDataLine label="Minimum cost (€)" value={result.minCost_Euro.toString()} />
+                <DisplayDataLine label="Best cost (€)" value={result.bestCost_Euro.toString()} />
+                <DisplayDataLine label="Iteration" value={progress.iteration.toString()} />
+                <DisplayDataLine label="Time (s)" value={progress.runtime_Second.toString()} />
             </Framer.Stack>
             <ButtonLine label="Pause" functionality={props.pause} />
         </Framer.Stack>

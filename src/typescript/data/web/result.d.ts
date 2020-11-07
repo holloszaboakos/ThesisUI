@@ -28,17 +28,17 @@ export interface Result {
      * @type {number}
      * @memberof Result
      */
-    maxCostEuro: number;
+    maxCost_Euro: number;
     /**
      * 
      * @type {number}
      * @memberof Result
      */
-    minCostEuro: number;
+    minCost_Euro: number;
     /**
      * 
      * @type {number}
      * @memberof Result
      */
-    bestCostEuro: number;
+    bestCost_Euro: number;
 }

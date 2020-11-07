@@ -767,6 +767,52 @@ export const SetupApiFetchParamCreator = function (configuration?: Configuration
             };
         },
         /**
+         * List names of saved settings
+         * @summary List names of settings
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        listSettingsNames(options: any = {}): FetchArgs {
+            const localVarPath = `/setup/setting/list`;
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * List names of saved tasks
+         * @summary List names of tasks
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        listTaskNames(options: any = {}): FetchArgs {
+            const localVarPath = `/setup/task/list`;
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Load setting with a name maching the parameter
          * @summary Load setting
          * @param {string} body Setting name
@@ -1062,6 +1108,42 @@ export const SetupApiFp = function (configuration?: Configuration) {
             };
         },
         /**
+         * List names of saved settings
+         * @summary List names of settings
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        listSettingsNames(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<string>> {
+            const localVarFetchArgs = SetupApiFetchParamCreator(configuration).listSettingsNames(options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
+         * List names of saved tasks
+         * @summary List names of tasks
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        listTaskNames(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<string>> {
+            const localVarFetchArgs = SetupApiFetchParamCreator(configuration).listTaskNames(options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
          * Load setting with a name maching the parameter
          * @summary Load setting
          * @param {string} body Setting name
@@ -1234,6 +1316,24 @@ export const SetupApiFactory = function (configuration?: Configuration, fetch?: 
             return SetupApiFp(configuration).listAlgorithms(options)(fetch, basePath);
         },
         /**
+         * List names of saved settings
+         * @summary List names of settings
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        listSettingsNames(options?: any) {
+            return SetupApiFp(configuration).listSettingsNames(options)(fetch, basePath);
+        },
+        /**
+         * List names of saved tasks
+         * @summary List names of tasks
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        listTaskNames(options?: any) {
+            return SetupApiFp(configuration).listTaskNames(options)(fetch, basePath);
+        },
+        /**
          * Load setting with a name maching the parameter
          * @summary Load setting
          * @param {string} body Setting name
@@ -1363,6 +1463,28 @@ export class SetupApi extends BaseAPI {
     }
 
     /**
+     * List names of saved settings
+     * @summary List names of settings
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SetupApi
+     */
+    public listSettingsNames(options?: any) {
+        return SetupApiFp(this.configuration).listSettingsNames(options)(this.fetch, this.basePath);
+    }
+
+    /**
+     * List names of saved tasks
+     * @summary List names of tasks
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SetupApi
+     */
+    public listTaskNames(options?: any) {
+        return SetupApiFp(this.configuration).listTaskNames(options)(this.fetch, this.basePath);
+    }
+
+    /**
      * Load setting with a name maching the parameter
      * @summary Load setting
      * @param {string} body Setting name
@@ -1457,6 +1579,7 @@ export const UpdateApiFetchParamCreator = function (configuration?: Configuratio
 
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+
             localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
 
             return {
@@ -1526,6 +1649,7 @@ export const UpdateApiFetchParamCreator = function (configuration?: Configuratio
 
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+
             localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
 
             return {
@@ -1688,4 +1812,3 @@ export class UpdateApi extends BaseAPI {
     }
 
 }
-

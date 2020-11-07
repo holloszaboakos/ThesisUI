@@ -29,17 +29,17 @@ export interface Objective {
      * @type {number}
      * @memberof Objective
      */
-    timeSecond: number;
+    time_Second: number;
     /**
      * 
      * @type {number}
      * @memberof Objective
      */
-    volumeStere: number;
+    volume_Stere: number;
     /**
      * 
      * @type {number}
      * @memberof Objective
      */
-    weightGramm: number;
+    weight_Gramm: number;
 }

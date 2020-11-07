@@ -10,35 +10,61 @@ import { GPS } from "./web/gps"
 
 
 //TASK CONTAINER
-let savedTasks: Task[] = []
-export function viewTasks(): string[] {
-    return savedTasks.map(it => { return it.name })
+const savedTaskNames = [] as string[]
+export function viewTasks(setNames: (names: string[]) => void) {
+    if (savedTaskNames.length === 0)
+        WebInterface.listTaskNames().then(names => {
+            setNames(names)
+            names.forEach(name => {
+                savedTaskNames.push(name)
+            })
+        })
+    else
+        setNames(savedTaskNames)
 }
 export function saveTask(name: string) {
     let clone = { ...task }
     clone.name = name
-    savedTasks.push(clone)
+    WebInterface.defineTask(clone)
+        .then(id => {
+            clone.id = id
+            WebInterface.saveTask(name)
+            savedTaskNames.push(name)
+        })
 }
 export function loadTask(name: string) {
-    let newsetup = savedTasks.find(it => { return it.name === name })
-    let tmp = newsetup ? newsetup as Task : task
-    updateTask(tmp)
+    WebInterface.loadTask(name).then(task => {
+        updateTask(task)
+    })
 }
 
 //ALGORITHM CONTAINER
-let savedSetups: Setting[] = []
-export function viewSetups(): string[] {
-    return savedSetups.map(it => { return it.name })
+let savedSettingNames: string[] = []
+export function viewSettings(setNames: (names: string[]) => void) {
+    if (savedSettingNames.length === 0)
+        WebInterface.listSettingsNames().then(names => {
+            setNames(names)
+            names.forEach(name => {
+                savedSettingNames.push(name)
+            })
+        })
+    else
+        setNames(savedTaskNames)
 }
-export function saveSetup(name: string) {
-    let clone = { ...setup }
+export function saveSetting(name: string) {
+    let clone = { ...setting }
     clone.name = name
-    savedSetups.push(clone)
+    WebInterface.defineSetting(clone)
+        .then(id => {
+            clone.id = id
+            WebInterface.saveSetting(name)
+            savedSettingNames.push(name)
+        })
 }
-export function loadSetup(name: string) {
-    let newSetup = savedSetups.find(it => { return it.name === name })
-    let tmp = newSetup ? newSetup as Setting : setup
-    updateSetup(tmp)
+export function loadSetting(name: string) {
+    WebInterface.loadSetting(name).then(setting => {
+        updateSetting(setting)
+    })
 }
 
 //TASK
@@ -134,26 +160,26 @@ export function setSalesmanByOldName(oldName: string, salesman: Salesman) {
 
 
 //SETUP
-let setup: Setting = {
+let setting: Setting = {
     id: "",
     name: "",
     algorithm: "",
     iterLimit: 0,
-    timeLimitSecond: 0
+    timeLimit_Second: 0
 }
-let setupChangedCallBacks = [] as ((data: Setting) => void)[]
-export function addSetupChangeCallBack(callBack: ((data: Setting) => void)) {
-    setupChangedCallBacks.push(callBack)
+let settingChangedCallBacks = [] as ((data: Setting) => void)[]
+export function addSettingChangeCallBack(callBack: ((data: Setting) => void)) {
+    settingChangedCallBacks.push(callBack)
 }
-export function removeSetupChangeCallBack(callBack: ((data: Setting) => void)) {
-    setupChangedCallBacks = setupChangedCallBacks.filter((it) => { return it !== callBack })
+export function removeSettingChangeCallBack(callBack: ((data: Setting) => void)) {
+    settingChangedCallBacks = settingChangedCallBacks.filter((it) => { return it !== callBack })
 }
-export function updateSetup(data: Setting) {
-    setup = data
-    setupChangedCallBacks.forEach(it => { it(data) })
+export function updateSetting(data: Setting) {
+    setting = data
+    settingChangedCallBacks.forEach(it => { it(data) })
 }
-export function getSetup(): Setting {
-    return { ...setup }
+export function getSetting(): Setting {
+    return { ...setting }
 }
 
 
@@ -162,10 +188,10 @@ export function getSetup(): Setting {
 let result: Result = {
     id: "",
     name: "",
-    bestCostEuro: 0,
+    bestCost_Euro: 0,
     bestRout: [] as GPS[],
-    maxCostEuro: 0,
-    minCostEuro: 0,
+    maxCost_Euro: 0,
+    minCost_Euro: 0,
 }
 let resultChangedCallBacks = [] as ((data: Result) => void)[]
 export function addResultChangeCallBack(callBack: ((data: Result) => void)) {
@@ -179,28 +205,50 @@ export function updateResult(data: Result) {
     resultChangedCallBacks.forEach(it => { it(data) })
 }
 export function getResult(): Result {
+    WebInterface.getResult().then(result => {
+        updateResult(result)
+    })
     return { ...result }
 }
 
 
 
 //RUN
-let run: Result
-let runChangedCallBacks = [] as ((data: Result) => void)[]
-export function addRunChangeCallBack(callBack: ((data: Result) => void)) {
-    runChangedCallBacks.push(callBack)
+let progress: Progress = {
+    id: "",
+    name: "",
+    iteration: 0,
+    runtime_Second: 0
 }
-export function removeRunChangeCallBack(callBack: ((data: Result) => void)) {
-    runChangedCallBacks = runChangedCallBacks.filter((it) => { return it !== callBack })
+let progressChangedCallBacks = [] as ((data: Progress) => void)[]
+export function addProgressChangeCallBack(callBack: ((data: Progress) => void)) {
+    progressChangedCallBacks.push(callBack)
 }
-export function updateRun(data: Result) {
-    run = data
-    runChangedCallBacks.forEach(it => { it(data) })
+export function removeProgressChangeCallBack(callBack: ((data: Progress) => void)) {
+    progressChangedCallBacks = progressChangedCallBacks.filter((it) => { return it !== callBack })
 }
-export function getRun(): Result {
-    return { ...run }
+export function updateProgress(data: Progress) {
+    progress = data
+    progressChangedCallBacks.forEach(it => { it(data) })
+}
+export function getProgress(): Progress {
+    WebInterface.getProgress().then(progress => {
+        updateProgress(progress)
+    })
+    return { ...progress }
 }
 
-
+const algorithmNames: string[] = []
+export function listAlgorithms(setNames: (names: string[]) => void) {
+    if (algorithmNames.length === 0)
+        WebInterface.listAlgorithms(names => {
+            setNames(names)
+            names.forEach(name => {
+                algorithmNames.push(name)
+            })
+        })
+    else
+        setNames(algorithmNames)
+}
 export const publicKey = "pk.eyJ1IjoiaG9sbG8wMDciLCJhIjoiY2tjMjc2OHFoMDFwazMxcXRxczVrYmUxciJ9.aXkMyO-37U4gaScXDnzwnw"
 export const style = "mapbox://styles/hollo007/ckc23mj4c10vf1ioabsb1cq9t"

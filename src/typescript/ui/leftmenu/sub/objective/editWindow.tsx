@@ -11,9 +11,9 @@ export function EditWindow(props: { name: string, setObjectiveName: (text) => vo
             id: "",
             name: "",
             location: { longitude: 0, lattitude: 0 },
-            timeSecond: 0,
-            volumeStere: 0,
-            weightGramm: 0,
+            time_Second: 0,
+            volume_Stere: 0,
+            weight_Gramm: 0,
         } :
         DataCenter.getObjectiveByName(props.name)
 
@@ -76,29 +76,29 @@ export function EditWindow(props: { name: string, setObjectiveName: (text) => vo
             />
             <SetDataLine
                 label="time (s)"
-                startText={objective.timeSecond.toString()}
+                startText={objective.time_Second.toString()}
                 placefolder="time"
                 validate={() => true}
                 sendValue={(text) => {
-                    objective.timeSecond = JSON.parse(text)
+                    objective.time_Second = JSON.parse(text)
                 }}
             />
             <SetDataLine
                 label="volume (m^3)"
-                startText={objective.volumeStere.toString()}
+                startText={objective.volume_Stere.toString()}
                 placefolder="volume"
                 validate={() => true}
                 sendValue={(text) => {
-                    objective.volumeStere = JSON.parse(text)
+                    objective.volume_Stere = JSON.parse(text)
                 }}
             />
             <SetDataLine
                 label="weight (g)"
-                startText={objective.weightGramm.toString()}
+                startText={objective.weight_Gramm.toString()}
                 placefolder="weight"
                 validate={() => true}
                 sendValue={(text) => {
-                    objective.weightGramm = JSON.parse(text)
+                    objective.weight_Gramm = JSON.parse(text)
                 }}
             />
         </Framer.Stack>

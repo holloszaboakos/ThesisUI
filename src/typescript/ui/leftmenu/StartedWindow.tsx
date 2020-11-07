@@ -5,8 +5,26 @@ import { DisplayDataLine } from "./sub/lines/DisplayDataLine"
 import { LabelAndIconButtons } from "./sub/lines/LabelAndIconButtons"
 import * as WebInterface from "../../web/webinterface"
 import { GPS } from "../../data/web/gps"
+import { Progress } from "../../data/web/progress"
+import * as DataCenter from "../../data/dataCenter"
 
 export function StartedWindow(props: { stop: () => void, run: () => void }) {
+
+    const [progress, setProgress] = React.useState(DataCenter.getProgress)
+    const [result, setResult] = React.useState(DataCenter.getResult)
+
+    React.useEffect(() => {
+        DataCenter.addProgressChangeCallBack(setProgress)
+        DataCenter.addResultChangeCallBack(setResult)
+    }, [])
+
+    React.useEffect(() => {
+        return () => {
+            DataCenter.removeProgressChangeCallBack(setProgress)
+            DataCenter.removeResultChangeCallBack(setResult)
+        }
+    }, [])
+
     return (
         <Framer.Stack
             width="100%"
@@ -25,9 +43,9 @@ export function StartedWindow(props: { stop: () => void, run: () => void }) {
                 alignment="center"
                 gap={8}
             >
-                <DisplayDataLine label="Maximum cost (€)" value="1000" />
-                <DisplayDataLine label="Minimum cost (€)" value="0" />
-                <DisplayDataLine label="Best cost (€)" value="50" />
+                <DisplayDataLine label="Maximum cost (€)" value={result.maxCost_Euro.toString()} />
+                <DisplayDataLine label="Minimum cost (€)" value={result.minCost_Euro.toString()} />
+                <DisplayDataLine label="Best cost (€)" value={result.bestCost_Euro.toString()} />
                 <LabelAndIconButtons
                     label="Iteration"
                     iconButtons={[
@@ -37,7 +55,7 @@ export function StartedWindow(props: { stop: () => void, run: () => void }) {
                                 let bestCost: number
                                 let bestRoot: GPS[]
                                 WebInterface.step().then(progress => {
-                                    bestCost = progress.bestCostEuro
+                                    bestCost = progress.bestCost_Euro
                                     bestRoot = progress.bestRout
                                 })
                             }
@@ -48,11 +66,11 @@ export function StartedWindow(props: { stop: () => void, run: () => void }) {
                         }
                     ]}
                 />
-                <DisplayDataLine label="Iteration" value="15" />
-                <DisplayDataLine label="Time (s)" value="1070.123" />
+                <DisplayDataLine label="Iteration" value={progress.iteration.toString()} />
+                <DisplayDataLine label="Time (s)" value={progress.runtime_Second.toString()} />
             </Framer.Stack>
-            <ButtonLine label="Stop" functionality={props.stop} />
             <ButtonLine label="run" functionality={props.run} />
+            <ButtonLine label="Stop" functionality={props.stop} />
         </Framer.Stack>
     )
 }

@@ -9,14 +9,14 @@ export function EditWindow(props: { name: string, setSalesmanName: (text) => voi
     let salesman: Salesman = props.name === "" ? {
         id: "",
         name: "",
-        basePriceEuro: 0,
-        fuelConsuptionLiterPerMeter: 0,
-        fuelPriceEuroPerLiter: 0,
-        paymentEuroPerSecond: 0,
-        vechicleSpeedMeterPerSecond: 0,
-        volumeCapacityStere: 0,
-        weightCapacityGramm: 0,
-        workTimeSecondPerDay: 0
+        basePrice_Euro: 0,
+        fuelConsuption_LiterPerMeter: 0,
+        fuelPrice_EuroPerLiter: 0,
+        paymentEuroPer_Second: 0,
+        vechicleSpeed_MeterPerSecond: 0,
+        volumeCapacity_Stere: 0,
+        weightCapacity_Gramm: 0,
+        workTime_SecondPerDay: 0
     } : DataCenter.getSalesmanByName(props.name)
 
     function ok() {
@@ -61,11 +61,11 @@ export function EditWindow(props: { name: string, setSalesmanName: (text) => voi
                 />
                 <SetDataLine
                     label="base price (€)"
-                    startText={salesman.basePriceEuro.toString()}
+                    startText={salesman.basePrice_Euro.toString()}
                     placefolder="basePriceEuro"
                     validate={() => true}
                     sendValue={(text) => {
-                        salesman.basePriceEuro = JSON.parse(text)
+                        salesman.basePrice_Euro = JSON.parse(text)
                         console.log(JSON.stringify(salesman))
                         console.log(JSON.stringify(DataCenter.getSalesmanByName(props.name)))
                         console.log(props.name)
@@ -73,65 +73,65 @@ export function EditWindow(props: { name: string, setSalesmanName: (text) => voi
                 />
                 <SetDataLine
                     label="fuel consuption (l/m)"
-                    startText={salesman.fuelConsuptionLiterPerMeter.toString()}
+                    startText={salesman.fuelConsuption_LiterPerMeter.toString()}
                     placefolder="fuelConsuption"
                     validate={() => true}
                     sendValue={(text) => {
-                        salesman.fuelConsuptionLiterPerMeter = JSON.parse(text)
+                        salesman.fuelConsuption_LiterPerMeter = JSON.parse(text)
                     }}
                 />
                 <SetDataLine
                     label="fuel price (€/l)"
-                    startText={salesman.fuelPriceEuroPerLiter.toString()}
+                    startText={salesman.fuelPrice_EuroPerLiter.toString()}
                     placefolder="fuelPrice"
                     validate={() => true}
                     sendValue={(text) => {
-                        salesman.fuelPriceEuroPerLiter = JSON.parse(text)
+                        salesman.fuelPrice_EuroPerLiter = JSON.parse(text)
                     }}
                 />
                 <SetDataLine
                     label="payment (€/s)"
-                    startText={salesman.paymentEuroPerSecond.toString()}
+                    startText={salesman.paymentEuroPer_Second.toString()}
                     placefolder="payment"
                     validate={() => true}
                     sendValue={(text) => {
-                        salesman.paymentEuroPerSecond = JSON.parse(text)
+                        salesman.paymentEuroPer_Second = JSON.parse(text)
                     }}
                 />
                 <SetDataLine
                     label="vechicle speed (m/s)"
-                    startText={salesman.vechicleSpeedMeterPerSecond.toString()}
+                    startText={salesman.vechicleSpeed_MeterPerSecond.toString()}
                     placefolder="vechicleSpeed"
                     validate={() => true}
                     sendValue={(text) => {
-                        salesman.vechicleSpeedMeterPerSecond = JSON.parse(text)
+                        salesman.vechicleSpeed_MeterPerSecond = JSON.parse(text)
                     }}
                 />
                 <SetDataLine
                     label="volume capacity (m^3)"
-                    startText={salesman.volumeCapacityStere.toString()}
+                    startText={salesman.volumeCapacity_Stere.toString()}
                     placefolder="volumeCapacity"
                     validate={() => true}
                     sendValue={(text) => {
-                        salesman.volumeCapacityStere = JSON.parse(text)
+                        salesman.volumeCapacity_Stere = JSON.parse(text)
                     }}
                 />
                 <SetDataLine
                     label="weight capacity (g)"
-                    startText={salesman.weightCapacityGramm.toString()}
+                    startText={salesman.weightCapacity_Gramm.toString()}
                     placefolder="weightCapacity"
                     validate={() => true}
                     sendValue={(text) => {
-                        salesman.weightCapacityGramm = JSON.parse(text)
+                        salesman.weightCapacity_Gramm = JSON.parse(text)
                     }}
                 />
                 <SetDataLine
                     label="work time (s/d)"
-                    startText={salesman.workTimeSecondPerDay.toString()}
+                    startText={salesman.workTime_SecondPerDay.toString()}
                     placefolder="workTime"
                     validate={() => true}
                     sendValue={(text) => {
-                        salesman.workTimeSecondPerDay = JSON.parse(text)
+                        salesman.workTime_SecondPerDay = JSON.parse(text)
                     }}
                 />
             </Framer.Stack>

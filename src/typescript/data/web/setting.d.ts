@@ -27,7 +27,7 @@ export interface Setting {
      * @type {number}
      * @memberof Setting
      */
-    timeLimitSecond: number;
+    timeLimit_Second: number;
     /**
      * 
      * @type {string}

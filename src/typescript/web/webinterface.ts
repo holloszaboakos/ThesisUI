@@ -32,10 +32,12 @@ export let removeSalesman = setupApi.removeSalesman
 export let loadTask = setupApi.loadTask
 export let defineTask = setupApi.defineTask
 export let saveTask = setupApi.saveTask
+export let listTaskNames = setupApi.listTaskNames
 
 export let loadSetting = setupApi.loadSetting
 export let defineSetting = setupApi.defineSetting
 export let saveSetting = setupApi.saveSetting
+export let listSettingsNames = setupApi.listSettingsNames
 
 export let listAlgorithms = setupApi.listAlgorithms
 

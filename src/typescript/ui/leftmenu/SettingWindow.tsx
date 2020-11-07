@@ -7,6 +7,7 @@ import * as WebInterface from "../../web/webinterface"
 import { SetDataLine } from "./sub/lines/SetDataLine"
 import * as DataCenter from "../../data/dataCenter"
 import { Setting } from "../../data/web/setting"
+import { isNumber } from "util"
 
 export function SetupWindow(props: { clean: () => void, start: () => void }) {
     enum States {
@@ -15,23 +16,17 @@ export function SetupWindow(props: { clean: () => void, start: () => void }) {
     }
 
     const [state, setState] = React.useState(States.main)
-    const [timeLimit, setTimeLimit] = React.useState(DataCenter.getSetup().timeLimitSecond)
-    const [iterationLimit, setIterationLimit] = React.useState(DataCenter.getSetup().iterLimit)
-
-    function onSetupChange(setup: Setting) {
-        setTimeLimit(setup.timeLimitSecond)
-        setIterationLimit(setup.iterLimit)
-    }
+    const [setting, setSetting] = React.useState(DataCenter.getSetting())
 
     //TODO rooting
     //onAttach
     React.useEffect(() => {
-        DataCenter.addSetupChangeCallBack(onSetupChange)
+        DataCenter.addSettingChangeCallBack(setSetting)
     }, [])
     //onDetach
     React.useEffect(() => {
         return () => {
-            DataCenter.removeSetupChangeCallBack(onSetupChange)
+            DataCenter.removeSettingChangeCallBack(setSetting)
         }
     }, [])
 
@@ -55,24 +50,22 @@ export function SetupWindow(props: { clean: () => void, start: () => void }) {
             >
                 <SetDataLine
                     label="run time limit (s)"
-                    startText={timeLimit.toString()}
+                    startText={setting.timeLimit_Second.toString()}
                     placefolder="number in seconds"
-                    validate={(text) => { return true }}
+                    validate={(text) => { return isNaN(Number(text)) }}
                     sendValue={(text) => {
-                        let setup = DataCenter.getSetup()
-                        setup.timeLimitSecond = JSON.parse(text)
-                        DataCenter.updateSetup(setup)
+                        setting.timeLimit_Second = Number(text)
+                        setSetting(setting)
                     }}
                 />
                 <SetDataLine
                     label="iterations limit"
-                    startText={iterationLimit.toString()}
+                    startText={setting.iterLimit.toString()}
                     placefolder="number in seconds"
-                    validate={(text) => { return true }}
+                    validate={(text) => { return isNaN(Number(text)) }}
                     sendValue={(text) => {
-                        let setup = DataCenter.getSetup()
-                        setup.iterLimit = JSON.parse(text)
-                        DataCenter.updateSetup(setup)
+                        setting.iterLimit = Number(text)
+                        setSetting(setting)
                     }}
                 />
                 <DisplayDataLine label="Maximum cost (€)" value="1000" />
@@ -81,8 +74,14 @@ export function SetupWindow(props: { clean: () => void, start: () => void }) {
                     setState(States.algorithmChooser)
                 }} />
             </Framer.Stack>
-            <ButtonLine label="Clean" functionality={props.clean} />
-            <ButtonLine label="Start" functionality={props.start} />
+            <ButtonLine label="Start" functionality={() => {
+                DataCenter.updateSetting(setting)
+                props.start()
+            }
+            } />
+            <ButtonLine label="Clean" functionality={
+                props.clean
+            } />
         </Framer.Stack>
         : <ChooseWindow
             onEnded={() => { setState(States.main) }}

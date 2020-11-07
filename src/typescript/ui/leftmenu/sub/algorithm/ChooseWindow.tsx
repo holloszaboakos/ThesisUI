@@ -6,17 +6,23 @@ import * as WebInterface from "../../../../web/webinterface"
 import { RadioButtonLine } from "../lines/RadioButtonLine"
 
 export function ChooseWindow(props: { onEnded: () => void }) {
-    const names = WebInterface.listAlgorithms()
-    const [chosenName, setChosenName] = React.useState(names[0])
 
+    const [names, setNames] = React.useState([] as string[])
+    const [chosenName, setChosenName] = React.useState("")
     React.useEffect(() => {
-        console.log(chosenName)
-    }, [chosenName])
+        DataCenter.listAlgorithms(setNames)
+    }, [])
+    React.useEffect(() => {
+        if (names.length !== 0)
+            setChosenName(names[0])
+        else
+            setChosenName("")
+    }, [names])
 
     function ok() {
-        let setup = DataCenter.getSetup()
-        setup.algorithm = chosenName
-        DataCenter.updateSetup(setup)
+        let setting = DataCenter.getSetting()
+        setting.algorithm = chosenName
+        DataCenter.updateSetting(setting)
         props.onEnded()
     }
 
@@ -27,6 +33,18 @@ export function ChooseWindow(props: { onEnded: () => void }) {
     function onChosen(event) {
         setChosenName(event.target.value)
     }
+
+    React.useEffect(() => {
+        WebInterface.listAlgorithms().then(
+            result => {
+                setNames(result)
+            }
+        )
+    }, [])
+
+    React.useEffect(() => {
+        setChosenName(names[0])
+    }, [names])
 
     return (<Framer.Stack
         width="100%"

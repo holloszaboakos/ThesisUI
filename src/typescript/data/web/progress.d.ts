@@ -27,5 +27,5 @@ export interface Progress {
      * @type {number}
      * @memberof Progress
      */
-    runtimeSecond: number;
+    runtime_Second: number;
 }

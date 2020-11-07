@@ -8,7 +8,7 @@ let map
 
 export function Map(props: { width: string, height: string, radius: number, margin: number }) {
 
-    const [routes, setRoutes] = React.useState(DataCenter.getProgress().bestRout)
+    const [routes, setRoutes] = React.useState(DataCenter.getResult().bestRout)
     const [latitude, setLatitude] = React.useState(47.462851)
     const [longitude, setLongitude] = React.useState(19.088509)
     const [zoom, setZoom] = React.useState(7)
@@ -53,7 +53,7 @@ export function Map(props: { width: string, height: string, radius: number, marg
         })
 
         map.on("load", function () {
-            DataCenter.getProgress().bestRout.forEach((rout, index) => {
+            DataCenter.getResult().bestRout.forEach((rout, index) => {
                 map.addSource("route" + index, {
                     type: "geojson",
                     data: {

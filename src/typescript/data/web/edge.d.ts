@@ -21,7 +21,7 @@ export interface Edge {
      * @type {number}
      * @memberof Edge
      */
-    lengthMeter: number;
+    length_Meter: number;
     /**
      * 
      * @type {Array<GPS>}

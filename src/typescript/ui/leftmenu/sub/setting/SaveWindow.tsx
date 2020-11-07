@@ -9,7 +9,7 @@ export function SaveWindow(props: { onEnded: () => void }) {
     let name = ""
 
     function ok() {
-        DataCenter.saveSetup(name)
+        DataCenter.saveSetting(name)
         props.onEnded()
     }
 

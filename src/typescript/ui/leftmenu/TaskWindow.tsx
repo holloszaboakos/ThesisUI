@@ -18,6 +18,7 @@ import { Setting } from "../../data/web/setting"
 
 
 export function TaskWindow(props: { set: () => void }) {
+
     enum States {
         main,
         salesmanView,
@@ -95,7 +96,7 @@ export function TaskWindow(props: { set: () => void }) {
                             ]}
                         />
                         <LabelAndIconButtons
-                            label="state"
+                            label="task"
                             iconButtons={[
                                 {
                                     name: "upload",
@@ -121,7 +122,7 @@ export function TaskWindow(props: { set: () => void }) {
                             ]}
                         />
                     </Framer.Stack>
-                    <ButtonLine label="SetTask Setted" functionality={props.set} />
+                    <ButtonLine label="Set Task" functionality={props.set} />
                 </Framer.Stack>
                 )
                 : state === States.salesmanView ? (

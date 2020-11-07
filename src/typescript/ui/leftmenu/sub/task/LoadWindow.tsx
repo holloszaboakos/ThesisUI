@@ -5,12 +5,20 @@ import * as DataCenter from "../../../../data/dataCenter"
 import { RadioButtonLine } from "../lines/RadioButtonLine"
 
 export function LoadWindow(props: { onEnded: () => void }) {
-    const names = DataCenter.viewTasks()
-    const [chosenName, setChosenName] = React.useState(names[0])
+
+
+    const [names, setNames] = React.useState([] as string[])
+    const [chosenName, setChosenName] = React.useState("")
 
     React.useEffect(() => {
-        console.log(chosenName)
-    }, [chosenName])
+        DataCenter.listAlgorithms(setNames)
+    }, [])
+    React.useEffect(() => {
+        if (names.length !== 0)
+            setChosenName(names[0])
+        else
+            setChosenName("")
+    }, [names])
 
     function ok() {
         DataCenter.loadTask(chosenName)

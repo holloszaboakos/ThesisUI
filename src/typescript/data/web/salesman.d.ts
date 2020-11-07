@@ -21,47 +21,47 @@ export interface Salesman {
      * @type {number}
      * @memberof Salesman
      */
-    workTimeSecondPerDay: number;
+    workTime_SecondPerDay: number;
     /**
      * 
      * @type {number}
      * @memberof Salesman
      */
-    volumeCapacityStere: number;
+    volumeCapacity_Stere: number;
     /**
      * 
      * @type {number}
      * @memberof Salesman
      */
-    weightCapacityGramm: number;
+    weightCapacity_Gramm: number;
     /**
      * 
      * @type {number}
      * @memberof Salesman
      */
-    vechicleSpeedMeterPerSecond: number;
+    vechicleSpeed_MeterPerSecond: number;
     /**
      * 
      * @type {number}
      * @memberof Salesman
      */
-    paymentEuroPerSecond: number;
+    paymentEuroPer_Second: number;
     /**
      * 
      * @type {number}
      * @memberof Salesman
      */
-    fuelConsuptionLiterPerMeter: number;
+    fuelConsuption_LiterPerMeter: number;
     /**
      * 
      * @type {number}
      * @memberof Salesman
      */
-    fuelPriceEuroPerLiter: number;
+    fuelPrice_EuroPerLiter: number;
     /**
      * 
      * @type {number}
      * @memberof Salesman
      */
-    basePriceEuro: number;
+    basePrice_Euro: number;
 }
