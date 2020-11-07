@@ -27,5 +27,5 @@ export interface Edge {
      * @type {Array<GPS>}
      * @memberof Edge
      */
-    root: Array<GPS>;
+    rout: Array<GPS>;
 }

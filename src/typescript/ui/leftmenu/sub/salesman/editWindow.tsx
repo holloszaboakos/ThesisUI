@@ -12,7 +12,7 @@ export function EditWindow(props: { name: string, setSalesmanName: (text) => voi
         basePrice_Euro: 0,
         fuelConsuption_LiterPerMeter: 0,
         fuelPrice_EuroPerLiter: 0,
-        paymentEuroPer_Second: 0,
+        payment_EuroPerSecond: 0,
         vechicleSpeed_MeterPerSecond: 0,
         volumeCapacity_Stere: 0,
         weightCapacity_Gramm: 0,
@@ -91,11 +91,11 @@ export function EditWindow(props: { name: string, setSalesmanName: (text) => voi
                 />
                 <SetDataLine
                     label="payment (€/s)"
-                    startText={salesman.paymentEuroPer_Second.toString()}
+                    startText={salesman.payment_EuroPerSecond.toString()}
                     placefolder="payment"
                     validate={() => true}
                     sendValue={(text) => {
-                        salesman.paymentEuroPer_Second = JSON.parse(text)
+                        salesman.payment_EuroPerSecond = JSON.parse(text)
                     }}
                 />
                 <SetDataLine

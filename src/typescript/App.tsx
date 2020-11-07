@@ -3,18 +3,20 @@ import * as React from 'react'
 import { SetupWindow } from './ui/leftmenu/SettingWindow'
 import { StartedWindow } from './ui/leftmenu/StartedWindow'
 import { RunningWindow } from './ui/leftmenu/RunningWindow'
+import { RoutingWindow } from './ui/leftmenu/RoutingWindow';
 import { TaskWindow } from './ui/leftmenu/TaskWindow';
-import { Map } from "./ui/map/Map"
+import { Map } from "./ui/map/MapWithEditableTargets"
 import '../css/index.css';
 import * as DataCenter from "./data/dataCenter"
 import * as WebInterface from "./web/webinterface"
 
 export default function App() {
   enum States {
-    created,
-    prepared,
+    task,
+    routing,
+    setting,
     started,
-    resumed
+    running
   }
   const [state, setState] = React.useState(0)
 
@@ -43,40 +45,49 @@ export default function App() {
         background="#999999"
         radius={32}
       >
-        {(state === States.created) ? (
+        {(state === States.task) ? (
           <TaskWindow
-            set={() =>
+            next={() =>
               WebInterface.defineTask(DataCenter.getTask())
                 .then(id => {
                   let task = DataCenter.getTask()
                   task.id = id
                   DataCenter.updateTask(task)
                   WebInterface.prepare()
-                    .then(response => setState(States.prepared))
+                    .then(response => setState(States.routing))
                 })
             }
           />
-        ) : (state === States.prepared) ? (
-          <SetupWindow
-            clean={() =>
-              WebInterface.clean().then(response => setState(States.created))
+        ) : (state === States.routing) ? (
+          <RoutingWindow
+            previous={() =>
+              WebInterface.clean().then(response => setState(States.task))
             }
-            start={() =>
+            next={() =>
+              WebInterface.start().then(response => setState(States.setting))
+            }
+          />
+        ) : (state === States.setting) ? (
+          <SetupWindow
+            previous={() =>
+              WebInterface.clean().then(response => setState(States.routing))
+            }
+            next={() =>
               WebInterface.start().then(response => setState(States.started))
             }
           />
         ) : (state === States.started) ? (
           <StartedWindow
-            stop={() =>
-              WebInterface.stop().then(response => setState(States.prepared))
+            previous={() =>
+              WebInterface.stop().then(response => setState(States.setting))
             }
-            run={() =>
-              WebInterface.resume().then(response => setState(States.resumed))
+            next={() =>
+              WebInterface.resume().then(response => setState(States.running))
             }
           />
-        ) : (state === States.resumed) && (
+        ) : (state === States.running) && (
           <RunningWindow
-            pause={() =>
+            previous={() =>
               WebInterface.pause().then(response => setState(States.started))
             }
           />

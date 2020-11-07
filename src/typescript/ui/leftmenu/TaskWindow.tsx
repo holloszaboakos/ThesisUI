@@ -1,6 +1,5 @@
 import * as React from "react"
 import * as Framer from "framer"
-import { SetDataLine } from "./sub/lines/SetDataLine"
 import { LabelAndIconButtons } from "./sub/lines/LabelAndIconButtons"
 import { ButtonLine } from "./sub/lines/ButtonLine"
 import { EditWindow as SalesmanEditWindow } from "./sub/salesman/EditWindow"
@@ -11,13 +10,10 @@ import { DeleteWindow as ObjectiveDeleteWindow } from "./sub/objective/DeleteWin
 import { ListWindow as ObjectiveListWindow } from "./sub/objective/ListWindow"
 import { LoadWindow as TaskLoadWindow } from "./sub/task/LoadWindow"
 import { SaveWindow as TaskSaveWindow } from "./sub/task/SaveWindow"
-import { LoadWindow as SetupLoadWindow } from "./sub/setting/LoadWindow"
-import { SaveWindow as SetupSaveWindow } from "./sub/setting/SaveWindow"
 import * as DataCenter from "../../data/dataCenter"
-import { Setting } from "../../data/web/setting"
 
 
-export function TaskWindow(props: { set: () => void }) {
+export function TaskWindow(props: { next: () => void }) {
 
     enum States {
         main,
@@ -62,7 +58,7 @@ export function TaskWindow(props: { set: () => void }) {
                         gap={8}
                     >
                         <LabelAndIconButtons
-                            label="salesmen"
+                            label="Salesmen"
                             iconButtons={[
                                 {
                                     name: "eye",
@@ -79,7 +75,7 @@ export function TaskWindow(props: { set: () => void }) {
                             ]}
                         />
                         <LabelAndIconButtons
-                            label="objectives"
+                            label="Objectives"
                             iconButtons={[
                                 {
                                     name: "eye",
@@ -96,7 +92,7 @@ export function TaskWindow(props: { set: () => void }) {
                             ]}
                         />
                         <LabelAndIconButtons
-                            label="task"
+                            label="Task"
                             iconButtons={[
                                 {
                                     name: "upload",
@@ -108,21 +104,8 @@ export function TaskWindow(props: { set: () => void }) {
                                 },
                             ]}
                         />
-                        <LabelAndIconButtons
-                            label="setting"
-                            iconButtons={[
-                                {
-                                    name: "upload",
-                                    function: () => { setState(States.setupLoad) }
-                                },
-                                {
-                                    name: "save",
-                                    function: () => { setState(States.setupSave) }
-                                },
-                            ]}
-                        />
                     </Framer.Stack>
-                    <ButtonLine label="Set Task" functionality={props.set} />
+                    <ButtonLine label="Set Task" functionality={props.next} />
                 </Framer.Stack>
                 )
                 : state === States.salesmanView ? (
@@ -172,16 +155,8 @@ export function TaskWindow(props: { set: () => void }) {
                     <TaskLoadWindow
                         onEnded={() => { setState(States.main) }}
                     />
-                ) : state === States.taskSave ? (
+                ) : state === States.taskSave && (
                     <TaskSaveWindow
-                        onEnded={() => { setState(States.main) }}
-                    />
-                ) : state === States.setupLoad ? (
-                    <SetupLoadWindow
-                        onEnded={() => { setState(States.main) }}
-                    />
-                ) : state === States.setupSave && (
-                    <SetupSaveWindow
                         onEnded={() => { setState(States.main) }}
                     />
                 )

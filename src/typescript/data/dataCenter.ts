@@ -71,15 +71,17 @@ export function loadSetting(name: string) {
 let task: Task = {
     id: "",
     name: "",
-    center: {
-        lattitude: 0,
-        longitude: 0
-    },
     costGraph: {
         id: "",
         name: "",
         objectives: [] as Objective[],
-        edges: [] as Edge[][]
+        center: {
+            lattitude: 0,
+            longitude: 0
+        },
+        edgesBetween: [] as Edge[][],
+        edgesFromCenter: [] as Edge[],
+        edgesToCenter: [] as Edge[]
     },
     salesmen: [] as Salesman[]
 }

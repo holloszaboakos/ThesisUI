@@ -45,7 +45,7 @@ export interface Salesman {
      * @type {number}
      * @memberof Salesman
      */
-    paymentEuroPer_Second: number;
+    payment_EuroPerSecond: number;
     /**
      * 
      * @type {number}

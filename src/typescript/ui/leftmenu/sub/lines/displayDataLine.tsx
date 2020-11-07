@@ -28,7 +28,7 @@ export function DisplayDataLine(props: {
                 width="1fr"
                 height={32}
                 radius={16}
-                background="#FFFFFF">
+                background="#DDDDDD">
                 {props.value}
             </Framer.Frame>
         </Framer.Stack>

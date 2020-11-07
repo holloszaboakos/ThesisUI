@@ -1,3 +1,6 @@
+import Objective from "./objective"
+import Edge from "./edge"
+
 /**
  * 
  * @export
@@ -18,6 +21,12 @@ export interface Graph {
     name: string;
     /**
      * 
+     * @type {GPS}
+     * @memberof Graph
+     */
+    center: GPS;
+    /**
+     * 
      * @type {Array<Objective>}
      * @memberof Graph
      */
@@ -27,5 +36,17 @@ export interface Graph {
      * @type {Array<Array<Edge>>}
      * @memberof Graph
      */
-    edges: Array<Array<Edge>>;
+    edgesBetween: Array<Array<Edge>>;
+    /**
+     * 
+     * @type {Array<Array<Edge>>}
+     * @memberof Graph
+     */
+    edgesFromCenter: Array<Edge>;
+    /**
+     * 
+     * @type {Array<Array<Edge>>}
+     * @memberof Graph
+     */
+    edgesToCenter: Array<Edge>;
 }

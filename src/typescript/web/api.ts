@@ -23,6 +23,7 @@ import { Setting } from "../data/web/setting";
 import { Task } from "../data/web/task";
 import { GPS } from "../data/web/gps";
 import { Progress } from "../data/web/progress";
+import { Edge } from "../data/web/edge";
 
 const BASE_PATH = "https://waprom.drp".replace(/\/+$/, "");
 
@@ -103,6 +104,7 @@ export const LifecicleApiFetchParamCreator = function (configuration?: Configura
             const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+            localVarHeaderParameter["Access-Control-Allow-Origin"] = "*"
 
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
@@ -126,6 +128,7 @@ export const LifecicleApiFetchParamCreator = function (configuration?: Configura
             const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+            localVarHeaderParameter["Access-Control-Allow-Origin"] = "*"
 
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
@@ -149,6 +152,7 @@ export const LifecicleApiFetchParamCreator = function (configuration?: Configura
             const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+            localVarHeaderParameter["Access-Control-Allow-Origin"] = "*"
 
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
@@ -172,6 +176,7 @@ export const LifecicleApiFetchParamCreator = function (configuration?: Configura
             const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+            localVarHeaderParameter["Access-Control-Allow-Origin"] = "*"
 
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
@@ -195,6 +200,7 @@ export const LifecicleApiFetchParamCreator = function (configuration?: Configura
             const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+            localVarHeaderParameter["Access-Control-Allow-Origin"] = "*"
 
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
@@ -218,6 +224,7 @@ export const LifecicleApiFetchParamCreator = function (configuration?: Configura
             const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+            localVarHeaderParameter["Access-Control-Allow-Origin"] = "*"
 
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
@@ -241,6 +248,7 @@ export const LifecicleApiFetchParamCreator = function (configuration?: Configura
             const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+            localVarHeaderParameter["Access-Control-Allow-Origin"] = "*"
 
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
@@ -264,6 +272,7 @@ export const LifecicleApiFetchParamCreator = function (configuration?: Configura
             const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+            localVarHeaderParameter["Access-Control-Allow-Origin"] = "*"
 
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
@@ -632,6 +641,7 @@ export const SetupApiFetchParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+            localVarHeaderParameter["Access-Control-Allow-Origin"] = "*"
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
@@ -664,6 +674,7 @@ export const SetupApiFetchParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+            localVarHeaderParameter["Access-Control-Allow-Origin"] = "*"
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
@@ -696,6 +707,7 @@ export const SetupApiFetchParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+            localVarHeaderParameter["Access-Control-Allow-Origin"] = "*"
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
@@ -728,6 +740,7 @@ export const SetupApiFetchParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+            localVarHeaderParameter["Access-Control-Allow-Origin"] = "*"
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
@@ -755,6 +768,7 @@ export const SetupApiFetchParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+            localVarHeaderParameter["Access-Control-Allow-Origin"] = "*"
 
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
@@ -778,6 +792,7 @@ export const SetupApiFetchParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+            localVarHeaderParameter["Access-Control-Allow-Origin"] = "*"
 
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
@@ -801,6 +816,7 @@ export const SetupApiFetchParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+            localVarHeaderParameter["Access-Control-Allow-Origin"] = "*"
 
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
@@ -829,6 +845,7 @@ export const SetupApiFetchParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+            localVarHeaderParameter["Access-Control-Allow-Origin"] = "*"
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
@@ -861,6 +878,7 @@ export const SetupApiFetchParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+            localVarHeaderParameter["Access-Control-Allow-Origin"] = "*"
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
@@ -893,6 +911,7 @@ export const SetupApiFetchParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = Object.assign({ method: 'DELETE' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+            localVarHeaderParameter["Access-Control-Allow-Origin"] = "*"
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
@@ -925,6 +944,7 @@ export const SetupApiFetchParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = Object.assign({ method: 'DELETE' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+            localVarHeaderParameter["Access-Control-Allow-Origin"] = "*"
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
@@ -957,6 +977,7 @@ export const SetupApiFetchParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+            localVarHeaderParameter["Access-Control-Allow-Origin"] = "*"
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
@@ -989,6 +1010,7 @@ export const SetupApiFetchParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+            localVarHeaderParameter["Access-Control-Allow-Origin"] = "*"
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
@@ -1576,6 +1598,7 @@ export const UpdateApiFetchParamCreator = function (configuration?: Configuratio
             const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+            localVarHeaderParameter["Access-Control-Allow-Origin"] = "*"
 
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
@@ -1599,6 +1622,7 @@ export const UpdateApiFetchParamCreator = function (configuration?: Configuratio
             const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+            localVarHeaderParameter["Access-Control-Allow-Origin"] = "*"
 
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
@@ -1611,8 +1635,8 @@ export const UpdateApiFetchParamCreator = function (configuration?: Configuratio
             };
         },
         /**
-         * get best plan for actual transport
-         * @summary get root between locations
+         * get rout between two locations specified by GPS coordinates
+         * @summary get rout between locations
          * @param {number} fromLat lattitude of GPS coords of source location
          * @param {number} fromLong longitude of GPS coords of source location
          * @param {number} toLat lattitude of GPS coords of target location
@@ -1620,24 +1644,24 @@ export const UpdateApiFetchParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getRootBetween(fromLat: number, fromLong: number, toLat: number, toLong: number, options: any = {}): FetchArgs {
+        getRoutBetween(fromLat: number, fromLong: number, toLat: number, toLong: number, options: any = {}): FetchArgs {
             // verify required parameter 'fromLat' is not null or undefined
             if (fromLat === null || fromLat === undefined) {
-                throw new RequiredError('fromLat', 'Required parameter fromLat was null or undefined when calling getRootBetween.');
+                throw new RequiredError('fromLat', 'Required parameter fromLat was null or undefined when calling getRoutBetween.');
             }
             // verify required parameter 'fromLong' is not null or undefined
             if (fromLong === null || fromLong === undefined) {
-                throw new RequiredError('fromLong', 'Required parameter fromLong was null or undefined when calling getRootBetween.');
+                throw new RequiredError('fromLong', 'Required parameter fromLong was null or undefined when calling getRoutBetween.');
             }
             // verify required parameter 'toLat' is not null or undefined
             if (toLat === null || toLat === undefined) {
-                throw new RequiredError('toLat', 'Required parameter toLat was null or undefined when calling getRootBetween.');
+                throw new RequiredError('toLat', 'Required parameter toLat was null or undefined when calling getRoutBetween.');
             }
             // verify required parameter 'toLong' is not null or undefined
             if (toLong === null || toLong === undefined) {
-                throw new RequiredError('toLong', 'Required parameter toLong was null or undefined when calling getRootBetween.');
+                throw new RequiredError('toLong', 'Required parameter toLong was null or undefined when calling getRoutBetween.');
             }
-            const localVarPath = `/update/root/{fromLat}/{fromLong}/{toLat}/{toLong}`
+            const localVarPath = `/update/rout/{fromLat}/{fromLong}/{toLat}/{toLong}`
                 .replace(`{${"fromLat"}}`, encodeURIComponent(String(fromLat)))
                 .replace(`{${"fromLong"}}`, encodeURIComponent(String(fromLong)))
                 .replace(`{${"toLat"}}`, encodeURIComponent(String(toLat)))
@@ -1646,6 +1670,7 @@ export const UpdateApiFetchParamCreator = function (configuration?: Configuratio
             const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+            localVarHeaderParameter["Access-Control-Allow-Origin"] = "*"
 
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
@@ -1703,8 +1728,8 @@ export const UpdateApiFp = function (configuration?: Configuration) {
             };
         },
         /**
-         * get best plan for actual transport
-         * @summary get root between locations
+         * get rout between two locations specified by GPS coordinates
+         * @summary get rout between locations
          * @param {number} fromLat lattitude of GPS coords of source location
          * @param {number} fromLong longitude of GPS coords of source location
          * @param {number} toLat lattitude of GPS coords of target location
@@ -1712,8 +1737,8 @@ export const UpdateApiFp = function (configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getRootBetween(fromLat: number, fromLong: number, toLat: number, toLong: number, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<GPS>> {
-            const localVarFetchArgs = UpdateApiFetchParamCreator(configuration).getRootBetween(fromLat, fromLong, toLat, toLong, options);
+        getRoutBetween(fromLat: number, fromLong: number, toLat: number, toLong: number, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Edge> {
+            const localVarFetchArgs = UpdateApiFetchParamCreator(configuration).getRoutBetween(fromLat, fromLong, toLat, toLong, options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -1752,8 +1777,8 @@ export const UpdateApiFactory = function (configuration?: Configuration, fetch?:
             return UpdateApiFp(configuration).getResult(options)(fetch, basePath);
         },
         /**
-         * get best plan for actual transport
-         * @summary get root between locations
+         * get rout between two locations specified by GPS coordinates
+         * @summary get rout between locations
          * @param {number} fromLat lattitude of GPS coords of source location
          * @param {number} fromLong longitude of GPS coords of source location
          * @param {number} toLat lattitude of GPS coords of target location
@@ -1761,8 +1786,8 @@ export const UpdateApiFactory = function (configuration?: Configuration, fetch?:
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getRootBetween(fromLat: number, fromLong: number, toLat: number, toLong: number, options?: any) {
-            return UpdateApiFp(configuration).getRootBetween(fromLat, fromLong, toLat, toLong, options)(fetch, basePath);
+        getRoutBetween(fromLat: number, fromLong: number, toLat: number, toLong: number, options?: any) {
+            return UpdateApiFp(configuration).getRoutBetween(fromLat, fromLong, toLat, toLong, options)(fetch, basePath);
         },
     };
 };
@@ -1797,8 +1822,8 @@ export class UpdateApi extends BaseAPI {
     }
 
     /**
-     * get best plan for actual transport
-     * @summary get root between locations
+     * get rout between two locations specified by GPS coordinates
+     * @summary get rout between locations
      * @param {number} fromLat lattitude of GPS coords of source location
      * @param {number} fromLong longitude of GPS coords of source location
      * @param {number} toLat lattitude of GPS coords of target location
@@ -1807,8 +1832,8 @@ export class UpdateApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof UpdateApi
      */
-    public getRootBetween(fromLat: number, fromLong: number, toLat: number, toLong: number, options?: any) {
-        return UpdateApiFp(this.configuration).getRootBetween(fromLat, fromLong, toLat, toLong, options)(this.fetch, this.basePath);
+    public getRoutBetween(fromLat: number, fromLong: number, toLat: number, toLong: number, options?: any) {
+        return UpdateApiFp(this.configuration).getRoutBetween(fromLat, fromLong, toLat, toLong, options)(this.fetch, this.basePath);
     }
 
 }

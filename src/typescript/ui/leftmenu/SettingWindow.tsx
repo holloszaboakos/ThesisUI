@@ -3,20 +3,24 @@ import * as Framer from "framer"
 import { DisplayDataLine } from "./sub/lines/DisplayDataLine"
 import { ButtonLine } from "./sub/lines/ButtonLine"
 import { ChooseWindow } from "./sub/algorithm/ChooseWindow"
-import * as WebInterface from "../../web/webinterface"
 import { SetDataLine } from "./sub/lines/SetDataLine"
 import * as DataCenter from "../../data/dataCenter"
-import { Setting } from "../../data/web/setting"
-import { isNumber } from "util"
+import { LoadWindow as SetupLoadWindow } from "./sub/setting/LoadWindow"
+import { SaveWindow as SetupSaveWindow } from "./sub/setting/SaveWindow"
+import { LabelAndIconButtons } from "./sub/lines/LabelAndIconButtons"
+import { Settings } from "ts-react-feather-icons"
 
-export function SetupWindow(props: { clean: () => void, start: () => void }) {
+export function SetupWindow(props: { previous: () => void, next: () => void }) {
     enum States {
         main,
         algorithmChooser,
+        setupLoad,
+        setupSave
     }
 
     const [state, setState] = React.useState(States.main)
     const [setting, setSetting] = React.useState(DataCenter.getSetting())
+    const [result, setResult] = React.useState(DataCenter.getResult)
 
     //TODO rooting
     //onAttach
@@ -68,23 +72,47 @@ export function SetupWindow(props: { clean: () => void, start: () => void }) {
                         setSetting(setting)
                     }}
                 />
-                <DisplayDataLine label="Maximum cost (€)" value="1000" />
-                <DisplayDataLine label="Minimum cost (€)" value="0" />
+                <LabelAndIconButtons
+                    label="Setting"
+                    iconButtons={[
+                        {
+                            name: "upload",
+                            function: () => { setState(States.setupLoad) }
+                        },
+                        {
+                            name: "save",
+                            function: () => { setState(States.setupSave) }
+                        },
+                    ]}
+                />
+                <DisplayDataLine label="Maximum cost (€)" value={result.maxCost_Euro.toString()} />
+                <DisplayDataLine label="Minimum cost (€)" value={result.minCost_Euro.toString()} />
                 <ButtonLine label="Algorithm" functionality={() => {
                     setState(States.algorithmChooser)
                 }} />
             </Framer.Stack>
             <ButtonLine label="Start" functionality={() => {
                 DataCenter.updateSetting(setting)
-                props.start()
+                props.next()
             }
             } />
             <ButtonLine label="Clean" functionality={
-                props.clean
+                props.previous
             } />
         </Framer.Stack>
-        : <ChooseWindow
-            onEnded={() => { setState(States.main) }}
-        />}
+        : state === States.algorithmChooser ? (
+            <ChooseWindow
+                onEnded={() => { setState(States.main) }}
+            />
+        ) : state === States.setupLoad ? (
+            <SetupLoadWindow
+                onEnded={() => { setState(States.main) }}
+            />
+        ) : state === States.setupSave && (
+            <SetupSaveWindow
+                onEnded={() => { setState(States.main) }}
+            />
+        )
+    }
     </>)
 }

@@ -1,5 +1,6 @@
 import * as GPS from "./gps"
 import * as Graph from "./graph"
+import * as Salesman from "./salesman"
 
 /**
  * 
@@ -19,12 +20,6 @@ export interface Task {
      * @memberof Task
      */
     name: string;
-    /**
-     * 
-     * @type {GPS}
-     * @memberof Task
-     */
-    center: GPS;
     /**
      * 
      * @type {Array<Salesman>}

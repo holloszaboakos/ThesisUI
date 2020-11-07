@@ -417,13 +417,13 @@ paths:
         "405":
           description: "invalid in current state"
           
-  /update/root/{fromLat}/{fromLong}/{toLat}/{toLong}:
+  /update/rout/{fromLat}/{fromLong}/{toLat}/{toLong}:
     get:
       tags:
         - "update"
-      summary: "get root between locations"
-      description: "get best plan for actual transport"
-      operationId: "getRootBetween"
+      summary: "get rout between locations"
+      description: "get rout between two locations specified by GPS coordinates"
+      operationId: "getRoutBetween"
       produces:
       - "application/json"
       parameters:
@@ -451,9 +451,7 @@ paths:
         "200":
           description: "successful operation"
           schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/GPS"
+            $ref: "#/definitions/Edge"
           
   /update/progress:
     get:
@@ -605,7 +603,7 @@ definitions:
         type: "string"
       length_Meter:
         type: "number"
-      root:
+      rout:
         type: "array"
         items:
           $ref: "#/definitions/GPS"
@@ -613,7 +611,7 @@ definitions:
       - id
       - name
       - length_Meter
-      - root
+      - rout
   
   Objective:
     type: "object"

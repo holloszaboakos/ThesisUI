@@ -5,7 +5,7 @@ import { ButtonLine } from "./sub/lines/ButtonLine"
 import * as WebInterface from "../../web/webinterface"
 import * as DataCenter from "../../data/dataCenter"
 
-export function RunningWindow(props: { pause: () => void }) {
+export function RunningWindow(props: { previous: () => void }) {
 
     const [progress, setProgress] = React.useState(DataCenter.getProgress)
     const [result, setResult] = React.useState(DataCenter.getResult)
@@ -53,7 +53,7 @@ export function RunningWindow(props: { pause: () => void }) {
                 <DisplayDataLine label="Iteration" value={progress.iteration.toString()} />
                 <DisplayDataLine label="Time (s)" value={progress.runtime_Second.toString()} />
             </Framer.Stack>
-            <ButtonLine label="Pause" functionality={props.pause} />
+            <ButtonLine label="Pause" functionality={props.previous} />
         </Framer.Stack>
     )
 }

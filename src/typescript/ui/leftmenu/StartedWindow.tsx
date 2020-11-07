@@ -8,7 +8,7 @@ import { GPS } from "../../data/web/gps"
 import { Progress } from "../../data/web/progress"
 import * as DataCenter from "../../data/dataCenter"
 
-export function StartedWindow(props: { stop: () => void, run: () => void }) {
+export function StartedWindow(props: { previous: () => void, next: () => void }) {
 
     const [progress, setProgress] = React.useState(DataCenter.getProgress)
     const [result, setResult] = React.useState(DataCenter.getResult)
@@ -69,8 +69,8 @@ export function StartedWindow(props: { stop: () => void, run: () => void }) {
                 <DisplayDataLine label="Iteration" value={progress.iteration.toString()} />
                 <DisplayDataLine label="Time (s)" value={progress.runtime_Second.toString()} />
             </Framer.Stack>
-            <ButtonLine label="run" functionality={props.run} />
-            <ButtonLine label="Stop" functionality={props.stop} />
+            <ButtonLine label="run" functionality={props.next} />
+            <ButtonLine label="Stop" functionality={props.previous} />
         </Framer.Stack>
     )
 }
