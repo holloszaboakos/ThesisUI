@@ -6,7 +6,7 @@ import * as DataCenter from "../../data/dataCenter"
 let mapContainer: HTMLDivElement | null
 let map
 
-export function Map(props: { width: string, height: string, radius: number, margin: number }) {
+export function HighlighterMap(props: { width: string, height: string, radius: number, margin: number }) {
 
     const [routes, setRoutes] = React.useState(DataCenter.getResult().bestRout)
     const [latitude, setLatitude] = React.useState(47.462851)
@@ -44,6 +44,7 @@ export function Map(props: { width: string, height: string, radius: number, marg
             width: props.width,
             center: [longitude, latitude],
             zoom: zoom,
+            interactive: false
         })
 
         map.on("move", () => {

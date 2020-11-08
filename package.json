@@ -17,6 +17,7 @@
     "portable-fetch": "^3.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-mapbox-gl": "^5.0.0",
     "react-scripts": "^3.4.1",
     "ts-react-feather-icons": "^1.0.0",
     "typescript": "^3.7.5"

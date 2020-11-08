@@ -7,6 +7,7 @@ import { Progress } from "./web/progress"
 import { Edge } from "./web/edge"
 import { Setting } from "./web/setting"
 import { GPS } from "./web/gps"
+import { MapView } from "./map/mapview"
 
 
 //TASK CONTAINER
@@ -94,7 +95,7 @@ export function removeTaskChangeCallBack(callBack: ((data: Task) => void)) {
 }
 export function updateTask(data: Task) {
     task = data
-    taskChangedCallBacks.forEach(it => { it(data) })
+    taskChangedCallBacks.forEach(it => { it({ ...data }) })
 }
 export function getTask(): Task {
     return { ...task }
@@ -252,5 +253,48 @@ export function listAlgorithms(setNames: (names: string[]) => void) {
     else
         setNames(algorithmNames)
 }
+
+//MAPVIEW
+let mapview: MapView = {
+    location: {
+        lattitude: 0,
+        longitude: 0
+    },
+    zoom: 1
+}
+let mapviewChangedCallBacks = [] as ((data: MapView) => void)[]
+export function addMapViewChangeCallBack(callBack: ((data: MapView) => void)) {
+    mapviewChangedCallBacks.push(callBack)
+}
+export function removeMapViewChangeCallBack(callBack: ((data: MapView) => void)) {
+    mapviewChangedCallBacks = mapviewChangedCallBacks.filter((it) => { return it !== callBack })
+}
+export function updateMapView(data: MapView) {
+    mapview = data
+    mapviewChangedCallBacks.forEach(it => it({ ...data }))
+}
+export function getMapView(): MapView {
+    return { ...mapview }
+}
+
+let pos: GPS = {
+    lattitude: 0,
+    longitude: 0
+}
+let posChangedCallBacks = [] as ((data: GPS) => void)[]
+export function addPosChangeCallBack(callBack: ((data: GPS) => void)) {
+    posChangedCallBacks.push(callBack)
+}
+export function removePosChangeCallBack(callBack: ((data: GPS) => void)) {
+    posChangedCallBacks = posChangedCallBacks.filter((it) => { return it !== callBack })
+}
+export function updatePos(data: GPS) {
+    pos = data
+    posChangedCallBacks.forEach(it => it({ ...data }))
+}
+export function getPos(): GPS {
+    return { ...pos }
+}
+
 export const publicKey = "pk.eyJ1IjoiaG9sbG8wMDciLCJhIjoiY2tjMjc2OHFoMDFwazMxcXRxczVrYmUxciJ9.aXkMyO-37U4gaScXDnzwnw"
 export const style = "mapbox://styles/hollo007/ckc23mj4c10vf1ioabsb1cq9t"

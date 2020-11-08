@@ -5,10 +5,13 @@ import { StartedWindow } from './ui/leftmenu/StartedWindow'
 import { RunningWindow } from './ui/leftmenu/RunningWindow'
 import { RoutingWindow } from './ui/leftmenu/RoutingWindow';
 import { TaskWindow } from './ui/leftmenu/TaskWindow';
-import { Map } from "./ui/map/MapWithEditableTargets"
+import { EditableMap } from "./ui/map/EditableMap"
 import '../css/index.css';
 import * as DataCenter from "./data/dataCenter"
 import * as WebInterface from "./web/webinterface"
+import { LoaderMap } from './ui/map/LoaderMap'
+import { HighlighterMap } from './ui/map/HighlighterMap'
+import { BasicMap } from './ui/map/BasicMap'
 
 export default function App() {
   enum States {
@@ -100,13 +103,29 @@ export default function App() {
         radius={32}
         padding={16}
         background="#999999"
-      >
-        <Map
+      > {(state === States.task) ?
+        (<EditableMap
           height="100%"
           width="100%"
           radius={32}
           margin={16}
-        />
+        />) : (state === States.routing) ? (
+          <LoaderMap
+            height="100%"
+            width="100%"
+            radius={32}
+            margin={16}
+          />
+        ) : (state === States.setting
+          || state === States.started
+          || state === States.running) && (
+            <HighlighterMap
+              height="100%"
+              width="100%"
+              radius={32}
+              margin={16}
+            />
+          )}
       </Framer.Frame>
     </Framer.Stack >
   );

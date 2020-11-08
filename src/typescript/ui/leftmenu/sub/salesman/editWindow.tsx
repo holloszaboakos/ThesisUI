@@ -54,7 +54,7 @@ export function EditWindow(props: { name: string, setSalesmanName: (text) => voi
                     label="name"
                     startText={salesman.name}
                     placefolder="name"
-                    validate={() => true}
+                    validate={(text) => true}
                     sendValue={(text) => {
                         salesman.name = text
                     }}
@@ -63,75 +63,72 @@ export function EditWindow(props: { name: string, setSalesmanName: (text) => voi
                     label="base price (€)"
                     startText={salesman.basePrice_Euro.toString()}
                     placefolder="basePriceEuro"
-                    validate={() => true}
+                    validate={(text) => !isNaN(Number(text))}
                     sendValue={(text) => {
-                        salesman.basePrice_Euro = JSON.parse(text)
-                        console.log(JSON.stringify(salesman))
-                        console.log(JSON.stringify(DataCenter.getSalesmanByName(props.name)))
-                        console.log(props.name)
+                        salesman.basePrice_Euro = Number(text)
                     }}
                 />
                 <SetDataLine
                     label="fuel consuption (l/m)"
                     startText={salesman.fuelConsuption_LiterPerMeter.toString()}
                     placefolder="fuelConsuption"
-                    validate={() => true}
+                    validate={(text) => !isNaN(Number(text))}
                     sendValue={(text) => {
-                        salesman.fuelConsuption_LiterPerMeter = JSON.parse(text)
+                        salesman.fuelConsuption_LiterPerMeter = Number(text)
                     }}
                 />
                 <SetDataLine
                     label="fuel price (€/l)"
                     startText={salesman.fuelPrice_EuroPerLiter.toString()}
                     placefolder="fuelPrice"
-                    validate={() => true}
+                    validate={(text) => !isNaN(Number(text))}
                     sendValue={(text) => {
-                        salesman.fuelPrice_EuroPerLiter = JSON.parse(text)
+                        salesman.fuelPrice_EuroPerLiter = Number(text)
                     }}
                 />
                 <SetDataLine
                     label="payment (€/s)"
                     startText={salesman.payment_EuroPerSecond.toString()}
                     placefolder="payment"
-                    validate={() => true}
+                    validate={(text) => !isNaN(Number(text))}
                     sendValue={(text) => {
-                        salesman.payment_EuroPerSecond = JSON.parse(text)
+                        salesman.payment_EuroPerSecond = Number(text)
                     }}
                 />
                 <SetDataLine
                     label="vechicle speed (m/s)"
                     startText={salesman.vechicleSpeed_MeterPerSecond.toString()}
                     placefolder="vechicleSpeed"
-                    validate={() => true}
+                    validate={(text) => !isNaN(Number(text))}
                     sendValue={(text) => {
-                        salesman.vechicleSpeed_MeterPerSecond = JSON.parse(text)
+                        salesman.vechicleSpeed_MeterPerSecond = Number(text)
                     }}
                 />
                 <SetDataLine
                     label="volume capacity (m^3)"
                     startText={salesman.volumeCapacity_Stere.toString()}
                     placefolder="volumeCapacity"
-                    validate={() => true}
+                    validate={(text) => !isNaN(Number(text))}
                     sendValue={(text) => {
-                        salesman.volumeCapacity_Stere = JSON.parse(text)
+                        salesman.volumeCapacity_Stere = Number(text)
                     }}
                 />
                 <SetDataLine
                     label="weight capacity (g)"
                     startText={salesman.weightCapacity_Gramm.toString()}
                     placefolder="weightCapacity"
-                    validate={() => true}
+                    validate={(text) => !isNaN(Number(text))}
                     sendValue={(text) => {
-                        salesman.weightCapacity_Gramm = JSON.parse(text)
+                        salesman.weightCapacity_Gramm = Number(text)
                     }}
                 />
                 <SetDataLine
                     label="work time (s/d)"
                     startText={salesman.workTime_SecondPerDay.toString()}
                     placefolder="workTime"
-                    validate={() => true}
+                    validate={(text) => !isNaN(Number(text))}
                     sendValue={(text) => {
-                        salesman.workTime_SecondPerDay = JSON.parse(text)
+                        salesman.workTime_SecondPerDay = Number(text)
                     }}
                 />
             </Framer.Stack>

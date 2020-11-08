@@ -11,6 +11,9 @@ import { ListWindow as ObjectiveListWindow } from "./sub/objective/ListWindow"
 import { LoadWindow as TaskLoadWindow } from "./sub/task/LoadWindow"
 import { SaveWindow as TaskSaveWindow } from "./sub/task/SaveWindow"
 import * as DataCenter from "../../data/dataCenter"
+import { SetDataLine } from "./sub/lines/SetDataLine"
+import { Graph } from "../../data/web/graph"
+import { GPS } from "../../data/web/gps"
 
 
 export function TaskWindow(props: { next: () => void }) {
@@ -33,9 +36,33 @@ export function TaskWindow(props: { next: () => void }) {
         progressSave,
     }
 
+    function setPos(pos: GPS) {
+        task.costGraph.center = pos
+        DataCenter.updateTask(task)
+    }
+    const [task, setTask] = React.useState(DataCenter.getTask)
     const [salesmanName, setSalesmanName] = React.useState("")
     const [objectiveName, setObjectiveName] = React.useState("")
     const [state, setState] = React.useState(States.main)
+    const [refresher, setRefresher] = React.useState(true)
+
+    React.useEffect(() => {
+        DataCenter.addTaskChangeCallBack(setTask)
+        DataCenter.addPosChangeCallBack(setPos)
+    }, [])
+
+    React.useEffect(() => {
+        return () => {
+            DataCenter.removeTaskChangeCallBack(setTask)
+            DataCenter.removePosChangeCallBack(setPos)
+        }
+    }, [])
+    React.useEffect(() => {
+        setRefresher(!refresher)
+    }, [task])
+    React.useEffect(() => {
+        !refresher && setRefresher(!refresher)
+    }, [refresher])
 
     return (<>
         {
@@ -103,7 +130,22 @@ export function TaskWindow(props: { next: () => void }) {
                                     function: () => { setState(States.taskSave) }
                                 },
                             ]}
-                        />
+                        />{refresher && (<>
+                            <SetDataLine
+                                label="Center longitude"
+                                placefolder="longitude"
+                                startText={((task.costGraph as Graph).center as GPS).longitude.toString()}
+                                validate={(text) => !isNaN(Number(text))}
+                                sendValue={(text) => { task.costGraph.center.longitude = Number(text) }}
+                            />
+                            <SetDataLine
+                                label="Center lattitude"
+                                placefolder="lattitude"
+                                startText={((task.costGraph as Graph).center as GPS).lattitude.toString()}
+                                validate={(text) => !isNaN(Number(text))}
+                                sendValue={(text) => { task.costGraph.center.lattitude = Number(text) }}
+                            />
+                        </>)}
                     </Framer.Stack>
                     <ButtonLine label="Set Task" functionality={props.next} />
                 </Framer.Stack>
