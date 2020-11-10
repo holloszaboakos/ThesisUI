@@ -35,16 +35,12 @@ export function TaskWindow(props: { next: () => void }) {
         progressLoad,
         progressSave,
     }
-
-    function setPos(pos: GPS) {
-        task.costGraph.center = pos
-        DataCenter.updateTask(task)
-    }
     const [task, setTask] = React.useState(DataCenter.getTask)
     const [salesmanName, setSalesmanName] = React.useState("")
     const [objectiveName, setObjectiveName] = React.useState("")
     const [state, setState] = React.useState(States.main)
     const [refresher, setRefresher] = React.useState(true)
+    const [pos, setPos] = React.useState({ longitude: 0, lattitude: 0 } as GPS)
 
     React.useEffect(() => {
         DataCenter.addTaskChangeCallBack(setTask)
@@ -57,9 +53,18 @@ export function TaskWindow(props: { next: () => void }) {
             DataCenter.removePosChangeCallBack(setPos)
         }
     }, [])
+
+    React.useEffect(() => {
+        if (state === States.main) {
+            task.costGraph.center = pos
+            DataCenter.updateTask(task)
+        }
+    }, [pos])
+
     React.useEffect(() => {
         setRefresher(!refresher)
     }, [task])
+
     React.useEffect(() => {
         !refresher && setRefresher(!refresher)
     }, [refresher])

@@ -11,10 +11,10 @@ let map
 
 export function EditableMap(props: { width: string, height: string, radius: number, margin: number }) {
 
-    let layerIds = [] as string[]
     const [loaded, setLoaded] = React.useState(false)
     const [task, setTask] = React.useState(DataCenter.getTask())
     const [mapView, setMapView] = React.useState(DataCenter.getMapView())
+    const [pos, setPos] = React.useState({ longitude: 0, lattitude: 0 } as GPS)
 
     function getCostGraph(): Graph {
         return task.costGraph
@@ -24,6 +24,7 @@ export function EditableMap(props: { width: string, height: string, radius: numb
     React.useEffect(() => {
         DataCenter.addTaskChangeCallBack(setTask)
         DataCenter.addMapViewChangeCallBack(setMapView)
+        DataCenter.addPosChangeCallBack(setPos)
         mapboxgl.accessToken = DataCenter.publicKey
         map = new mapboxgl.Map({
             container: mapContainer,
@@ -46,43 +47,47 @@ export function EditableMap(props: { width: string, height: string, radius: numb
             DataCenter.updatePos({ longitude: e.lngLat.lng, lattitude: e.lngLat.lat })
         });
 
-        map.on("load", function () {
-            map.addSource("center", {
+        map.on('load', function () {
+            let center = getCostGraph().center as GPS
+            let objectives = getCostGraph().objectives as Objective[]
+            map.addSource('pointSource', {
                 'type': 'geojson',
                 'data': {
-                    'type': 'Point',
-                    'coordinates': [getCostGraph().center.longitude, getCostGraph().center.lattitude]
+                    'type': 'FeatureCollection',
+                    'features': [
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                'color': '#ff0000'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [center.longitude, center.lattitude]
+                            }
+                        },
+                        ...objectives.map(objective => {
+                            return {
+                                'type': 'Feature',
+                                'properties': {
+                                    'color': '#007700'
+                                },
+                                'geometry': {
+                                    'type': 'Point',
+                                    'coordinates': [objective.location.longitude, objective.location.lattitude]
+                                }
+                            }
+                        })
+                    ]
                 }
             })
             map.addLayer({
-                'id': "center",
-                'source': "center",
+                'id': "pointsLayer",
+                'source': "pointSource",
                 'type': 'circle',
                 'paint': {
                     'circle-radius': 10,
-                    'circle-color': '#ff0000'
+                    'circle-color': ['get', 'color']
                 }
-            })
-            getCostGraph().objectives.forEach((objective: Objective, index) => {
-                let position = objective.location
-                map.addSource("point" + index, {
-                    'type': 'geojson',
-                    'data': {
-                        'type': 'Point',
-                        'coordinates': [position.longitude, position.lattitude]
-                    }
-                })
-                map.addLayer({
-                    'id': "point" + index,
-                    'source': "point" + index,
-                    'type': 'circle',
-                    'paint': {
-                        'circle-radius': 10,
-                        'circle-color': '#007cbf'
-                    }
-                })
-
-                layerIds.push("point" + index)
             })
             setLoaded(true)
             console.log("loaded")
@@ -91,6 +96,11 @@ export function EditableMap(props: { width: string, height: string, radius: numb
 
     // componentWillUnmount
     React.useEffect(() => {
+        return () => {
+            DataCenter.removeTaskChangeCallBack(setTask)
+            DataCenter.removeMapViewChangeCallBack(setMapView)
+            DataCenter.removePosChangeCallBack(setPos)
+        }
     }, [])
 
     React.useEffect(() => {
@@ -100,62 +110,48 @@ export function EditableMap(props: { width: string, height: string, radius: numb
 
     React.useEffect(() => {
         if (loaded) {
-
-            let temporaryMap = map
-            temporaryMap = temporaryMap.removeLayer("center")
-            temporaryMap = temporaryMap.removeSource("center")
-            layerIds.forEach((id) => {
-                temporaryMap = temporaryMap.removelayer(id)
-                temporaryMap = temporaryMap.removeSource(id)
-            })
-            map = temporaryMap
-            layerIds = []
-
-            map.addSource("center", {
-                'type': 'geojson',
-                'data': {
-                    'type': 'Point',
-                    'coordinates': [getCostGraph().center.longitude, getCostGraph().center.lattitude]
-                }
-            })
-            map.addLayer({
-                'id': "center",
-                'source': "center",
-                'type': 'circle',
-                'paint': {
-                    'circle-radius': 10,
-                    'circle-color': '#ff0000'
-                }
-            })
-            getCostGraph().objectives.forEach((objective: Objective, index) => {
-                let position = objective.location
-                if (!map.getSource("point" + index))
-                    map.addSource("point" + index, {
-                        'type': 'geojson',
-                        'data': {
+            let center = getCostGraph().center as GPS
+            let objectives = getCostGraph().objectives as Objective[]
+            map.getSource("pointSource").setData({
+                'type': 'FeatureCollection',
+                'features': [
+                    {
+                        'type': 'Feature',
+                        'properties': {
+                            'color': '#77FF77'
+                        },
+                        'geometry': {
                             'type': 'Point',
-                            'coordinates': [position.longitude, position.lattitude]
+                            'coordinates': [pos.longitude, pos.lattitude]
                         }
-                    })
-                else
-                    map.getSource("point" + index).setData({
-                        'type': 'Point',
-                        'coordinates': [position.longitude, position.lattitude]
-                    })
-                map.addLayer({
-                    'id': "point" + index,
-                    'source': "point" + index,
-                    'type': 'circle',
-                    'paint': {
-                        'circle-radius': 10,
-                        'circle-color': '#007cbf'
-                    }
-                })
-                layerIds.push("point" + index)
+                    },
+                    {
+                        'type': 'Feature',
+                        'properties': {
+                            'color': '#ff0000'
+                        },
+                        'geometry': {
+                            'type': 'Point',
+                            'coordinates': [center.longitude, center.lattitude]
+                        }
+                    },
+                    ...objectives.map(objective => {
+                        return {
+                            'type': 'Feature',
+                            'properties': {
+                                'color': '#007700'
+                            },
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [objective.location.longitude, objective.location.lattitude]
+                            }
+                        }
+                    }),
+                ]
             })
             setMapView(mapView)
         }
-    }, [task])
+    }, [task, pos])
 
     return (
         <Framer.Frame

@@ -61,6 +61,7 @@ export function RoutingWindow(props: { previous: () => void, next: () => void })
         let maxLength_Meter = 0
         let minLength_Meter = Infinity
 
+        console.log("ROUTING")
         //routing
         await objectives.forEach(async (from: Objective, indexFrom: number) => {
             //rout from center to actual location
@@ -136,6 +137,7 @@ export function RoutingWindow(props: { previous: () => void, next: () => void })
     React.useEffect(() => {
         DataCenter.addResultChangeCallBack(setResult)
         DataCenter.addTaskChangeCallBack(setTask)
+        routing()
     }, [])
     //onDetach
     React.useEffect(() => {
@@ -166,7 +168,7 @@ export function RoutingWindow(props: { previous: () => void, next: () => void })
                 <DisplayDataLine label="Maximum cost (€)" value={result.maxCost_Euro.toString()} />
                 <DisplayDataLine label="Minimum cost (€)" value={result.minCost_Euro.toString()} />
             </Framer.Stack>
-            { checkIfRoutingIsDone &&
+            { checkIfRoutingIsDone() &&
                 <ButtonLine label="Next" functionality={props.next} />
             }
             <ButtonLine label="Clean" functionality={props.previous} />

@@ -513,7 +513,9 @@ definitions:
       bestRout:
         type: "array"
         items:
-          $ref: "#/definitions/GPS"
+          type: "array"
+          items:
+            $ref: "#/definitions/GPS"
       maxCost_Euro:
         type: "number"
       minCost_Euro:

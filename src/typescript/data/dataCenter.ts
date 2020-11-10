@@ -192,7 +192,7 @@ let result: Result = {
     id: "",
     name: "",
     bestCost_Euro: 0,
-    bestRout: [] as GPS[],
+    bestRout: [] as GPS[][],
     maxCost_Euro: 0,
     minCost_Euro: 0,
 }

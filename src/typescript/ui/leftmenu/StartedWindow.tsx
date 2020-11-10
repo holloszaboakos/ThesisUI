@@ -53,7 +53,7 @@ export function StartedWindow(props: { previous: () => void, next: () => void })
                             name: "skip-forward",
                             function: () => {
                                 let bestCost: number
-                                let bestRoot: GPS[]
+                                let bestRoot: GPS[][]
                                 WebInterface.step().then(progress => {
                                     bestCost = progress.bestCost_Euro
                                     bestRoot = progress.bestRout
