@@ -14,9 +14,9 @@ export function EditWindow(props: { name: string, setSalesmanName: (text) => voi
         fuelPrice_EuroPerLiter: 0,
         payment_EuroPerSecond: 0,
         vechicleSpeed_MeterPerSecond: 0,
-        volumeCapacity_Stere: 0,
+        volumeCapacity_Stere: 0, 
         weightCapacity_Gramm: 0,
-        workTime_SecondPerDay: 0
+        workTime_SecondPerDay: 0 
     } : DataCenter.getSalesmanByName(props.name)
 
     function ok() {

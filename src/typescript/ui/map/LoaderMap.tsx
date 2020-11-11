@@ -30,7 +30,6 @@ export function LoaderMap(props: { width: string, height: string, radius: number
             width: props.width,
             center: [mapView.location.longitude, mapView.location.lattitude],
             zoom: mapView.zoom,
-            interactive: false
         })
 
         map.on("move", () => {
@@ -52,7 +51,9 @@ export function LoaderMap(props: { width: string, height: string, radius: number
                         ...(task.costGraph as Graph).edgesFromCenter.map((edge: Edge, index) => {
                             return {
                                 type: "Feature",
-                                properties: {},
+                                properties: {
+                                    'color': '#000077'
+                                },
                                 geometry: {
                                     type: "LineString",
                                     coordinates: edge.rout.map(GPS => [GPS.longitude, GPS.lattitude]),
@@ -62,7 +63,9 @@ export function LoaderMap(props: { width: string, height: string, radius: number
                         ...(task.costGraph as Graph).edgesToCenter.map((edge: Edge, index) => {
                             return {
                                 type: "Feature",
-                                properties: {},
+                                properties: {
+                                    'color': '#000077'
+                                },
                                 geometry: {
                                     type: "LineString",
                                     coordinates: edge.rout.map(GPS => [GPS.longitude, GPS.lattitude]),
@@ -72,7 +75,9 @@ export function LoaderMap(props: { width: string, height: string, radius: number
                         ...(task.costGraph as Graph).edgesBetween.flat().map((edge: Edge, index) => {
                             return {
                                 type: "Feature",
-                                properties: {},
+                                properties: {
+                                    'color': '#000077'
+                                },
                                 geometry: {
                                     type: "LineString",
                                     coordinates: edge.rout.map(GPS => [GPS.longitude, GPS.lattitude]),
@@ -126,7 +131,7 @@ export function LoaderMap(props: { width: string, height: string, radius: number
                 'source': "pointSource",
                 'type': 'circle',
                 'paint': {
-                    'circle-radius': 10,
+                    'circle-radius': 5,
                     'circle-color': ['get', 'color']
                 }
             })
@@ -154,16 +159,15 @@ export function LoaderMap(props: { width: string, height: string, radius: number
     //ComponentWasActivated
     React.useEffect(() => {
         if (loaded) {
-            console.log("edgeFrom" + (task.costGraph as Graph).edgesFromCenter.length)
-            console.log("edgeTo" + (task.costGraph as Graph).edgesToCenter.length)
-            console.log("edgeBetween" + (task.costGraph as Graph).edgesBetween.length)
             map.getSource("routSource").setData({
                 'type': 'FeatureCollection',
                 'features': [
                     ...(task.costGraph as Graph).edgesFromCenter.map((edge: Edge, index) => {
                         return {
                             type: "Feature",
-                            properties: {},
+                            properties: {
+                                'color': '#000077'
+                            },
                             geometry: {
                                 type: "LineString",
                                 coordinates: edge.rout.map(GPS => [GPS.longitude, GPS.lattitude]),
@@ -173,7 +177,9 @@ export function LoaderMap(props: { width: string, height: string, radius: number
                     ...(task.costGraph as Graph).edgesToCenter.map((edge: Edge, index) => {
                         return {
                             type: "Feature",
-                            properties: {},
+                            properties: {
+                                'color': '#000077'
+                            },
                             geometry: {
                                 type: "LineString",
                                 coordinates: edge.rout.map(GPS => [GPS.longitude, GPS.lattitude]),
@@ -183,7 +189,9 @@ export function LoaderMap(props: { width: string, height: string, radius: number
                     ...(task.costGraph as Graph).edgesBetween.flat().map((edge: Edge, index) => {
                         return {
                             type: "Feature",
-                            properties: {},
+                            properties: {
+                                'color': '#000077'
+                            },
                             geometry: {
                                 type: "LineString",
                                 coordinates: edge.rout.map(GPS => [GPS.longitude, GPS.lattitude]),

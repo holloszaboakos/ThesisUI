@@ -85,7 +85,7 @@ export function EditableMap(props: { width: string, height: string, radius: numb
                 'source': "pointSource",
                 'type': 'circle',
                 'paint': {
-                    'circle-radius': 10,
+                    'circle-radius': 5,
                     'circle-color': ['get', 'color']
                 }
             })

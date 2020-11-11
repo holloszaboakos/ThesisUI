@@ -15,7 +15,7 @@ import { SetDataLine } from "./sub/lines/SetDataLine"
 import { Graph } from "../../data/web/graph"
 import { GPS } from "../../data/web/gps"
 
-
+ 
 export function TaskWindow(props: { next: () => void }) {
 
     enum States {

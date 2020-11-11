@@ -12,7 +12,7 @@ export function ChooseWindow(props: { onEnded: () => void }) {
     React.useEffect(() => {
         DataCenter.listAlgorithms(setNames)
     }, [])
-    React.useEffect(() => {
+    React.useEffect(() => { 
         if (names.length !== 0)
             setChosenName(names[0])
         else

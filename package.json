@@ -20,7 +20,7 @@
     "react-mapbox-gl": "^5.0.0",
     "react-scripts": "^3.4.1",
     "ts-react-feather-icons": "^1.0.0",
-    "typescript": "^3.7.5"
+    "typescript": "^3.9.7"
   },
   "scripts": {
     "start": "react-scripts start",

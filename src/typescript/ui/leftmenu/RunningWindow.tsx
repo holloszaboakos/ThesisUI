@@ -7,8 +7,8 @@ import * as DataCenter from "../../data/dataCenter"
 
 export function RunningWindow(props: { previous: () => void }) {
 
-    const [progress, setProgress] = React.useState(DataCenter.getProgress)
-    const [result, setResult] = React.useState(DataCenter.getResult)
+    const [progress, setProgress] = React.useState(DataCenter.getProgress())
+    const [result, setResult] = React.useState(DataCenter.getResult())
 
     let interval
 
@@ -47,9 +47,9 @@ export function RunningWindow(props: { previous: () => void }) {
                 alignment="center"
                 gap={8}
             >
-                <DisplayDataLine label="Maximum cost (€)" value={result.maxCost_Euro.toString()} />
-                <DisplayDataLine label="Minimum cost (€)" value={result.minCost_Euro.toString()} />
-                <DisplayDataLine label="Best cost (€)" value={result.bestCost_Euro.toString()} />
+                <DisplayDataLine label="Maximum cost (€)" value={result.maxCost_Euro.toFixed(2).toString()} />
+                <DisplayDataLine label="Minimum cost (€)" value={result.minCost_Euro.toFixed(2).toString()} />
+                <DisplayDataLine label="Best cost (€)" value={result.bestCost_Euro.toFixed(2).toString()} />
                 <DisplayDataLine label="Iteration" value={progress.iteration.toString()} />
                 <DisplayDataLine label="Time (s)" value={progress.runtime_Second.toString()} />
             </Framer.Stack>

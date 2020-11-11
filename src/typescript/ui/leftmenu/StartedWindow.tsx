@@ -10,8 +10,8 @@ import * as DataCenter from "../../data/dataCenter"
 
 export function StartedWindow(props: { previous: () => void, next: () => void }) {
 
-    const [progress, setProgress] = React.useState(DataCenter.getProgress)
-    const [result, setResult] = React.useState(DataCenter.getResult)
+    const [progress, setProgress] = React.useState(DataCenter.getProgress())
+    const [result, setResult] = React.useState(DataCenter.getResult())
 
     React.useEffect(() => {
         DataCenter.addProgressChangeCallBack(setProgress)
@@ -43,20 +43,17 @@ export function StartedWindow(props: { previous: () => void, next: () => void })
                 alignment="center"
                 gap={8}
             >
-                <DisplayDataLine label="Maximum cost (€)" value={result.maxCost_Euro.toString()} />
-                <DisplayDataLine label="Minimum cost (€)" value={result.minCost_Euro.toString()} />
-                <DisplayDataLine label="Best cost (€)" value={result.bestCost_Euro.toString()} />
+                <DisplayDataLine label="Maximum cost (€)" value={result.maxCost_Euro.toFixed(2).toString()} />
+                <DisplayDataLine label="Minimum cost (€)" value={result.minCost_Euro.toFixed(2).toString()} />
+                <DisplayDataLine label="Best cost (€)" value={result.bestCost_Euro.toFixed(2).toString()} />
                 <LabelAndIconButtons
                     label="Iteration"
                     iconButtons={[
                         {
                             name: "skip-forward",
                             function: () => {
-                                let bestCost: number
-                                let bestRoot: GPS[][]
                                 WebInterface.step().then(progress => {
-                                    bestCost = progress.bestCost_Euro
-                                    bestRoot = progress.bestRout
+                                    DataCenter.updateResult(progress)
                                 })
                             }
                         },
@@ -69,7 +66,7 @@ export function StartedWindow(props: { previous: () => void, next: () => void })
                 <DisplayDataLine label="Iteration" value={progress.iteration.toString()} />
                 <DisplayDataLine label="Time (s)" value={progress.runtime_Second.toString()} />
             </Framer.Stack>
-            <ButtonLine label="run" functionality={props.next} />
+            <ButtonLine label="Run" functionality={props.next} />
             <ButtonLine label="Stop" functionality={props.previous} />
         </Framer.Stack>
     )

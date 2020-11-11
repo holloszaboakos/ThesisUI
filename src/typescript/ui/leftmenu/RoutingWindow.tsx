@@ -15,7 +15,9 @@ import { Salesman } from "../../data/web/salesman"
 
 export function RoutingWindow(props: { previous: () => void, next: () => void }) {
     const [task, setTask] = React.useState(DataCenter.getTask())
-    const [result, setResult] = React.useState(DataCenter.getResult)
+    const [result, setResult] = React.useState(DataCenter.getResult())
+    const [routingDone, setRoutingDone] = React.useState(false)
+    const [refresher, setRefresher] = React.useState(true)
 
     async function routing() {
         //graph to complete
@@ -59,77 +61,89 @@ export function RoutingWindow(props: { previous: () => void, next: () => void })
         let minCost_Euro = Infinity
         let maxCost_Euro = 0
         let maxLength_Meter = 0
-        let minLength_Meter = Infinity
+        let minLength_Meter = 0
 
         console.log("ROUTING")
         //routing
-        await objectives.forEach(async (from: Objective, indexFrom: number) => {
-            //rout from center to actual location
-            await WebInterface.getRootBetween(costGraph.center, from.location)
-                .then(edge => {
-                    edgesFromCenter.push(edge)
-                    DataCenter.updateTask(task)
-                })
-            //rout from actual location to center
-            await WebInterface.getRootBetween(from.location, costGraph.center)
-                .then(edge => {
-                    edgesToCenter.push(edge)
-                    DataCenter.updateTask(task)
+
+        function recursiveRoutingTo(from: Objective, indexFrom: number, indexTo: number) {
+            if (indexTo >= objectives.length) {
+
+                //add rout length from and to center to max length
+                maxLength_Meter += (
+                    edgesFromCenter[indexFrom].length_Meter
+                    + edgesToCenter[indexFrom].length_Meter
+                )
+                //search for salesman with minimal cost on maximal length
+                maxCost_Euro = Infinity
+                salesmen_Euro.forEach((item) => {
+                    let cost = maxLength_Meter * item.perMeter + item.const
+                    maxCost_Euro = cost < maxCost_Euro ? cost : maxCost_Euro
                 })
 
-            //add rout length from and to center to max length
-            maxLength_Meter += (
-                edgesFromCenter[indexFrom].length_Meter
-                + edgesToCenter[indexFrom].length_Meter
-            )
-            //search for salesman with minimal cost on maximal length
-            maxCost_Euro = Infinity
-            salesmen_Euro.forEach((item) => {
-                let cost = maxLength_Meter * item.perMeter + item.const
-                maxCost_Euro = cost < maxCost_Euro ? cost : maxCost_Euro
-            })
-            //rout from actual location to every other locations
-            edgesBetween.push([] as Edge[])
-            await objectives.forEach(async (to: Objective, indexTo: number) => {
-                if (from !== to) {
-                    await WebInterface.getRootBetween(from.location, to.location)
+                //search for shortest rout from actual location
+                let minEdge = Infinity
+                edgesBetween[indexFrom].forEach(edge => {
+                    minEdge = minEdge > edge.length_Meter ? edge.length_Meter : minEdge
+                })
+                
+                //add shortest rout to minimal length sum
+                minLength_Meter += minEdge
+                //search for salesman with minimal cost on minimal length
+                minCost_Euro = Infinity
+                salesmen_Euro.forEach((item) => {
+                    let cost = minLength_Meter * item.perMeter + item.const
+                    minCost_Euro = cost < minCost_Euro ? cost : minCost_Euro
+                })
+                //save maximal and minimal cost
+                result.maxCost_Euro = maxCost_Euro
+                result.minCost_Euro = minCost_Euro
+                DataCenter.updateResult(result)
+                setRefresher(false)
+                recursiveRoutingFrom(indexFrom + 1)
+            }
+            else {
+                let to = objectives[indexTo]
+                if (from != to) {
+                    WebInterface.getRootBetween(from.location, to.location)
                         .then(edge => {
                             edgesBetween[indexFrom].push(edge)
                             DataCenter.updateTask(task)
+                            recursiveRoutingTo(from, indexFrom, indexTo + 1)
                         })
                 }
-            })
-            //search for shortest rout from actual location
-            let minEdge = Infinity
-            edgesBetween[indexFrom].forEach(edge => {
-                minEdge = minEdge > edge.length_Meter ? edge.length_Meter : minEdge
-            })
-            //add shortest rout to minimal length sum
-            minLength_Meter += minEdge
-            //search for salesman with minimal cost on minimal length
-            minCost_Euro = Infinity
-            salesmen_Euro.forEach((item) => {
-                let cost = minLength_Meter * item.perMeter + item.const
-                minCost_Euro = cost < minCost_Euro ? cost : minCost_Euro
-            })
-            //save maximal and minimal cost
-            result.maxCost_Euro = maxCost_Euro
-            result.minCost_Euro = minCost_Euro
-            DataCenter.updateResult(result)
-        })
-    }
+                else{
+                    recursiveRoutingTo(from, indexFrom, indexTo + 1)
+                }
+            }
+        }
 
-    async function checkIfRoutingIsDone(): Promise<boolean> {
-        let costGraph = task.costGraph as Graph
-        let objectives = costGraph.objectives
-        //cache edges for easy access
-        let edgesBetween: Edge[][] = costGraph.edgesBetween as Edge[][]
-        let edgesFromCenter: Edge[] = costGraph.edgesFromCenter as Edge[]
-        let edgesToCenter: Edge[] = costGraph.edgesToCenter as Edge[]
-        return objectives.length == edgesFromCenter.length
-            && objectives.length == edgesToCenter.length
-            && objectives.length == edgesBetween.length
-            && edgesBetween.every(edges => edges.length == objectives.length)
+        function recursiveRoutingFrom(indexFrom: number) {
+            if (indexFrom < objectives.length) {
+                let from = objectives[indexFrom]
+
+                WebInterface.getRootBetween(costGraph.center, from.location)
+                    .then(edge => {
+                        edgesFromCenter.push(edge)
+                        DataCenter.updateTask(task)
+                        //rout from actual location to center
+                        WebInterface.getRootBetween(from.location, costGraph.center)
+                            .then(edge => {
+                                edgesToCenter.push(edge)
+                                DataCenter.updateTask(task)
+
+                                //rout from actual location to every other locations
+                                edgesBetween.push([] as Edge[])
+                                recursiveRoutingTo(from, indexFrom, 0)
+
+                            })
+                    })
+            }
+            else {
+                setRoutingDone(true)
+            }
+        }
+        recursiveRoutingFrom(0)
     }
 
     //TODO rooting
@@ -146,6 +160,10 @@ export function RoutingWindow(props: { previous: () => void, next: () => void })
             DataCenter.removeTaskChangeCallBack(setTask)
         }
     }, [])
+
+    React.useEffect(() => {
+        !refresher && setRefresher(!refresher)
+    }, [refresher])
 
     return (
         <Framer.Stack
@@ -165,10 +183,12 @@ export function RoutingWindow(props: { previous: () => void, next: () => void })
                 alignment="center"
                 gap={8}
             >
-                <DisplayDataLine label="Maximum cost (€)" value={result.maxCost_Euro.toString()} />
-                <DisplayDataLine label="Minimum cost (€)" value={result.minCost_Euro.toString()} />
+                {refresher && (<>
+                    <DisplayDataLine label="Maximum cost (€)" value={result.maxCost_Euro.toFixed(2).toString()} />
+                    <DisplayDataLine label="Minimum cost (€)" value={result.minCost_Euro.toFixed(2).toString()} />
+                </>)}
             </Framer.Stack>
-            { checkIfRoutingIsDone() &&
+            {routingDone &&
                 <ButtonLine label="Next" functionality={props.next} />
             }
             <ButtonLine label="Clean" functionality={props.previous} />

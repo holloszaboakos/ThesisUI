@@ -20,7 +20,7 @@ export function SetupWindow(props: { previous: () => void, next: () => void }) {
 
     const [state, setState] = React.useState(States.main)
     const [setting, setSetting] = React.useState(DataCenter.getSetting())
-    const [result, setResult] = React.useState(DataCenter.getResult)
+    const [result, setResult] = React.useState(DataCenter.getResult())
 
     //TODO rooting
     //onAttach
@@ -85,8 +85,8 @@ export function SetupWindow(props: { previous: () => void, next: () => void }) {
                         },
                     ]}
                 />
-                <DisplayDataLine label="Maximum cost (€)" value={result.maxCost_Euro.toString()} />
-                <DisplayDataLine label="Minimum cost (€)" value={result.minCost_Euro.toString()} />
+                <DisplayDataLine label="Maximum cost (€)" value={result.maxCost_Euro.toFixed(2).toString()} />
+                <DisplayDataLine label="Minimum cost (€)" value={result.minCost_Euro.toFixed(2).toString()} />
                 <ButtonLine label="Algorithm" functionality={() => {
                     setState(States.algorithmChooser)
                 }} />
