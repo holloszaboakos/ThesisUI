@@ -1,19 +1,33 @@
+
 /**
  * 
  * @export
- * @interface GPS
+ * @interface Gps
  */
-export interface GPS {
+export interface Gps {
+    /**
+     * 
+     * @type {string}
+     * @memberof Gps
+     */
+    id: string;
     /**
      * 
      * @type {number}
-     * @memberof GPS
+     * @memberof Gps
+     */
+    orderInOwner: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof Gps
      */
     lattitude: number;
     /**
      * 
      * @type {number}
-     * @memberof GPS
+     * @memberof Gps
      */
     longitude: number;
 }
+

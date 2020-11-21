@@ -4,8 +4,6 @@ import { ButtonLine } from "./sub/lines/ButtonLine"
 import { DisplayDataLine } from "./sub/lines/DisplayDataLine"
 import { LabelAndIconButtons } from "./sub/lines/LabelAndIconButtons"
 import * as WebInterface from "../../web/webinterface"
-import { GPS } from "../../data/web/gps"
-import { Progress } from "../../data/web/progress"
 import * as DataCenter from "../../data/dataCenter"
 
 export function StartedWindow(props: { previous: () => void, next: () => void }) {

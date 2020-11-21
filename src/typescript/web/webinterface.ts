@@ -1,6 +1,6 @@
 import { gzipSync } from "zlib"
 import { Edge } from "../data/web/edge"
-import { GPS } from "../data/web/gps"
+import { Gps } from "../data/web/gps"
 import * as Api from "./api"
 import { Configuration } from "./configuration"
 let basePath = "http://192.168.1.69:1234/".replace(/\/+$/, "")
@@ -44,7 +44,7 @@ export let listAlgorithms = setupApi.listAlgorithms
 
 export let getProgress = updateApi.getProgress
 export let getResult = updateApi.getResult
-export let getRootBetween = async function getRootBetween(from: GPS, to: GPS): Promise<Edge> {
+export let getRootBetween = async function getRootBetween(from: Gps, to: Gps): Promise<Edge> {
     return await updateApi
         .getRoutBetween(from.lattitude, from.longitude, to.lattitude, to.longitude)
         .then(response => { return response })

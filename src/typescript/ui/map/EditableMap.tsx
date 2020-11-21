@@ -4,7 +4,7 @@ import * as mapboxgl from "mapbox-gl"
 import * as DataCenter from "../../data/dataCenter"
 import { Graph } from "../../data/web/graph"
 import { Objective } from "../../data/web/objective"
-import { GPS } from "../../data/web/gps"
+import { Gps } from "../../data/web/gps"
 
 let mapContainer: HTMLDivElement | null
 let map
@@ -14,7 +14,7 @@ export function EditableMap(props: { width: string, height: string, radius: numb
     const [loaded, setLoaded] = React.useState(false)
     const [task, setTask] = React.useState(DataCenter.getTask())
     const [mapView, setMapView] = React.useState(DataCenter.getMapView())
-    const [pos, setPos] = React.useState({ longitude: 0, lattitude: 0 } as GPS)
+    const [pos, setPos] = React.useState({ longitude: 0, lattitude: 0 } as Gps)
 
     function getCostGraph(): Graph {
         return task.costGraph
@@ -44,11 +44,11 @@ export function EditableMap(props: { width: string, height: string, radius: numb
         })
 
         map.on('click', function (e) {
-            DataCenter.updatePos({ longitude: e.lngLat.lng, lattitude: e.lngLat.lat })
+            DataCenter.updatePos({ id: "", orderInOwner: 0, longitude: e.lngLat.lng, lattitude: e.lngLat.lat })
         });
 
         map.on('load', function () {
-            let center = getCostGraph().center as GPS
+            let center = getCostGraph().center as Gps
             let objectives = getCostGraph().objectives as Objective[]
             map.addSource('pointSource', {
                 'type': 'geojson',
@@ -110,7 +110,7 @@ export function EditableMap(props: { width: string, height: string, radius: numb
 
     React.useEffect(() => {
         if (loaded) {
-            let center = getCostGraph().center as GPS
+            let center = getCostGraph().center as Gps
             let objectives = getCostGraph().objectives as Objective[]
             map.getSource("pointSource").setData({
                 'type': 'FeatureCollection',

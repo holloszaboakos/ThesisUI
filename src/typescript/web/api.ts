@@ -21,7 +21,7 @@ import { Objective } from "../data/web/objective";
 import { Salesman } from "../data/web/salesman";
 import { Setting } from "../data/web/setting";
 import { Task } from "../data/web/task";
-import { GPS } from "../data/web/gps";
+import { Gps } from "../data/web/gps";
 import { Progress } from "../data/web/progress";
 import { Edge } from "../data/web/edge";
 

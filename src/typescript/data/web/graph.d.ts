@@ -21,10 +21,10 @@ export interface Graph {
     name: string;
     /**
      * 
-     * @type {GPS}
+     * @type {Gps}
      * @memberof Graph
      */
-    center: GPS;
+    center: Gps;
     /**
      * 
      * @type {Array<Objective>}
@@ -33,20 +33,20 @@ export interface Graph {
     objectives: Array<Objective>;
     /**
      * 
-     * @type {Array<Array<Edge>>}
+     * @type {EdgeMatrix}
      * @memberof Graph
      */
-    edgesBetween: Array<Array<Edge>>;
+    edgesBetween: EdgeMatrix;
     /**
      * 
-     * @type {Array<Array<Edge>>}
+     * @type {EdgeArray}
      * @memberof Graph
      */
-    edgesFromCenter: Array<Edge>;
+    edgesFromCenter: EdgeArray;
     /**
      * 
-     * @type {Array<Array<Edge>>}
+     * @type {EdgeArray}
      * @memberof Graph
      */
-    edgesToCenter: Array<Edge>;
+    edgesToCenter: EdgeArray;
 }

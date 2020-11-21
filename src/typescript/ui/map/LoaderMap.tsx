@@ -5,7 +5,7 @@ import * as DataCenter from "../../data/dataCenter"
 import { Graph } from "../../data/web/graph"
 import { Edge } from "../../data/web/edge"
 import { RoutingWindow } from "../leftmenu/RoutingWindow"
-import { GPS } from "../../data/web/gps"
+import { Gps } from "../../data/web/gps"
 import { Objective } from "../../data/web/objective"
 
 let mapContainer: HTMLDivElement | null
@@ -41,7 +41,7 @@ export function LoaderMap(props: { width: string, height: string, radius: number
         })
 
         map.on("load", function () {
-            let center = task.costGraph.center as GPS
+            let center = task.costGraph.center as Gps
             let objectives = task.costGraph.objectives as Objective[]
             map.addSource("routSource", {
                 type: "geojson",

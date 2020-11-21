@@ -1,7 +1,7 @@
 import * as React from "react"
 import * as Framer from "framer"
 import * as DataCenter from "../../data/dataCenter"
-import { GPS } from "../../data/web/gps";
+import { Gps } from "../../data/web/gps";
 import { Feature } from "react-mapbox-gl";
 
 export function BasicMap(props: { width: string, height: string, radius: number, margin: number }) {
@@ -12,7 +12,7 @@ export function BasicMap(props: { width: string, height: string, radius: number,
         accessToken: DataCenter.publicKey
     });
 
-    const [position, setPosition] = React.useState({ longitude: 0, lattitude: 0 } as GPS)
+    const [position, setPosition] = React.useState({ longitude: 0, lattitude: 0 } as Gps)
 
     return (
         <Framer.Frame
@@ -36,7 +36,7 @@ export function BasicMap(props: { width: string, height: string, radius: number,
                         height: "70%"
                     }}
                     onClick={(map, evt) => {
-                        setPosition({ longitude: evt.lngLat.lng, lattitude: evt.lngLat.lat });
+                        setPosition({ id: "", orderInOwner: 0, longitude: evt.lngLat.lng, lattitude: evt.lngLat.lat });
                     }}
                 >
                     <Layer

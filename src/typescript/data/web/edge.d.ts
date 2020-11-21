@@ -1,4 +1,5 @@
 import { GPS } from "./gps"
+
 /**
  * 
  * @export
@@ -17,6 +18,12 @@ export interface Edge {
      * @memberof Edge
      */
     name: string;
+    /** 
+     * 
+     * @type {number}
+     * @memberof Edge
+     */
+    orderInOwner: number;
     /**
      * 
      * @type {number}
@@ -25,8 +32,8 @@ export interface Edge {
     length_Meter: number;
     /**
      * 
-     * @type {Array<GPS>}
+     * @type {Array<Gps>}
      * @memberof Edge
      */
-    rout: Array<GPS>;
+    rout: Array<Gps>;
 }

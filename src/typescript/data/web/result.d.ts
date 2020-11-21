@@ -1,4 +1,4 @@
-import { GPS } from "./gps"
+import { GpsMatrix } from "./gpsMatrix"
 
 /**
  * 
@@ -20,10 +20,10 @@ export interface Result {
     name: string;
     /**
      * 
-     * @type {Array<Array<GPS>>}
+     * @type {GpsMatrix}
      * @memberof Result
      */
-    bestRout: Array<Array<GPS>>;
+    bestRout: GpsMatrix;
     /**
      * 
      * @type {number}

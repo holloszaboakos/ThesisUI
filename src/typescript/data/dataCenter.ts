@@ -6,8 +6,9 @@ import { Result } from "./web/result"
 import { Progress } from "./web/progress"
 import { Edge } from "./web/edge"
 import { Setting } from "./web/setting"
-import { GPS } from "./web/gps"
+import { Gps } from "./web/gps"
 import { MapView } from "./map/mapview"
+import { EdgeArray } from "./web/edgeArray"
 
 
 //TASK CONTAINER
@@ -192,7 +193,10 @@ let result: Result = {
     id: "",
     name: "",
     bestCost_Euro: 0,
-    bestRout: [] as GPS[][],
+    bestRout: {
+        id: "",
+        edgesArrays: [] as EdgeArray[]
+    },
     maxCost_Euro: 0,
     minCost_Euro: 0,
 }
@@ -277,22 +281,24 @@ export function getMapView(): MapView {
     return { ...mapview }
 }
 
-let pos: GPS = {
+let pos: Gps = {
+    id: "",
+    orderInOwner: 0,
     lattitude: 0,
     longitude: 0
 }
-let posChangedCallBacks = [] as ((data: GPS) => void)[]
-export function addPosChangeCallBack(callBack: ((data: GPS) => void)) {
+let posChangedCallBacks = [] as ((data: Gps) => void)[]
+export function addPosChangeCallBack(callBack: ((data: Gps) => void)) {
     posChangedCallBacks.push(callBack)
 }
-export function removePosChangeCallBack(callBack: ((data: GPS) => void)) {
+export function removePosChangeCallBack(callBack: ((data: Gps) => void)) {
     posChangedCallBacks = posChangedCallBacks.filter((it) => { return it !== callBack })
 }
-export function updatePos(data: GPS) {
+export function updatePos(data: Gps) {
     pos = data
     posChangedCallBacks.forEach(it => it({ ...data }))
 }
-export function getPos(): GPS {
+export function getPos(): Gps {
     return { ...pos }
 }
 

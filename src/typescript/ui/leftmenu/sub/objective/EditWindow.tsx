@@ -4,7 +4,7 @@ import { ButtonLine } from "../lines/ButtonLine"
 import * as DataCenter from "../../../../data/dataCenter"
 import { SetDataLine } from "../lines/SetDataLine"
 import { Objective } from "../../../../data/web/objective"
-import { GPS } from "../../../../data/web/gps"
+import { Gps } from "../../../../data/web/gps"
 
 export function EditWindow(props: { name: string, setObjectiveName: (text) => void, onEnded: () => void }) {
     const [objective, setObjective] = React.useState(
@@ -20,7 +20,7 @@ export function EditWindow(props: { name: string, setObjectiveName: (text) => vo
             : DataCenter.getObjectiveByName(props.name)
     )
     const [refresher, setRefresher] = React.useState(true)
-    function setPos(pos: GPS) {
+    function setPos(pos: Gps) {
         objective.location = pos
         setObjective(objective)
         setRefresher(!refresher)

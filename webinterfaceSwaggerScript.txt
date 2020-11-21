@@ -511,11 +511,7 @@ definitions:
       name:
         type: "string"
       bestRout:
-        type: "array"
-        items:
-          type: "array"
-          items:
-            $ref: "#/definitions/GPS"
+        $ref: "#/definitions/GpsMatrix"
       maxCost_Euro:
         type: "number"
       minCost_Euro:
@@ -559,7 +555,7 @@ definitions:
       name:
         type: "string"
       center:
-          $ref: "#/definitions/GPS"
+          $ref: "#/definitions/Gps"
       salesmen:
         type: "array"
         items:
@@ -580,21 +576,26 @@ definitions:
         type: "string"
       name:
         type: "string"
+      center:
+        $ref: "#/definitions/Gps"
       objectives:
         type: "array"
         items:
           $ref: "#/definitions/Objective"
-      edges:
-        type: "array"
-        items:
-          type: "array"
-          items:
-            $ref: "#/definitions/Edge"
+      edgesBetween:
+        $ref: "#/definitions/EdgeMatrix"
+      edgesFromCenter:
+        $ref: "#/definitions/EdgeArray"
+      edgesToCenter:
+        $ref: "#/definitions/EdgeArray"
     required: 
       - id
       - name
+      - center
       - objectives
-      - edges
+      - edgesBetween
+      - edgesFromCenter
+      - edgesToCenter
       
   Edge:
     type: "object"
@@ -603,17 +604,52 @@ definitions:
         type: "string"
       name:
         type: "string"
+      orderInOwner:
+        type: "integer"
       length_Meter:
         type: "number"
       rout:
         type: "array"
         items:
-          $ref: "#/definitions/GPS"
+          $ref: "#/definitions/Gps"
     required: 
       - id
+      - orderInOwner
       - name
       - length_Meter
       - rout
+      
+  EdgeArray:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      orderInOwner:
+        type: "integer"
+      edges:
+        type: "array"
+        items:
+          $ref: "#/definitions/Edge"
+    required: 
+      - id
+      - orderInOwner
+      - edges
+      
+  EdgeMatrix:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      orderInOwner:
+        type: "integer"
+      edgesArrays:
+        type: "array"
+        items:
+          $ref: "#/definitions/EdgeArray"
+    required: 
+      - id
+      - orderInOwner
+      - edgesArrays
   
   Objective:
     type: "object"
@@ -622,8 +658,10 @@ definitions:
         type: "string"
       name:
         type: "string"
+      orderInOwner:
+        type: "integer"
       location:
-          $ref: "#/definitions/GPS"
+          $ref: "#/definitions/Gps"
       time_Second:
         type: "number"
       volume_Stere:
@@ -633,21 +671,57 @@ definitions:
     required: 
       - id
       - name
+      - orderInOwner
       - location
       - time_Second
       - volume_Stere
       - weight_Gramm
         
-  GPS:
+  Gps:
     type: "object"
     properties:
+      id:
+        type: "string"
+      orderInOwner:
+        type: "integer"
       lattitude: 
         type: "number"
       longitude: 
         type: "number"
     required: 
+      - id
+      - orderInOwner
       - lattitude
       - longitude
+        
+  GpsArray:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      orderInOwner:
+        type: "integer"
+      gps:
+        type: "array"
+        items:
+          $ref: "#/definitions/Gps"
+    required: 
+      - id
+      - orderInOwner
+      - gps
+        
+  GpsMatrix:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      edgesArrays:
+        type: "array"
+        items:
+          $ref: "#/definitions/GpsArray"
+    required: 
+      - id
+      - edgesArrays
   
   Salesman:
     type: "object"
@@ -656,6 +730,8 @@ definitions:
         type: "string"
       name:
         type: "string"
+      orderInOwner:
+        type: "integer"
       workTime_SecondPerDay:
         type: "number"
       volumeCapacity_Stere:
@@ -675,6 +751,7 @@ definitions:
     required: 
       - id
       - name
+      - orderInOwner
       - workTime_SecondPerDay
       - volumeCapacity_Stere
       - weightCapacity_Gramm

@@ -2,10 +2,11 @@ import * as React from "react"
 import * as Framer from "framer"
 import * as mapboxgl from "mapbox-gl"
 import * as DataCenter from "../../data/dataCenter"
-import { GPS } from "../../data/web/gps"
+import { Gps } from "../../data/web/gps"
 import { Objective } from "../../data/web/objective"
 import { Graph } from "../../data/web/graph"
 import { Edge } from "../../data/web/edge"
+import { GpsArray } from "../../data/web/gpsArrray"
 
 let mapContainer: HTMLDivElement | null
 let map
@@ -32,7 +33,7 @@ export function HighlighterMap(props: { width: string, height: string, radius: n
             width: props.width,
             center: [mapView.location.longitude, mapView.location.lattitude],
             zoom: mapView.zoom,
-            interactive:false,
+            interactive: false,
         })
 
         map.on("move", () => {
@@ -44,7 +45,7 @@ export function HighlighterMap(props: { width: string, height: string, radius: n
         })
 
         map.on("load", function () {
-            let center = task.costGraph.center as GPS
+            let center = task.costGraph.center as Gps
             let objectives = task.costGraph.objectives as Objective[]
             map.addSource("routSource", {
                 type: "geojson",
@@ -149,15 +150,15 @@ export function HighlighterMap(props: { width: string, height: string, radius: n
             let fromCenterIndexes = [] as number[]
             let toCenterIndexes = [] as number[]
             let betweenObjectivesIndexes = [] as { from: number, to: number }[]
-            result.bestRout.forEach((rout: GPS[]) => {
+            result.bestRout.edgesArrays.forEach((rout: GpsArray) => {
 
                 let first = objectives.find(objective => objective.location == rout[0])
                 first && fromCenterIndexes.push(objectives.indexOf(first))
 
-                let last = objectives.find(objective => objective.location == rout[rout.length - 1])
+                let last = objectives.find(objective => objective.location == rout[rout.gps.length - 1])
                 last && toCenterIndexes.push(objectives.indexOf(last))
 
-                rout.forEach((stopFrom: GPS, indexFrom: number, rout: GPS[]) => {
+                rout.gps.forEach((stopFrom: Gps, indexFrom: number, rout: Gps[]) => {
                     if (indexFrom != rout.length - 1) {
                         let stopTo = rout[indexFrom + 1]
                         let objectiveFrom = objectives.find(objective => objective.location == stopFrom)
@@ -195,7 +196,7 @@ export function HighlighterMap(props: { width: string, height: string, radius: n
                         }
                     }),
                     ...(task.costGraph as Graph).edgesBetween.flat().map((edge: Edge, index) => {
-                        let edgeGroup = (task.costGraph as Graph).edgesBetween.find((edgeGroup:Edge[])=>edgeGroup.includes(edge))
+                        let edgeGroup = (task.costGraph as Graph).edgesBetween.find((edgeGroup: Edge[]) => edgeGroup.includes(edge))
                         let groupIndex = edgeGroup && (task.costGraph as Graph).edgesBetween.indexOf(edgeGroup)
                         let edgeIndex = edgeGroup && edgeGroup.indexOf(edge)
 

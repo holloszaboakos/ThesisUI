@@ -13,9 +13,9 @@ import { SaveWindow as TaskSaveWindow } from "./sub/task/SaveWindow"
 import * as DataCenter from "../../data/dataCenter"
 import { SetDataLine } from "./sub/lines/SetDataLine"
 import { Graph } from "../../data/web/graph"
-import { GPS } from "../../data/web/gps"
+import { Gps } from "../../data/web/gps"
 
- 
+
 export function TaskWindow(props: { next: () => void }) {
 
     enum States {
@@ -40,7 +40,7 @@ export function TaskWindow(props: { next: () => void }) {
     const [objectiveName, setObjectiveName] = React.useState("")
     const [state, setState] = React.useState(States.main)
     const [refresher, setRefresher] = React.useState(true)
-    const [pos, setPos] = React.useState({ longitude: 0, lattitude: 0 } as GPS)
+    const [pos, setPos] = React.useState({ longitude: 0, lattitude: 0 } as Gps)
 
     React.useEffect(() => {
         DataCenter.addTaskChangeCallBack(setTask)
@@ -139,14 +139,14 @@ export function TaskWindow(props: { next: () => void }) {
                             <SetDataLine
                                 label="Center longitude"
                                 placefolder="longitude"
-                                startText={((task.costGraph as Graph).center as GPS).longitude.toString()}
+                                startText={((task.costGraph as Graph).center as Gps).longitude.toString()}
                                 validate={(text) => !isNaN(Number(text))}
                                 sendValue={(text) => { task.costGraph.center.longitude = Number(text) }}
                             />
                             <SetDataLine
                                 label="Center lattitude"
                                 placefolder="lattitude"
-                                startText={((task.costGraph as Graph).center as GPS).lattitude.toString()}
+                                startText={((task.costGraph as Graph).center as Gps).lattitude.toString()}
                                 validate={(text) => !isNaN(Number(text))}
                                 sendValue={(text) => { task.costGraph.center.lattitude = Number(text) }}
                             />
