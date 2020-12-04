@@ -163,7 +163,7 @@ export function LoaderMap(props: { width: string, height: string, radius: number
                 'type': 'FeatureCollection',
                 'features': [
                     ...(task.costGraph as Graph).edgesFromCenter.map((edge: Edge, index) => {
-                        return {
+                        return edge.rout && {
                             type: "Feature",
                             properties: {
                                 'color': '#000077'
@@ -173,9 +173,9 @@ export function LoaderMap(props: { width: string, height: string, radius: number
                                 coordinates: edge.rout.map(GPS => [GPS.longitude, GPS.lattitude]),
                             }
                         }
-                    }),
+                    }).filter((it)=>it),
                     ...(task.costGraph as Graph).edgesToCenter.map((edge: Edge, index) => {
-                        return {
+                        return edge.rout && {
                             type: "Feature",
                             properties: {
                                 'color': '#000077'
@@ -185,9 +185,9 @@ export function LoaderMap(props: { width: string, height: string, radius: number
                                 coordinates: edge.rout.map(GPS => [GPS.longitude, GPS.lattitude]),
                             }
                         }
-                    }),
+                    }).filter((it)=>it),
                     ...(task.costGraph as Graph).edgesBetween.flat().map((edge: Edge, index) => {
-                        return {
+                        return edge.rout && {
                             type: "Feature",
                             properties: {
                                 'color': '#000077'
@@ -197,7 +197,7 @@ export function LoaderMap(props: { width: string, height: string, radius: number
                                 coordinates: edge.rout.map(GPS => [GPS.longitude, GPS.lattitude]),
                             }
                         }
-                    }),
+                    }).filter((it)=>it),
                 ]
             })
             setMapView(mapView)
