@@ -14,6 +14,7 @@ import * as DataCenter from "../../data/dataCenter"
 import { SetDataLine } from "./sub/lines/SetDataLine"
 import { Graph } from "../../data/web/graph"
 import { Gps } from "../../data/web/gps"
+import { DisplayDataLine } from "./sub/lines/DisplayDataLine"
 
 
 export function TaskWindow(props: { next: () => void }) {
@@ -36,6 +37,7 @@ export function TaskWindow(props: { next: () => void }) {
         progressSave,
     }
     const [task, setTask] = React.useState(DataCenter.getTask)
+    const [mapView, setMapView] = React.useState(DataCenter.getMapView)
     const [salesmanName, setSalesmanName] = React.useState("")
     const [objectiveName, setObjectiveName] = React.useState("")
     const [state, setState] = React.useState(States.main)
@@ -45,12 +47,14 @@ export function TaskWindow(props: { next: () => void }) {
     React.useEffect(() => {
         DataCenter.addTaskChangeCallBack(setTask)
         DataCenter.addPosChangeCallBack(setPos)
+        DataCenter.addMapViewChangeCallBack(setMapView)
     }, [])
 
     React.useEffect(() => {
         return () => {
             DataCenter.removeTaskChangeCallBack(setTask)
             DataCenter.removePosChangeCallBack(setPos)
+            DataCenter.removeMapViewChangeCallBack(setMapView)
         }
     }, [])
 
@@ -63,7 +67,7 @@ export function TaskWindow(props: { next: () => void }) {
 
     React.useEffect(() => {
         setRefresher(!refresher)
-    }, [task])
+    }, [task, mapView])
 
     React.useEffect(() => {
         !refresher && setRefresher(!refresher)
@@ -150,6 +154,10 @@ export function TaskWindow(props: { next: () => void }) {
                                 validate={(text) => !isNaN(Number(text))}
                                 sendValue={(text) => { task.costGraph.center.lattitude = Number(text) }}
                             />
+                            <DisplayDataLine label="longitude" value={mapView.location.longitude.toFixed(4).toString()} />
+                            <DisplayDataLine label="lattitude" value={mapView.location.lattitude.toFixed(4).toString()} />
+                            <DisplayDataLine label="zoom" value={mapView.zoom.toFixed(4).toString()} />
+
                         </>)}
                     </Framer.Stack>
                     <ButtonLine label="Set Task" functionality={props.next} />

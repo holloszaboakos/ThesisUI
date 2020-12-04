@@ -20,10 +20,10 @@ export interface Result {
     name: string;
     /**
      * 
-     * @type {GpsMatrix}
+     * @type {Array<GpsArray>}
      * @memberof Result
      */
-    bestRout: GpsMatrix;
+    bestRout: Array<GpsArray>;
     /**
      * 
      * @type {number}

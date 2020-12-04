@@ -1,3 +1,4 @@
+
 /**
  * 
  * @export
@@ -35,3 +36,4 @@ export interface Setting {
      */
     algorithm: string;
 }
+

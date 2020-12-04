@@ -44,7 +44,7 @@ export default function App() {
     >
       <Framer.Frame
         height="100%"
-        width="0.2fr"
+        width="3fr"
         background="#999999"
         radius={32}
       >
@@ -56,8 +56,7 @@ export default function App() {
                   let task = DataCenter.getTask()
                   task.id = id
                   DataCenter.updateTask(task)
-                  WebInterface.prepare()
-                    .then(response => setState(States.routing))
+                  setState(States.routing)
                 })
             }
           />
@@ -67,13 +66,21 @@ export default function App() {
               WebInterface.clean().then(response => setState(States.task))
             }
             next={() =>
-              WebInterface.start().then(response => setState(States.setting))
+              WebInterface.defineTask(DataCenter.getTask())
+                .then(id => {
+                  let task = DataCenter.getTask()
+                  task.id = id
+                  DataCenter.updateTask(task)
+                  WebInterface.prepare().then(
+                    response => setState(States.setting)
+                  )
+                })
             }
           />
         ) : (state === States.setting) ? (
           <SetupWindow
             previous={() =>
-              WebInterface.clean().then(response => setState(States.routing))
+              WebInterface.clean().then(response => setState(States.task))
             }
             next={() =>
               WebInterface.start().then(response => setState(States.started))
@@ -99,7 +106,7 @@ export default function App() {
       </Framer.Frame>
       <Framer.Frame
         height="100%"
-        width="0.8fr"
+        width="8fr"
         radius={32}
         padding={16}
         background="#999999"

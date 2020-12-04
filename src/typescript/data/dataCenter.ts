@@ -9,6 +9,7 @@ import { Setting } from "./web/setting"
 import { Gps } from "./web/gps"
 import { MapView } from "./map/mapview"
 import { EdgeArray } from "./web/edgeArray"
+import { GpsArray } from "./web/gpsArrray"
 
 
 //TASK CONTAINER
@@ -81,7 +82,7 @@ let task: Task = {
             lattitude: 0,
             longitude: 0
         },
-        edgesBetween: [] as Edge[][],
+        edgesBetween: [] as EdgeArray[],
         edgesFromCenter: [] as Edge[],
         edgesToCenter: [] as Edge[]
     },
@@ -192,13 +193,10 @@ export function getSetting(): Setting {
 let result: Result = {
     id: "",
     name: "",
-    bestCost_Euro: 0,
-    bestRout: {
-        id: "",
-        edgesArrays: [] as EdgeArray[]
-    },
+    bestRout: [] as GpsArray[],
     maxCost_Euro: 0,
     minCost_Euro: 0,
+    bestCost_Euro: 0,
 }
 let resultChangedCallBacks = [] as ((data: Result) => void)[]
 export function addResultChangeCallBack(callBack: ((data: Result) => void)) {
@@ -261,10 +259,10 @@ export function listAlgorithms(setNames: (names: string[]) => void) {
 //MAPVIEW
 let mapview: MapView = {
     location: {
-        lattitude: 0,
-        longitude: 0
+        lattitude: 47.15,
+        longitude: 19.43
     },
-    zoom: 1
+    zoom: 7.1
 }
 let mapviewChangedCallBacks = [] as ((data: MapView) => void)[]
 export function addMapViewChangeCallBack(callBack: ((data: MapView) => void)) {

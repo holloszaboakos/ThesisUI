@@ -150,15 +150,15 @@ export function HighlighterMap(props: { width: string, height: string, radius: n
             let fromCenterIndexes = [] as number[]
             let toCenterIndexes = [] as number[]
             let betweenObjectivesIndexes = [] as { from: number, to: number }[]
-            result.bestRout.edgesArrays.forEach((rout: GpsArray) => {
+            result.bestRout.forEach((rout: GpsArray) => {
 
-                let first = objectives.find(objective => objective.location == rout[0])
+                let first = objectives.find(objective => objective.location == rout.values[0])
                 first && fromCenterIndexes.push(objectives.indexOf(first))
 
-                let last = objectives.find(objective => objective.location == rout[rout.gps.length - 1])
+                let last = objectives.find(objective => objective.location == rout.values[rout.values.length - 1])
                 last && toCenterIndexes.push(objectives.indexOf(last))
 
-                rout.gps.forEach((stopFrom: Gps, indexFrom: number, rout: Gps[]) => {
+                rout.values.forEach((stopFrom: Gps, indexFrom: number, rout: Gps[]) => {
                     if (indexFrom != rout.length - 1) {
                         let stopTo = rout[indexFrom + 1]
                         let objectiveFrom = objectives.find(objective => objective.location == stopFrom)

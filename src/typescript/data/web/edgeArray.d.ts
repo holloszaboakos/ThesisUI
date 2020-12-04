@@ -1,4 +1,5 @@
 import Edge from "./edge"
+
 /**
  * 
  * @export
@@ -22,6 +23,6 @@ export interface EdgeArray {
      * @type {Array<Edge>}
      * @memberof EdgeArray
      */
-    edges: Array<Edge>;
+    values: Array<Edge>;
 }
 

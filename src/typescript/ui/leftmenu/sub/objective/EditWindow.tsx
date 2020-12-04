@@ -11,6 +11,7 @@ export function EditWindow(props: { name: string, setObjectiveName: (text) => vo
         props.name == "" ?
             {
                 id: "",
+                orderInOwner: 0,
                 name: "",
                 location: { longitude: 0, lattitude: 0 },
                 time_Second: 0,
@@ -81,7 +82,7 @@ export function EditWindow(props: { name: string, setObjectiveName: (text) => vo
                     label="location longitude"
                     startText={objective.location.longitude.toString()}
                     placefolder="longitude"
-                    validate={(text) => !isNaN(Number(text))}
+                    validate={(text) => !isNaN(Number(text)) && Number(text) <= 180 && Number(text) >= -180}
                     sendValue={(text) => {
                         objective.location.longitude = Number(text)
                     }}
@@ -90,7 +91,7 @@ export function EditWindow(props: { name: string, setObjectiveName: (text) => vo
                     label="location lattitude"
                     startText={objective.location.lattitude.toString()}
                     placefolder="lattitude"
-                    validate={(text) => !isNaN(Number(text))}
+                    validate={(text) => !isNaN(Number(text)) && Number(text) <= 90 && Number(text) >= -90}
                     sendValue={(text) => {
                         objective.location.lattitude = Number(text)
                     }}
@@ -99,7 +100,7 @@ export function EditWindow(props: { name: string, setObjectiveName: (text) => vo
                     label="time (s)"
                     startText={objective.time_Second.toString()}
                     placefolder="time"
-                    validate={(text) => !isNaN(Number(text))}
+                    validate={(text) => !isNaN(Number(text)) && Number(text) < 1000000000 && Number(text) >= 0}
                     sendValue={(text) => {
                         objective.time_Second = Number(text)
                     }}
@@ -108,7 +109,7 @@ export function EditWindow(props: { name: string, setObjectiveName: (text) => vo
                     label="volume (m^3)"
                     startText={objective.volume_Stere.toString()}
                     placefolder="volume"
-                    validate={(text) => !isNaN(Number(text))}
+                    validate={(text) => !isNaN(Number(text)) && Number(text) < 1000000000 && Number(text) >= 0}
                     sendValue={(text) => {
                         objective.volume_Stere = Number(text)
                     }}
@@ -117,7 +118,7 @@ export function EditWindow(props: { name: string, setObjectiveName: (text) => vo
                     label="weight (g)"
                     startText={objective.weight_Gramm.toString()}
                     placefolder="weight"
-                    validate={(text) => !isNaN(Number(text))}
+                    validate={(text) => !isNaN(Number(text)) && Number(text) < 1000000000 && Number(text) >= 0}
                     sendValue={(text) => {
                         objective.weight_Gramm = Number(text)
                     }}

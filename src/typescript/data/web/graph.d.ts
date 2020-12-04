@@ -33,20 +33,20 @@ export interface Graph {
     objectives: Array<Objective>;
     /**
      * 
-     * @type {EdgeMatrix}
+     * @type {Array<EdgeArray>}
      * @memberof Graph
      */
-    edgesBetween: EdgeMatrix;
+    edgesBetween: Array<EdgeArray>;
     /**
      * 
-     * @type {EdgeArray}
+     * @type {Array<Edge>}
      * @memberof Graph
      */
-    edgesFromCenter: EdgeArray;
+    edgesFromCenter: Array<Edge>;
     /**
      * 
-     * @type {EdgeArray}
+     * @type {Array<Edge>}
      * @memberof Graph
      */
-    edgesToCenter: EdgeArray;
+    edgesToCenter: Array<Edge>;
 }

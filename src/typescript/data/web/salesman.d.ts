@@ -1,3 +1,4 @@
+
 /**
  * 
  * @export
@@ -16,6 +17,12 @@ export interface Salesman {
      * @memberof Salesman
      */
     name: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof Salesman
+     */
+    orderInOwner: number;
     /**
      * 
      * @type {number}
@@ -65,3 +72,5 @@ export interface Salesman {
      */
     basePrice_Euro: number;
 }
+
+

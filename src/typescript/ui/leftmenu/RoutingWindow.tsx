@@ -11,6 +11,7 @@ import { Graph } from "../../data/web/graph"
 import { Edge } from "../../data/web/edge"
 import { Objective } from "../../data/web/objective"
 import { Salesman } from "../../data/web/salesman"
+import { EdgeArray } from "../../data/web/edgeArray"
 
 
 export function RoutingWindow(props: { previous: () => void, next: () => void }) {
@@ -23,11 +24,11 @@ export function RoutingWindow(props: { previous: () => void, next: () => void })
         //graph to complete
         let costGraph: Graph = task.costGraph
         //clear graph
-        costGraph.edgesBetween = [] as Edge[][]
+        costGraph.edgesBetween = [] as EdgeArray[]
         costGraph.edgesFromCenter = [] as Edge[]
         costGraph.edgesToCenter = [] as Edge[]
         //cache edges for easy access
-        let edgesBetween: Edge[][] = costGraph.edgesBetween as Edge[][]
+        let edgesBetween: EdgeArray[] = costGraph.edgesBetween as EdgeArray[]
         let edgesFromCenter: Edge[] = costGraph.edgesFromCenter as Edge[]
         let edgesToCenter: Edge[] = costGraph.edgesToCenter as Edge[]
         //save cleared graph
@@ -83,10 +84,10 @@ export function RoutingWindow(props: { previous: () => void, next: () => void })
 
                 //search for shortest rout from actual location
                 let minEdge = Infinity
-                edgesBetween[indexFrom].forEach(edge => {
+                edgesBetween[indexFrom].values.forEach(edge => {
                     minEdge = minEdge > edge.length_Meter ? edge.length_Meter : minEdge
                 })
-                
+
                 //add shortest rout to minimal length sum
                 minLength_Meter += minEdge
                 //search for salesman with minimal cost on minimal length
@@ -107,12 +108,12 @@ export function RoutingWindow(props: { previous: () => void, next: () => void })
                 if (from != to) {
                     WebInterface.getRootBetween(from.location, to.location)
                         .then(edge => {
-                            edgesBetween[indexFrom].push(edge)
+                            edgesBetween[indexFrom].values.push(edge)
                             DataCenter.updateTask(task)
                             recursiveRoutingTo(from, indexFrom, indexTo + 1)
                         })
                 }
-                else{
+                else {
                     recursiveRoutingTo(from, indexFrom, indexTo + 1)
                 }
             }
@@ -133,7 +134,11 @@ export function RoutingWindow(props: { previous: () => void, next: () => void })
                                 DataCenter.updateTask(task)
 
                                 //rout from actual location to every other locations
-                                edgesBetween.push([] as Edge[])
+                                edgesBetween.push({
+                                    id: "",
+                                    orderInOwner: edgesBetween.length,
+                                    values: [] as Edge[]
+                                } as EdgeArray)
                                 recursiveRoutingTo(from, indexFrom, 0)
 
                             })

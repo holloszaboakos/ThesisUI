@@ -1,5 +1,6 @@
 import { GPS } from "./gps"
 
+
 /**
  * 
  * @export
@@ -18,7 +19,7 @@ export interface Edge {
      * @memberof Edge
      */
     name: string;
-    /** 
+    /**
      * 
      * @type {number}
      * @memberof Edge
@@ -37,3 +38,4 @@ export interface Edge {
      */
     rout: Array<Gps>;
 }
+

@@ -1,4 +1,5 @@
 import Gps from "./gps"
+
 /**
  * 
  * @export
@@ -22,6 +23,7 @@ export interface GpsArray {
      * @type {Array<Gps>}
      * @memberof GpsArray
      */
-    gps: Array<Gps>;
+    values: Array<Gps>;
 }
+
 

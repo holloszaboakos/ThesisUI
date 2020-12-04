@@ -9,14 +9,15 @@ export function EditWindow(props: { name: string, setSalesmanName: (text) => voi
     let salesman: Salesman = props.name === "" ? {
         id: "",
         name: "",
+        orderInOwner: 0,
         basePrice_Euro: 0,
         fuelConsuption_LiterPerMeter: 0,
         fuelPrice_EuroPerLiter: 0,
         payment_EuroPerSecond: 0,
         vechicleSpeed_MeterPerSecond: 0,
-        volumeCapacity_Stere: 0, 
+        volumeCapacity_Stere: 0,
         weightCapacity_Gramm: 0,
-        workTime_SecondPerDay: 0 
+        workTime_SecondPerDay: 0
     } : DataCenter.getSalesmanByName(props.name)
 
     function ok() {
@@ -63,7 +64,7 @@ export function EditWindow(props: { name: string, setSalesmanName: (text) => voi
                     label="base price (€)"
                     startText={salesman.basePrice_Euro.toString()}
                     placefolder="basePriceEuro"
-                    validate={(text) => !isNaN(Number(text))}
+                    validate={(text) => !isNaN(Number(text)) && Number(text) < 1000000000 && Number(text) >= 0}
                     sendValue={(text) => {
                         salesman.basePrice_Euro = Number(text)
                     }}
@@ -72,7 +73,7 @@ export function EditWindow(props: { name: string, setSalesmanName: (text) => voi
                     label="fuel consuption (l/m)"
                     startText={salesman.fuelConsuption_LiterPerMeter.toString()}
                     placefolder="fuelConsuption"
-                    validate={(text) => !isNaN(Number(text))}
+                    validate={(text) => !isNaN(Number(text)) && Number(text) < 1000000000 && Number(text) >= 0}
                     sendValue={(text) => {
                         salesman.fuelConsuption_LiterPerMeter = Number(text)
                     }}
@@ -81,7 +82,7 @@ export function EditWindow(props: { name: string, setSalesmanName: (text) => voi
                     label="fuel price (€/l)"
                     startText={salesman.fuelPrice_EuroPerLiter.toString()}
                     placefolder="fuelPrice"
-                    validate={(text) => !isNaN(Number(text))}
+                    validate={(text) => !isNaN(Number(text)) && Number(text) < 1000000000 && Number(text) >= 0}
                     sendValue={(text) => {
                         salesman.fuelPrice_EuroPerLiter = Number(text)
                     }}
@@ -90,7 +91,7 @@ export function EditWindow(props: { name: string, setSalesmanName: (text) => voi
                     label="payment (€/s)"
                     startText={salesman.payment_EuroPerSecond.toString()}
                     placefolder="payment"
-                    validate={(text) => !isNaN(Number(text))}
+                    validate={(text) => !isNaN(Number(text)) && Number(text) < 1000000000 && Number(text) >= 0}
                     sendValue={(text) => {
                         salesman.payment_EuroPerSecond = Number(text)
                     }}
@@ -99,7 +100,7 @@ export function EditWindow(props: { name: string, setSalesmanName: (text) => voi
                     label="vechicle speed (m/s)"
                     startText={salesman.vechicleSpeed_MeterPerSecond.toString()}
                     placefolder="vechicleSpeed"
-                    validate={(text) => !isNaN(Number(text))}
+                    validate={(text) => !isNaN(Number(text)) && Number(text) < 1000000000 && Number(text) >= 0}
                     sendValue={(text) => {
                         salesman.vechicleSpeed_MeterPerSecond = Number(text)
                     }}
@@ -108,7 +109,7 @@ export function EditWindow(props: { name: string, setSalesmanName: (text) => voi
                     label="volume capacity (m^3)"
                     startText={salesman.volumeCapacity_Stere.toString()}
                     placefolder="volumeCapacity"
-                    validate={(text) => !isNaN(Number(text))}
+                    validate={(text) => !isNaN(Number(text)) && Number(text) < 1000000000 && Number(text) >= 0}
                     sendValue={(text) => {
                         salesman.volumeCapacity_Stere = Number(text)
                     }}
@@ -117,7 +118,7 @@ export function EditWindow(props: { name: string, setSalesmanName: (text) => voi
                     label="weight capacity (g)"
                     startText={salesman.weightCapacity_Gramm.toString()}
                     placefolder="weightCapacity"
-                    validate={(text) => !isNaN(Number(text))}
+                    validate={(text) => !isNaN(Number(text)) && Number(text) < 1000000000 && Number(text) >= 0}
                     sendValue={(text) => {
                         salesman.weightCapacity_Gramm = Number(text)
                     }}
@@ -126,7 +127,7 @@ export function EditWindow(props: { name: string, setSalesmanName: (text) => voi
                     label="work time (s/d)"
                     startText={salesman.workTime_SecondPerDay.toString()}
                     placefolder="workTime"
-                    validate={(text) => !isNaN(Number(text))}
+                    validate={(text) => !isNaN(Number(text)) && Number(text) < 1000000000 && Number(text) >= 0}
                     sendValue={(text) => {
                         salesman.workTime_SecondPerDay = Number(text)
                     }}

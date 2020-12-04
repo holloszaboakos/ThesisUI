@@ -3,7 +3,7 @@ import { Edge } from "../data/web/edge"
 import { Gps } from "../data/web/gps"
 import * as Api from "./api"
 import { Configuration } from "./configuration"
-let basePath = "http://192.168.1.69:1234/".replace(/\/+$/, "")
+let basePath = "http://192.168.1.82:1234/".replace(/\/+$/, "")
 export function setBasepath(data: string) {
     basePath = data
 }

@@ -32,3 +32,4 @@ export interface Task {
      */
     costGraph: Graph;
 }
+

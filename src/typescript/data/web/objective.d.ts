@@ -20,10 +20,16 @@ export interface Objective {
     name: string;
     /**
      * 
-     * @type {GPS}
+     * @type {number}
      * @memberof Objective
      */
-    location: GPS;
+    orderInOwner: number;
+    /**
+     * 
+     * @type {Gps}
+     * @memberof Objective
+     */
+    location: Gps;
     /**
      * 
      * @type {number}

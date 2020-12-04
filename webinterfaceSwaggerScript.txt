@@ -511,7 +511,9 @@ definitions:
       name:
         type: "string"
       bestRout:
-        $ref: "#/definitions/GpsMatrix"
+        type: "array"
+        items:
+          $ref: "#/definitions/GpsArray"
       maxCost_Euro:
         type: "number"
       minCost_Euro:
@@ -554,8 +556,6 @@ definitions:
         type: "string"
       name:
         type: "string"
-      center:
-          $ref: "#/definitions/Gps"
       salesmen:
         type: "array"
         items:
@@ -583,11 +583,17 @@ definitions:
         items:
           $ref: "#/definitions/Objective"
       edgesBetween:
-        $ref: "#/definitions/EdgeMatrix"
+        type: "array"
+        items:
+          $ref: "#/definitions/EdgeArray"
       edgesFromCenter:
-        $ref: "#/definitions/EdgeArray"
+        type: "array"
+        items:
+          $ref: "#/definitions/Edge"
       edgesToCenter:
-        $ref: "#/definitions/EdgeArray"
+        type: "array"
+        items:
+          $ref: "#/definitions/Edge"
     required: 
       - id
       - name
@@ -626,30 +632,14 @@ definitions:
         type: "string"
       orderInOwner:
         type: "integer"
-      edges:
+      values:
         type: "array"
         items:
           $ref: "#/definitions/Edge"
     required: 
       - id
       - orderInOwner
-      - edges
-      
-  EdgeMatrix:
-    type: "object"
-    properties:
-      id:
-        type: "string"
-      orderInOwner:
-        type: "integer"
-      edgesArrays:
-        type: "array"
-        items:
-          $ref: "#/definitions/EdgeArray"
-    required: 
-      - id
-      - orderInOwner
-      - edgesArrays
+      - values
   
   Objective:
     type: "object"
@@ -701,27 +691,14 @@ definitions:
         type: "string"
       orderInOwner:
         type: "integer"
-      gps:
+      values:
         type: "array"
         items:
           $ref: "#/definitions/Gps"
     required: 
       - id
       - orderInOwner
-      - gps
-        
-  GpsMatrix:
-    type: "object"
-    properties:
-      id:
-        type: "string"
-      edgesArrays:
-        type: "array"
-        items:
-          $ref: "#/definitions/GpsArray"
-    required: 
-      - id
-      - edgesArrays
+      - values
   
   Salesman:
     type: "object"
