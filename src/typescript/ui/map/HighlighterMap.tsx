@@ -7,15 +7,16 @@ import { Objective } from "../../data/web/objective"
 import { Graph } from "../../data/web/graph"
 import { Edge } from "../../data/web/edge"
 import { GpsArray } from "../../data/web/gpsArrray"
+import { EdgeArray } from "../../data/web/edgeArray"
 
 let mapContainer: HTMLDivElement | null
 let map
 
 export function HighlighterMap(props: { width: string, height: string, radius: number, margin: number }) {
 
-    const [task, setTask] = React.useState(DataCenter.getTask())
-    const [mapView, setMapView] = React.useState(DataCenter.getMapView())
-    const [result, setResult] = React.useState(DataCenter.getResult())
+    const [task, setTask] = React.useState(DataCenter.getTask)
+    const [mapView, setMapView] = React.useState(DataCenter.getMapView)
+    const [result, setResult] = React.useState(DataCenter.getResult)
     const [loaded, setLoaded] = React.useState(false)
     const [active, setActive] = React.useState(true)
 
@@ -76,18 +77,20 @@ export function HighlighterMap(props: { width: string, height: string, radius: n
                                 }
                             }
                         }),
-                        ...(task.costGraph as Graph).edgesBetween.flat().map((edge: Edge, index) => {
-                            return {
-                                type: "Feature",
-                                properties: {
-                                    'color': '#000077'
-                                },
-                                geometry: {
-                                    type: "LineString",
-                                    coordinates: edge.rout.map(GPS => [GPS.longitude, GPS.lattitude]),
+                        ...(task.costGraph as Graph).edgesBetween.map((edgeArray: EdgeArray, indexArray) => {
+                            return edgeArray.values.map((edge: Edge, indexEdge) => {
+                                return {
+                                    type: "Feature",
+                                    properties: {
+                                        'color': '#000077'
+                                    },
+                                    geometry: {
+                                        type: "LineString",
+                                        coordinates: edge.rout && edge.rout.map(GPS => [GPS.longitude, GPS.lattitude]),
+                                    }
                                 }
-                            }
-                        }),
+                            })
+                        }).flat().filter((it) => it),
                     ]
                 }
             })
@@ -195,22 +198,20 @@ export function HighlighterMap(props: { width: string, height: string, radius: n
                             }
                         }
                     }),
-                    ...(task.costGraph as Graph).edgesBetween.flat().map((edge: Edge, index) => {
-                        let edgeGroup = (task.costGraph as Graph).edgesBetween.find((edgeGroup: Edge[]) => edgeGroup.includes(edge))
-                        let groupIndex = edgeGroup && (task.costGraph as Graph).edgesBetween.indexOf(edgeGroup)
-                        let edgeIndex = edgeGroup && edgeGroup.indexOf(edge)
-
-                        return betweenObjectivesIndexes.find(indexPair => indexPair.from == groupIndex && indexPair.to == edgeIndex) && {
-                            type: "Feature",
-                            properties: {
-                                'color': '#000077'
-                            },
-                            geometry: {
-                                type: "LineString",
-                                coordinates: edge.rout.map(GPS => [GPS.longitude, GPS.lattitude]),
+                    ...(task.costGraph as Graph).edgesBetween.map((edgeArray: EdgeArray, indexArray) => {
+                        return edgeArray.values.map((edge: Edge, indexEdge) => {
+                            return {
+                                type: "Feature",
+                                properties: {
+                                    'color': '#000077'
+                                },
+                                geometry: {
+                                    type: "LineString",
+                                    coordinates: edge.rout && edge.rout.map(GPS => [GPS.longitude, GPS.lattitude]),
+                                }
                             }
-                        }
-                    }),
+                        })
+                    }).flat(),
                 ]
             })
             setMapView(mapView)

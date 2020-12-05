@@ -12,8 +12,8 @@ let map
 export function EditableMap(props: { width: string, height: string, radius: number, margin: number }) {
 
     const [loaded, setLoaded] = React.useState(false)
-    const [task, setTask] = React.useState(DataCenter.getTask())
-    const [mapView, setMapView] = React.useState(DataCenter.getMapView())
+    const [task, setTask] = React.useState(DataCenter.getTask)
+    const [mapView, setMapView] = React.useState(DataCenter.getMapView)
     const [pos, setPos] = React.useState({ longitude: 0, lattitude: 0 } as Gps)
 
     function getCostGraph(): Graph {
@@ -26,6 +26,7 @@ export function EditableMap(props: { width: string, height: string, radius: numb
         DataCenter.addMapViewChangeCallBack(setMapView)
         DataCenter.addPosChangeCallBack(setPos)
         mapboxgl.accessToken = DataCenter.publicKey
+
         map = new mapboxgl.Map({
             container: mapContainer,
             style: DataCenter.style,

@@ -7,8 +7,23 @@ import * as DataCenter from "../../data/dataCenter"
 
 export function RunningWindow(props: { previous: () => void }) {
 
-    const [progress, setProgress] = React.useState(DataCenter.getProgress())
-    const [result, setResult] = React.useState(DataCenter.getResult())
+    const [progress, setProgress] = React.useState(DataCenter.getProgress)
+    const [progressRefresher, setProgressRefresher] = React.useState(true)
+    React.useEffect(() => {
+        setProgressRefresher(false)
+    }, [progress])
+    React.useEffect(() => {
+        !progressRefresher && setProgressRefresher(true)
+    }, [progressRefresher])
+
+    const [result, setResult] = React.useState(DataCenter.getResult)
+    const [resultRefresher, setResultRefresher] = React.useState(true)
+    React.useEffect(() => {
+        setResultRefresher(false)
+    }, [result])
+    React.useEffect(() => {
+        !resultRefresher && setResultRefresher(true)
+    }, [resultRefresher])
 
     let interval
 
@@ -16,9 +31,9 @@ export function RunningWindow(props: { previous: () => void }) {
         DataCenter.addProgressChangeCallBack(setProgress)
         DataCenter.addResultChangeCallBack(setResult)
         interval = setInterval(async () => {
-            setProgress(DataCenter.getProgress())
-            setResult(DataCenter.getResult())
-        }, 1000)
+            WebInterface.getProgress().then(progress => DataCenter.updateProgress(progress))
+            WebInterface.getResult().then(result => DataCenter.updateResult(result))
+        }, DataCenter.getTask().costGraph.objectives.length * 100)
     }, [])
 
     React.useEffect(() => {
@@ -47,11 +62,15 @@ export function RunningWindow(props: { previous: () => void }) {
                 alignment="center"
                 gap={8}
             >
-                <DisplayDataLine label="Maximum cost (€)" value={result.maxCost_Euro.toFixed(2).toString()} />
-                <DisplayDataLine label="Minimum cost (€)" value={result.minCost_Euro.toFixed(2).toString()} />
-                <DisplayDataLine label="Best cost (€)" value={result.bestCost_Euro.toFixed(2).toString()} />
-                <DisplayDataLine label="Iteration" value={progress.iteration.toString()} />
-                <DisplayDataLine label="Time (s)" value={progress.runtime_Second.toString()} />
+                {resultRefresher && <>
+                    <DisplayDataLine label="Maximum cost (€)" value={result.maxCost_Euro.toFixed(2).toString()} />
+                    <DisplayDataLine label="Minimum cost (€)" value={result.minCost_Euro.toFixed(2).toString()} />
+                    <DisplayDataLine label="Best cost (€)" value={result.bestCost_Euro.toFixed(2).toString()} />
+                </>}
+                {progressRefresher && <>
+                    <DisplayDataLine label="Iteration" value={progress.iteration.toString()} />
+                    <DisplayDataLine label="Time (s)" value={progress.runtime_Second.toString()} />
+                </>}
             </Framer.Stack>
             <ButtonLine label="Pause" functionality={props.previous} />
         </Framer.Stack>

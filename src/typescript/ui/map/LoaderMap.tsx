@@ -7,14 +7,15 @@ import { Edge } from "../../data/web/edge"
 import { RoutingWindow } from "../leftmenu/RoutingWindow"
 import { Gps } from "../../data/web/gps"
 import { Objective } from "../../data/web/objective"
+import { EdgeArray } from "../../data/web/edgeArray"
 
 let mapContainer: HTMLDivElement | null
 let map: mapboxgl.Map
 
 export function LoaderMap(props: { width: string, height: string, radius: number, margin: number }) {
 
-    const [task, setTask] = React.useState(DataCenter.getTask())
-    const [mapView, setMapView] = React.useState(DataCenter.getMapView())
+    const [task, setTask] = React.useState(DataCenter.getTask)
+    const [mapView, setMapView] = React.useState(DataCenter.getMapView)
     const [active, setActive] = React.useState(true)
     const [loaded, setLoaded] = React.useState(false)
 
@@ -72,18 +73,20 @@ export function LoaderMap(props: { width: string, height: string, radius: number
                                 }
                             }
                         }),
-                        ...(task.costGraph as Graph).edgesBetween.flat().map((edge: Edge, index) => {
-                            return {
-                                type: "Feature",
-                                properties: {
-                                    'color': '#000077'
-                                },
-                                geometry: {
-                                    type: "LineString",
-                                    coordinates: edge.rout.map(GPS => [GPS.longitude, GPS.lattitude]),
+                        ...(task.costGraph as Graph).edgesBetween.map((edgeArray: EdgeArray, indexArray) => {
+                            return edgeArray.values.map((edge: Edge, indexEdge) => {
+                                return {
+                                    type: "Feature",
+                                    properties: {
+                                        'color': '#000077'
+                                    },
+                                    geometry: {
+                                        type: "LineString",
+                                        coordinates: edge.rout && edge.rout.map(GPS => [GPS.longitude, GPS.lattitude]),
+                                    }
                                 }
-                            }
-                        }),
+                            })
+                        }).flat(),
                     ]
                 }
             })
@@ -173,7 +176,7 @@ export function LoaderMap(props: { width: string, height: string, radius: number
                                 coordinates: edge.rout.map(GPS => [GPS.longitude, GPS.lattitude]),
                             }
                         }
-                    }).filter((it)=>it),
+                    }).filter((it) => it),
                     ...(task.costGraph as Graph).edgesToCenter.map((edge: Edge, index) => {
                         return edge.rout && {
                             type: "Feature",
@@ -185,19 +188,21 @@ export function LoaderMap(props: { width: string, height: string, radius: number
                                 coordinates: edge.rout.map(GPS => [GPS.longitude, GPS.lattitude]),
                             }
                         }
-                    }).filter((it)=>it),
-                    ...(task.costGraph as Graph).edgesBetween.flat().map((edge: Edge, index) => {
-                        return edge.rout && {
-                            type: "Feature",
-                            properties: {
-                                'color': '#000077'
-                            },
-                            geometry: {
-                                type: "LineString",
-                                coordinates: edge.rout.map(GPS => [GPS.longitude, GPS.lattitude]),
+                    }).filter((it) => it),
+                    ...(task.costGraph as Graph).edgesBetween.map((edgeArray: EdgeArray, indexArray) => {
+                        return edgeArray.values.map((edge: Edge, indexEdge) => {
+                            return {
+                                type: "Feature",
+                                properties: {
+                                    'color': '#000077'
+                                },
+                                geometry: {
+                                    type: "LineString",
+                                    coordinates: edge.rout && edge.rout.map(GPS => [GPS.longitude, GPS.lattitude]),
+                                }
                             }
-                        }
-                    }).filter((it)=>it),
+                        })
+                    }).flat(),
                 ]
             })
             setMapView(mapView)

@@ -19,20 +19,32 @@ export function SetupWindow(props: { previous: () => void, next: () => void }) {
     }
 
     const [state, setState] = React.useState(States.main)
-    const [setting, setSetting] = React.useState(DataCenter.getSetting())
-    const [result, setResult] = React.useState(DataCenter.getResult())
+    const [setting, setSetting] = React.useState(DataCenter.getSetting)
+    const [result, setResult] = React.useState(DataCenter.getResult)
+    const [refresher, setRefresher] = React.useState(true)
 
     //TODO rooting
     //onAttach
     React.useEffect(() => {
+        DataCenter.loadResult(setResult)
         DataCenter.addSettingChangeCallBack(setSetting)
+        DataCenter.addResultChangeCallBack(setResult)
     }, [])
     //onDetach
     React.useEffect(() => {
         return () => {
             DataCenter.removeSettingChangeCallBack(setSetting)
+            DataCenter.removeResultChangeCallBack(setResult)
         }
     }, [])
+
+    React.useEffect(() => {
+        setRefresher(false)
+    }, [setting])
+
+    React.useEffect(() => {
+        !refresher && setRefresher(true)
+    }, [refresher])
 
     return (<>{state === States.main ?
         <Framer.Stack
@@ -52,26 +64,28 @@ export function SetupWindow(props: { previous: () => void, next: () => void }) {
                 alignment="center"
                 gap={8}
             >
-                <SetDataLine
-                    label="run time limit (s)"
-                    startText={setting.timeLimit_Second.toString()}
-                    placefolder="number in seconds"
-                    validate={(text) => { return isNaN(Number(text)) }}
-                    sendValue={(text) => {
-                        setting.timeLimit_Second = Number(text)
-                        setSetting(setting)
-                    }}
-                />
-                <SetDataLine
-                    label="iterations limit"
-                    startText={setting.iterLimit.toString()}
-                    placefolder="number in seconds"
-                    validate={(text) => { return isNaN(Number(text)) }}
-                    sendValue={(text) => {
-                        setting.iterLimit = Number(text)
-                        setSetting(setting)
-                    }}
-                />
+                {refresher && <>
+                    <SetDataLine
+                        label="run time limit (s)"
+                        startText={setting.timeLimit_Second.toString()}
+                        placefolder="number in seconds"
+                        validate={(text) => { return !isNaN(Number(text)) }}
+                        sendValue={(text) => {
+                            setting.timeLimit_Second = Number(text)
+                            DataCenter.updateSetting(setting)
+                        }}
+                    />
+                    <SetDataLine
+                        label="iterations limit"
+                        startText={setting.iterLimit.toString()}
+                        placefolder="number in seconds"
+                        validate={(text) => { return !isNaN(Number(text)) }}
+                        sendValue={(text) => {
+                            setting.iterLimit = Number(text)
+                            DataCenter.updateSetting(setting)
+                        }}
+                    />
+                </>}
                 <LabelAndIconButtons
                     label="Setting"
                     iconButtons={[
@@ -85,8 +99,10 @@ export function SetupWindow(props: { previous: () => void, next: () => void }) {
                         },
                     ]}
                 />
-                <DisplayDataLine label="Maximum cost (€)" value={result.maxCost_Euro.toFixed(2).toString()} />
-                <DisplayDataLine label="Minimum cost (€)" value={result.minCost_Euro.toFixed(2).toString()} />
+                {refresher && <>
+                    <DisplayDataLine label="Maximum cost (€)" value={result.maxCost_Euro.toFixed(2).toString()} />
+                    <DisplayDataLine label="Minimum cost (€)" value={result.minCost_Euro.toFixed(2).toString()} />
+                </>}
                 <ButtonLine label="Algorithm" functionality={() => {
                     setState(States.algorithmChooser)
                 }} />

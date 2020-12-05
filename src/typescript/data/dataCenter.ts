@@ -52,7 +52,7 @@ export function viewSettings(setNames: (names: string[]) => void) {
             })
         })
     else
-        setNames(savedTaskNames)
+        setNames(savedSettingNames)
 }
 export function saveSetting(name: string) {
     let clone = { ...setting }
@@ -210,10 +210,12 @@ export function updateResult(data: Result) {
     resultChangedCallBacks.forEach(it => { it(data) })
 }
 export function getResult(): Result {
-    WebInterface.getResult().then(result => {
-        updateResult(result)
-    })
     return { ...result }
+}
+export function loadResult(setResult: (r: Result) => void) {
+    WebInterface.getResult().then(result => {
+        setResult(result)
+    })
 }
 
 

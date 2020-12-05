@@ -11,7 +11,7 @@ export function LoadWindow(props: { onEnded: () => void }) {
     const [chosenName, setChosenName] = React.useState("")
 
     React.useEffect(() => {
-        DataCenter.listAlgorithms(setNames)
+        DataCenter.viewTasks(setNames)
     }, [])
     React.useEffect(() => {
         if (names.length !== 0)

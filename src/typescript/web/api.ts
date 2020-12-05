@@ -618,7 +618,6 @@ export class LifecicleApi extends BaseAPI {
     }
 
 }
-
 /**
  * SetupApi - fetch parameter creator
  * @export
@@ -832,14 +831,14 @@ export const SetupApiFetchParamCreator = function (configuration?: Configuration
         /**
          * Load setting with a name maching the parameter
          * @summary Load setting
-         * @param {string} body Setting name
+         * @param {string} name Setting name
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        loadSetting(body: string, options: any = {}): FetchArgs {
-            // verify required parameter 'body' is not null or undefined
-            if (body === null || body === undefined) {
-                throw new RequiredError('body', 'Required parameter body was null or undefined when calling loadSetting.');
+        loadSetting(name: string, options: any = {}): FetchArgs {
+            // verify required parameter 'name' is not null or undefined
+            if (name === null || name === undefined) {
+                throw new RequiredError('name', 'Required parameter name was null or undefined when calling loadSetting.');
             }
             const localVarPath = `/setup/setting`;
             const localVarUrlObj = url.parse(localVarPath, true);
@@ -848,14 +847,14 @@ export const SetupApiFetchParamCreator = function (configuration?: Configuration
             const localVarQueryParameter = {} as any;
             localVarHeaderParameter["Access-Control-Allow-Origin"] = "*"
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+            if (name !== undefined) {
+                localVarQueryParameter['name'] = name;
+            }
 
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
             delete localVarUrlObj.search;
             localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-            const needsSerialization = (<any>"string" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.body = needsSerialization ? JSON.stringify(body || {}) : (body || "");
 
             return {
                 url: url.format(localVarUrlObj),
@@ -865,14 +864,14 @@ export const SetupApiFetchParamCreator = function (configuration?: Configuration
         /**
          * Load task with a name maching the parameter
          * @summary Load task
-         * @param {string} body Task name
+         * @param {string} name Task name
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        loadTask(body: string, options: any = {}): FetchArgs {
-            // verify required parameter 'body' is not null or undefined
-            if (body === null || body === undefined) {
-                throw new RequiredError('body', 'Required parameter body was null or undefined when calling loadTask.');
+        loadTask(name: string, options: any = {}): FetchArgs {
+            // verify required parameter 'name' is not null or undefined
+            if (name === null || name === undefined) {
+                throw new RequiredError('name', 'Required parameter name was null or undefined when calling loadTask.');
             }
             const localVarPath = `/setup/task`;
             const localVarUrlObj = url.parse(localVarPath, true);
@@ -881,14 +880,14 @@ export const SetupApiFetchParamCreator = function (configuration?: Configuration
             const localVarQueryParameter = {} as any;
             localVarHeaderParameter["Access-Control-Allow-Origin"] = "*"
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+            if (name !== undefined) {
+                localVarQueryParameter['name'] = name;
+            }
 
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
             delete localVarUrlObj.search;
             localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-            const needsSerialization = (<any>"string" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.body = needsSerialization ? JSON.stringify(body || {}) : (body || "");
 
             return {
                 url: url.format(localVarUrlObj),
@@ -912,9 +911,9 @@ export const SetupApiFetchParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = Object.assign({ method: 'DELETE' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-            localVarHeaderParameter["Access-Control-Allow-Origin"] = "*"
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter["Access-Control-Allow-Origin"] = "*"
 
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
@@ -945,9 +944,9 @@ export const SetupApiFetchParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = Object.assign({ method: 'DELETE' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-            localVarHeaderParameter["Access-Control-Allow-Origin"] = "*"
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter["Access-Control-Allow-Origin"] = "*"
 
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
@@ -978,9 +977,9 @@ export const SetupApiFetchParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-            localVarHeaderParameter["Access-Control-Allow-Origin"] = "*"
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter["Access-Control-Allow-Origin"] = "*"
 
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
@@ -1011,9 +1010,9 @@ export const SetupApiFetchParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-            localVarHeaderParameter["Access-Control-Allow-Origin"] = "*"
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter["Access-Control-Allow-Origin"] = "*"
 
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
@@ -1169,12 +1168,12 @@ export const SetupApiFp = function (configuration?: Configuration) {
         /**
          * Load setting with a name maching the parameter
          * @summary Load setting
-         * @param {string} body Setting name
+         * @param {string} name Setting name
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        loadSetting(body: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Setting> {
-            const localVarFetchArgs = SetupApiFetchParamCreator(configuration).loadSetting(body, options);
+        loadSetting(name: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Setting> {
+            const localVarFetchArgs = SetupApiFetchParamCreator(configuration).loadSetting(name, options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -1188,12 +1187,12 @@ export const SetupApiFp = function (configuration?: Configuration) {
         /**
          * Load task with a name maching the parameter
          * @summary Load task
-         * @param {string} body Task name
+         * @param {string} name Task name
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        loadTask(body: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Task> {
-            const localVarFetchArgs = SetupApiFetchParamCreator(configuration).loadTask(body, options);
+        loadTask(name: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Task> {
+            const localVarFetchArgs = SetupApiFetchParamCreator(configuration).loadTask(name, options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -1359,22 +1358,22 @@ export const SetupApiFactory = function (configuration?: Configuration, fetch?: 
         /**
          * Load setting with a name maching the parameter
          * @summary Load setting
-         * @param {string} body Setting name
+         * @param {string} name Setting name
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        loadSetting(body: string, options?: any) {
-            return SetupApiFp(configuration).loadSetting(body, options)(fetch, basePath);
+        loadSetting(name: string, options?: any) {
+            return SetupApiFp(configuration).loadSetting(name, options)(fetch, basePath);
         },
         /**
          * Load task with a name maching the parameter
          * @summary Load task
-         * @param {string} body Task name
+         * @param {string} name Task name
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        loadTask(body: string, options?: any) {
-            return SetupApiFp(configuration).loadTask(body, options)(fetch, basePath);
+        loadTask(name: string, options?: any) {
+            return SetupApiFp(configuration).loadTask(name, options)(fetch, basePath);
         },
         /**
          * delete objective specified by name
@@ -1510,25 +1509,25 @@ export class SetupApi extends BaseAPI {
     /**
      * Load setting with a name maching the parameter
      * @summary Load setting
-     * @param {string} body Setting name
+     * @param {string} name Setting name
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SetupApi
      */
-    public loadSetting(body: string, options?: any) {
-        return SetupApiFp(this.configuration).loadSetting(body, options)(this.fetch, this.basePath);
+    public loadSetting(name: string, options?: any) {
+        return SetupApiFp(this.configuration).loadSetting(name, options)(this.fetch, this.basePath);
     }
 
     /**
      * Load task with a name maching the parameter
      * @summary Load task
-     * @param {string} body Task name
+     * @param {string} name Task name
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SetupApi
      */
-    public loadTask(body: string, options?: any) {
-        return SetupApiFp(this.configuration).loadTask(body, options)(this.fetch, this.basePath);
+    public loadTask(name: string, options?: any) {
+        return SetupApiFp(this.configuration).loadTask(name, options)(this.fetch, this.basePath);
     }
 
     /**

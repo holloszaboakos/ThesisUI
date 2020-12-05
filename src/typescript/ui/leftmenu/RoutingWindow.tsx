@@ -15,8 +15,8 @@ import { EdgeArray } from "../../data/web/edgeArray"
 
 
 export function RoutingWindow(props: { previous: () => void, next: () => void }) {
-    const [task, setTask] = React.useState(DataCenter.getTask())
-    const [result, setResult] = React.useState(DataCenter.getResult())
+    const [task, setTask] = React.useState(DataCenter.getTask)
+    const [result, setResult] = React.useState(DataCenter.getResult)
     const [routingDone, setRoutingDone] = React.useState(false)
     const [refresher, setRefresher] = React.useState(true)
 
@@ -99,6 +99,7 @@ export function RoutingWindow(props: { previous: () => void, next: () => void })
                 //save maximal and minimal cost
                 result.maxCost_Euro = maxCost_Euro
                 result.minCost_Euro = minCost_Euro
+                DataCenter.updateTask(task)
                 DataCenter.updateResult(result)
                 setRefresher(false)
                 recursiveRoutingFrom(indexFrom + 1)
@@ -109,7 +110,6 @@ export function RoutingWindow(props: { previous: () => void, next: () => void })
                     WebInterface.getRootBetween(from.location, to.location)
                         .then(edge => {
                             edgesBetween[indexFrom].values.push(edge)
-                            DataCenter.updateTask(task)
                             recursiveRoutingTo(from, indexFrom, indexTo + 1)
                         })
                 }
@@ -126,12 +126,10 @@ export function RoutingWindow(props: { previous: () => void, next: () => void })
                 WebInterface.getRootBetween(costGraph.center, from.location)
                     .then(edge => {
                         edgesFromCenter.push(edge)
-                        DataCenter.updateTask(task)
                         //rout from actual location to center
                         WebInterface.getRootBetween(from.location, costGraph.center)
                             .then(edge => {
                                 edgesToCenter.push(edge)
-                                DataCenter.updateTask(task)
 
                                 //rout from actual location to every other locations
                                 edgesBetween.push({
@@ -139,6 +137,7 @@ export function RoutingWindow(props: { previous: () => void, next: () => void })
                                     orderInOwner: edgesBetween.length,
                                     values: [] as Edge[]
                                 } as EdgeArray)
+                                //console.log("recursive gonna be started!")
                                 recursiveRoutingTo(from, indexFrom, 0)
 
                             })

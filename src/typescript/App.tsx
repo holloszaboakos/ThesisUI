@@ -83,7 +83,13 @@ export default function App() {
               WebInterface.clean().then(response => setState(States.task))
             }
             next={() =>
-              WebInterface.start().then(response => setState(States.started))
+              WebInterface.defineSetting(DataCenter.getSetting())
+                .then(id => {
+                  let setting = DataCenter.getSetting()
+                  setting.id = id
+                  DataCenter.updateSetting(setting)
+                  WebInterface.start().then(response => setState(States.started))
+                })
             }
           />
         ) : (state === States.started) ? (
@@ -116,16 +122,16 @@ export default function App() {
           width="100%"
           radius={32}
           margin={16}
-        />) : (state === States.routing) ? (
-          <LoaderMap
-            height="100%"
-            width="100%"
-            radius={32}
-            margin={16}
-          />
-        ) : (state === States.setting
-          || state === States.started
-          || state === States.running) && (
+        />) : (state === States.setting
+          || state === States.routing) ? (
+            <LoaderMap
+              height="100%"
+              width="100%"
+              radius={32}
+              margin={16}
+            />
+          ) : (state === States.started
+            || state === States.running) && (
             <HighlighterMap
               height="100%"
               width="100%"

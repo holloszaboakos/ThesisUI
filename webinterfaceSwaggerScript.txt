@@ -143,12 +143,11 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - in: "body"
-        name: "body"
+      - in: "query"
+        name: "name"
         description: "Task name"
         required: true
-        schema:
-          type: "string"
+        type: "string"
       responses:
         "405":
           description: "Invalid task"
@@ -233,12 +232,11 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - in: "body"
-        name: "body"
+      - in: "query"
+        name: "name"
         description: "Setting name"
         required: true
-        schema:
-          type: "string"
+        type: "string"
       responses:
         "405":
           description: "Invalid setting"
