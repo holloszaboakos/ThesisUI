@@ -34,7 +34,6 @@ export function HighlighterMap(props: { width: string, height: string, radius: n
             width: props.width,
             center: [mapView.location.longitude, mapView.location.lattitude],
             zoom: mapView.zoom,
-            interactive: false,
         })
 
         map.on("move", () => {
@@ -149,69 +148,86 @@ export function HighlighterMap(props: { width: string, height: string, radius: n
     //ComponentWasActivated
     React.useEffect(() => {
         if (loaded) {
+            let colors: string[] = ['#000077', '#007700', '#770000', '#007777', '#770077', '#770000', '#777777', '#000000']
             let objectives: Objective[] = task.costGraph.objectives
             let fromCenterIndexes = [] as number[]
             let toCenterIndexes = [] as number[]
             let betweenObjectivesIndexes = [] as { from: number, to: number }[]
             result.bestRout.forEach((rout: GpsArray) => {
 
-                let first = objectives.find(objective => objective.location == rout.values[0])
-                first && fromCenterIndexes.push(objectives.indexOf(first))
+                if (rout.values.length != 0) {
 
-                let last = objectives.find(objective => objective.location == rout.values[rout.values.length - 1])
-                last && toCenterIndexes.push(objectives.indexOf(last))
+                    fromCenterIndexes.push(objectives.findIndex(objective =>
+                        objective.location.lattitude === rout.values[0].lattitude
+                        && objective.location.longitude === rout.values[0].longitude
+                    ))
 
-                rout.values.forEach((stopFrom: Gps, indexFrom: number, rout: Gps[]) => {
-                    if (indexFrom != rout.length - 1) {
-                        let stopTo = rout[indexFrom + 1]
-                        let objectiveFrom = objectives.find(objective => objective.location == stopFrom)
-                        let objectiveTo = objectives.find(objective => objective.location == stopTo)
+                    toCenterIndexes.push(objectives.findIndex(objective =>
+                        objective.location.lattitude === rout.values[rout.values.length - 1].lattitude
+                        && objective.location.longitude === rout.values[rout.values.length - 1].longitude
+                    ))
 
-                        objectiveFrom && objectiveTo && betweenObjectivesIndexes.push({ from: objectives.indexOf(objectiveFrom), to: objectives.indexOf(objectiveTo) })
+                    if (rout.values.length > 1) {
+                        rout.values.forEach((stopFrom: Gps, indexFrom: number, rout: Gps[]) => {
+                            if (indexFrom != rout.length - 1) {
+                                let stopTo = rout[indexFrom + 1]
+                                let fromIndex = objectives.findIndex(objective =>
+                                    objective.location.lattitude === stopFrom.lattitude
+                                    && objective.location.longitude === stopFrom.longitude
+                                )
+                                let toIndex = objectives.findIndex(objective =>
+                                    objective.location.lattitude === stopTo.lattitude
+                                    && objective.location.longitude === stopTo.longitude
+                                )
+
+                                fromIndex > toIndex ?
+                                    betweenObjectivesIndexes.push({ from: fromIndex, to: toIndex }) :
+                                    betweenObjectivesIndexes.push({ from: fromIndex, to: toIndex - 1 })
+                            }
+                        })
                     }
-                })
+                }
             })
             map.getSource("routSource").setData({
                 'type': 'FeatureCollection',
                 'features': [
-                    ...(task.costGraph as Graph).edgesFromCenter.map((edge: Edge, index) => {
-                        return fromCenterIndexes.includes(index) && {
+                    ...fromCenterIndexes.map(index => {
+                        return {
                             type: "Feature",
                             properties: {
                                 'color': '#000077'
                             },
                             geometry: {
                                 type: "LineString",
-                                coordinates: edge.rout.map(GPS => [GPS.longitude, GPS.lattitude]),
+                                coordinates: (task.costGraph as Graph).edgesFromCenter[index].rout.map(GPS => [GPS.longitude, GPS.lattitude]),
                             }
                         }
                     }),
-                    ...(task.costGraph as Graph).edgesToCenter.map((edge: Edge, index) => {
-                        return toCenterIndexes.includes(index) && {
+                    ...betweenObjectivesIndexes.map((pair: { from: number, to: number }) => {
+                        return {
                             type: "Feature",
                             properties: {
                                 'color': '#000077'
                             },
                             geometry: {
                                 type: "LineString",
-                                coordinates: edge.rout.map(GPS => [GPS.longitude, GPS.lattitude]),
+                                coordinates: (task.costGraph as Graph).edgesBetween[pair.from].values[pair.to].rout.map(GPS => [GPS.longitude, GPS.lattitude]),
+                            }
+                        }
+
+                    }),
+                    ...toCenterIndexes.map(index => {
+                        return {
+                            type: "Feature",
+                            properties: {
+                                'color': '#000077'
+                            },
+                            geometry: {
+                                type: "LineString",
+                                coordinates: (task.costGraph as Graph).edgesToCenter[index].rout.map(GPS => [GPS.longitude, GPS.lattitude]),
                             }
                         }
                     }),
-                    ...(task.costGraph as Graph).edgesBetween.map((edgeArray: EdgeArray, indexArray) => {
-                        return edgeArray.values.map((edge: Edge, indexEdge) => {
-                            return {
-                                type: "Feature",
-                                properties: {
-                                    'color': '#000077'
-                                },
-                                geometry: {
-                                    type: "LineString",
-                                    coordinates: edge.rout && edge.rout.map(GPS => [GPS.longitude, GPS.lattitude]),
-                                }
-                            }
-                        })
-                    }).flat(),
                 ]
             })
             setMapView(mapView)
@@ -235,6 +251,11 @@ export function HighlighterMap(props: { width: string, height: string, radius: n
         map.height = props.height
         if (!active) setActive(true)
     }, [active])
+
+    React.useEffect(() => {
+        map.center = [mapView.location.longitude, mapView.location.lattitude]
+        map.zoom = mapView.zoom
+    }, [mapView])
 
 
     return (
