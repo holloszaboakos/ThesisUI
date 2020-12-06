@@ -114,12 +114,15 @@ export function addObjective(data: Objective) {
     })
 }
 export function removeObjectives(data: string[]) {
-    data.forEach(name => {
-        let objective = task.costGraph.objective.find(() => it.name === name)
-        WebInterface.removeObjective(objective.id)
+    console.log(JSON.stringify(data))
+    task.costGraph.objectives = task.costGraph.objectives.filter(objective => {
+        let contains = false
+        data.forEach(name => {
+            if (name === objective.name)
+                contains = true
+        })
+        return !contains
     })
-    task.costGraph.objectives = task.costGraph.objectives
-        .filter(objective => objective.name! in data)
     updateTask(task)
 }
 export function viewObjectives(): string[] {
@@ -146,7 +149,15 @@ export function addSalesman(data: Salesman) {
     })
 }
 export function removeSalesmen(data: string[]) {
-    task.salesmen = task.salesmen.filter((it: Salesman) => { return it.name! in data })
+    console.log(JSON.stringify(data))
+    task.salesmen = task.salesmen.filter(salesman => {
+        let contains = false
+        data.forEach(name => {
+            if (name === salesman.name)
+                contains = true
+        })
+        return !contains
+    })
     updateTask(task)
 }
 export function viewSalesman(): string[] {
