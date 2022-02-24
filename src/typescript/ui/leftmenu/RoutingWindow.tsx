@@ -106,7 +106,7 @@ export function RoutingWindow(props: { previous: () => void, next: () => void })
             }
             else {
                 let to = objectives[indexTo]
-                if (from != to) {
+                if (from !== to) {
                     WebInterface.getRootBetween(from.location, to.location)
                         .then(edge => {
                             edgesBetween[indexFrom].values.push(edge)
@@ -150,7 +150,6 @@ export function RoutingWindow(props: { previous: () => void, next: () => void })
         recursiveRoutingFrom(0)
     }
 
-    //TODO rooting
     //onAttach
     React.useEffect(() => {
         DataCenter.addResultChangeCallBack(setResult)

@@ -7,7 +7,7 @@ import { Objective } from "../../data/web/objective"
 import { Gps } from "../../data/web/gps"
 
 let mapContainer: HTMLDivElement | null
-let map
+let map 
 
 export function EditableMap(props: { width: string, height: string, radius: number, margin: number }) {
 

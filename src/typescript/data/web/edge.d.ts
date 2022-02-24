@@ -1,4 +1,4 @@
-import { GPS } from "./gps"
+import { Gps } from "./gps"
 
 
 /**

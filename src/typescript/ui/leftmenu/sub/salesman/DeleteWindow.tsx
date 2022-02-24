@@ -7,10 +7,10 @@ import * as DataCenter from "../../../../data/dataCenter"
 
 export function DeleteWindow(props: { labels: string[], onEnded: () => void }) {
 
-    let checked = [] as string[]
+    const [checked,setChecked] = React.useState( [] as string[])
     function onCheckChange(salesmanName: string) {
         if (salesmanName in checked)
-            checked = checked.filter(name => { return name !== salesmanName })
+            setChecked(checked.filter(name => { return name !== salesmanName }))
         else
             checked.push(salesmanName)
     }

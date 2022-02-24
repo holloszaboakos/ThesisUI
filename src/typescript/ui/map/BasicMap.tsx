@@ -2,7 +2,6 @@ import * as React from "react"
 import * as Framer from "framer"
 import * as DataCenter from "../../data/dataCenter"
 import { Gps } from "../../data/web/gps";
-import { Feature } from "react-mapbox-gl";
 
 export function BasicMap(props: { width: string, height: string, radius: number, margin: number }) {
     var ReactMapboxGl = require('react-mapbox-gl');
@@ -12,7 +11,7 @@ export function BasicMap(props: { width: string, height: string, radius: number,
         accessToken: DataCenter.publicKey
     });
 
-    const [position, setPosition] = React.useState({ longitude: 0, lattitude: 0 } as Gps)
+    const [, setPosition] = React.useState({ longitude: 0, lattitude: 0 } as Gps)
 
     return (
         <Framer.Frame

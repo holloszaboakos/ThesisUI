@@ -6,7 +6,7 @@ import { SetDataLine } from "../lines/SetDataLine"
 import { Salesman } from "../../../../data/web/salesman"
 
 export function EditWindow(props: { name: string, setSalesmanName: (text) => void, onEnded: () => void }) {
-    let salesman: Salesman = props.name === "" ? {
+    const [salesman] = React.useState(props.name === "" ? {
         id: "",
         name: "",
         orderInOwner: 0,
@@ -18,10 +18,10 @@ export function EditWindow(props: { name: string, setSalesmanName: (text) => voi
         volumeCapacity_Stere: 0,
         weightCapacity_Gramm: 0,
         workTime_SecondPerDay: 0
-    } : DataCenter.getSalesmanByName(props.name)
+    }as Salesman : DataCenter.getSalesmanByName(props.name))
 
     function ok() {
-        if (props.name == "")
+        if (props.name === "")
             DataCenter.addSalesman(salesman)
         else
             DataCenter.setSalesmanByOldName(props.name, salesman)

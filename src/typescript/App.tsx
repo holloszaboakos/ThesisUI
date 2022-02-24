@@ -11,7 +11,6 @@ import * as DataCenter from "./data/dataCenter"
 import * as WebInterface from "./web/webinterface"
 import { LoaderMap } from './ui/map/LoaderMap'
 import { HighlighterMap } from './ui/map/HighlighterMap'
-import { BasicMap } from './ui/map/BasicMap'
 
 export default function App() {
   enum States {

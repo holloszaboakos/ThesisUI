@@ -1,4 +1,3 @@
-import { gzipSync } from "zlib"
 import { Edge } from "../data/web/edge"
 import { Gps } from "../data/web/gps"
 import * as Api from "./api"

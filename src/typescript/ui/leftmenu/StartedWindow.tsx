@@ -33,11 +33,6 @@ export function StartedWindow(props: { previous: () => void, next: () => void })
     }, [])
 
     React.useEffect(() => {
-        DataCenter.addProgressChangeCallBack(setProgress)
-        DataCenter.addResultChangeCallBack(setResult)
-    }, [])
-
-    React.useEffect(() => {
         return () => {
             DataCenter.removeProgressChangeCallBack(setProgress)
             DataCenter.removeResultChangeCallBack(setResult)

@@ -8,14 +8,13 @@ import * as DataCenter from "../../data/dataCenter"
 import { LoadWindow as SetupLoadWindow } from "./sub/setting/LoadWindow"
 import { SaveWindow as SetupSaveWindow } from "./sub/setting/SaveWindow"
 import { LabelAndIconButtons } from "./sub/lines/LabelAndIconButtons"
-import { Settings } from "ts-react-feather-icons"
 
 export function SetupWindow(props: { previous: () => void, next: () => void }) {
     enum States {
         main,
         algorithmChooser,
         setupLoad,
-        setupSave
+        setupSave,
     }
 
     const [state, setState] = React.useState(States.main)
@@ -23,13 +22,13 @@ export function SetupWindow(props: { previous: () => void, next: () => void }) {
     const [result, setResult] = React.useState(DataCenter.getResult)
     const [refresher, setRefresher] = React.useState(true)
 
-    //TODO rooting
     //onAttach
     React.useEffect(() => {
         DataCenter.loadResult(setResult)
         DataCenter.addSettingChangeCallBack(setSetting)
         DataCenter.addResultChangeCallBack(setResult)
     }, [])
+
     //onDetach
     React.useEffect(() => {
         return () => {

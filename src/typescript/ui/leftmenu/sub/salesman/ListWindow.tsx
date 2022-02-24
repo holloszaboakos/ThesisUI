@@ -3,9 +3,9 @@ import * as Framer from "framer"
 import { ButtonLine } from "../lines/ButtonLine"
 import * as DataCenter from "../../../../data/dataCenter"
 
-export function ListWindow(props: { setSalesmanName: (text) => void, onChosen: () => void, onEnded: () => void }) {
+export function ListWindow(props: { setSalesmanName: (text: string) => void, onChosen: () => void, onEnded: () => void }) {
 
-    let labels = DataCenter.viewSalesman()
+    const [labels] = React.useState(DataCenter.viewSalesman())
 
     function ok() {
         props.onEnded()

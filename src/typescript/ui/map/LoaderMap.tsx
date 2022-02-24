@@ -4,7 +4,6 @@ import * as mapboxgl from "mapbox-gl"
 import * as DataCenter from "../../data/dataCenter"
 import { Graph } from "../../data/web/graph"
 import { Edge } from "../../data/web/edge"
-import { RoutingWindow } from "../leftmenu/RoutingWindow"
 import { Gps } from "../../data/web/gps"
 import { Objective } from "../../data/web/objective"
 import { EdgeArray } from "../../data/web/edgeArray"
@@ -16,7 +15,6 @@ export function LoaderMap(props: { width: string, height: string, radius: number
 
     const [task, setTask] = React.useState(DataCenter.getTask)
     const [mapView, setMapView] = React.useState(DataCenter.getMapView)
-    const [active, setActive] = React.useState(true)
     const [loaded, setLoaded] = React.useState(false)
 
     //ComponentDidMount
@@ -156,8 +154,7 @@ export function LoaderMap(props: { width: string, height: string, radius: number
         map.zoom = mapView.zoom
         map.width = props.width
         map.height = props.height
-        if (!active) setActive(true)
-    }, [active])
+    }, [mapView, props.height, props.width])
 
     //ComponentWasActivated
     React.useEffect(() => {
@@ -207,7 +204,7 @@ export function LoaderMap(props: { width: string, height: string, radius: number
             })
             setMapView(mapView)
         }
-    }, [task])
+    }, [loaded, task])
 
     return (
         <Framer.Frame

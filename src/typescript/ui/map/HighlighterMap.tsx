@@ -18,7 +18,6 @@ export function HighlighterMap(props: { width: string, height: string, radius: n
     const [mapView, setMapView] = React.useState(DataCenter.getMapView)
     const [result, setResult] = React.useState(DataCenter.getResult)
     const [loaded, setLoaded] = React.useState(false)
-    const [active, setActive] = React.useState(true)
 
 
     //ComponentDidMount
@@ -148,14 +147,14 @@ export function HighlighterMap(props: { width: string, height: string, radius: n
     //ComponentWasActivated
     React.useEffect(() => {
         if (loaded) {
-            let colors: string[] = ['#000077', '#007700', '#770000', '#007777', '#770077', '#770000', '#777777', '#000000']
+            //let colors: string[] = ['#000077', '#007700', '#770000', '#007777', '#770077', '#770000', '#777777', '#000000']
             let objectives: Objective[] = task.costGraph.objectives
             let fromCenterIndexes = [] as number[]
             let toCenterIndexes = [] as number[]
             let betweenObjectivesIndexes = [] as { from: number, to: number }[]
             result.bestRout.forEach((rout: GpsArray) => {
 
-                if (rout.values.length != 0) {
+                if (rout.values.length !== 0) {
 
                     fromCenterIndexes.push(objectives.findIndex(objective =>
                         objective.location.lattitude === rout.values[0].lattitude
@@ -169,7 +168,7 @@ export function HighlighterMap(props: { width: string, height: string, radius: n
 
                     if (rout.values.length > 1) {
                         rout.values.forEach((stopFrom: Gps, indexFrom: number, rout: Gps[]) => {
-                            if (indexFrom != rout.length - 1) {
+                            if (indexFrom !== rout.length - 1) {
                                 let stopTo = rout[indexFrom + 1]
                                 let fromIndex = objectives.findIndex(objective =>
                                     objective.location.lattitude === stopFrom.lattitude
@@ -249,12 +248,6 @@ export function HighlighterMap(props: { width: string, height: string, radius: n
         map.zoom = mapView.zoom
         map.width = props.width
         map.height = props.height
-        if (!active) setActive(true)
-    }, [active])
-
-    React.useEffect(() => {
-        map.center = [mapView.location.longitude, mapView.location.lattitude]
-        map.zoom = mapView.zoom
     }, [mapView])
 
 

@@ -25,22 +25,22 @@ export function RunningWindow(props: { previous: () => void }) {
         !resultRefresher && setResultRefresher(true)
     }, [resultRefresher])
 
-    let interval
+    const [interval,updateInterval]=React.useState(null as (NodeJS.Timeout|null))
 
     React.useEffect(() => {
         DataCenter.addProgressChangeCallBack(setProgress)
         DataCenter.addResultChangeCallBack(setResult)
-        interval = setInterval(async () => {
+        updateInterval(setInterval(async () => {
             WebInterface.getProgress().then(progress => DataCenter.updateProgress(progress))
             WebInterface.getResult().then(result => DataCenter.updateResult(result))
-        }, DataCenter.getTask().costGraph.objectives.length * 100)
+        }, DataCenter.getTask().costGraph.objectives.length * 100))
     }, [])
 
     React.useEffect(() => {
         return () => {
             DataCenter.removeProgressChangeCallBack(setProgress)
             DataCenter.removeResultChangeCallBack(setResult)
-            clearInterval(interval)
+            interval && clearInterval(interval)
         }
     }, [])
 

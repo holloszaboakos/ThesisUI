@@ -6,7 +6,7 @@ import { SetDataLine } from "../lines/SetDataLine"
 
 export function SaveWindow(props: { onEnded: () => void }) {
 
-    let name = ""
+    const [name,setName] = React.useState("")
 
     function ok() {
         DataCenter.saveTask(name)
@@ -41,7 +41,7 @@ export function SaveWindow(props: { onEnded: () => void }) {
                     placefolder="name"
                     validate={() => true}
                     sendValue={(text) => {
-                        name = text
+                        setName(text)
                     }}
                 />
             </Framer.Stack>

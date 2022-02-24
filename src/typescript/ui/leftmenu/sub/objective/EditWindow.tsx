@@ -8,7 +8,7 @@ import { Gps } from "../../../../data/web/gps"
 
 export function EditWindow(props: { name: string, setObjectiveName: (text) => void, onEnded: () => void }) {
     const [objective, setObjective] = React.useState(
-        props.name == "" ?
+        props.name === "" ?
             {
                 id: "",
                 orderInOwner: 0,
@@ -17,7 +17,7 @@ export function EditWindow(props: { name: string, setObjectiveName: (text) => vo
                 time_Second: 0,
                 volume_Stere: 0,
                 weight_Gramm: 0,
-            }
+            } as Objective
             : DataCenter.getObjectiveByName(props.name)
     )
     const [refresher, setRefresher] = React.useState(true)
@@ -39,7 +39,7 @@ export function EditWindow(props: { name: string, setObjectiveName: (text) => vo
     }, [refresher])
 
     function ok() {
-        if (props.name == "")
+        if (props.name === "")
             DataCenter.addObjective(objective)
         else
             DataCenter.setObjectiveByOldName(props.name, objective)

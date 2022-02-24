@@ -1,4 +1,4 @@
-import { GpsMatrix } from "./gpsMatrix"
+import { GpsArray } from "./gpsArray"
 
 /**
  * 

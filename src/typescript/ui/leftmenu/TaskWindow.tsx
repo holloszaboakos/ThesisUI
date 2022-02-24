@@ -14,7 +14,6 @@ import * as DataCenter from "../../data/dataCenter"
 import { SetDataLine } from "./sub/lines/SetDataLine"
 import { Graph } from "../../data/web/graph"
 import { Gps } from "../../data/web/gps"
-import { DisplayDataLine } from "./sub/lines/DisplayDataLine"
 
 
 export function TaskWindow(props: { next: () => void }) {
@@ -31,10 +30,6 @@ export function TaskWindow(props: { next: () => void }) {
         objectiveRemove,
         taskLoad,
         taskSave,
-        setupLoad,
-        setupSave,
-        progressLoad,
-        progressSave,
     }
     const [task, setTask] = React.useState(DataCenter.getTask)
     const [salesmanName, setSalesmanName] = React.useState("")

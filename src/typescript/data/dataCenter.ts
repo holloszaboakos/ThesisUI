@@ -132,8 +132,7 @@ export function getObjectiveByName(name: string): Objective {
     return { ...task.costGraph.objectives.find(objective => { return objective.name === name }) }
 }
 export function setObjectiveByOldName(oldName: string, objective: Objective) {
-    let oldObjective = task.costGraph.objectives.find(objective => { return objective.name === oldName })
-    let index = task.costGraph.objectives.indexOf(oldObjective)
+    let index = task.costGraph.objectives.findIndex(objective => { return objective.name === oldName })
     task.costGraph.objectives[index] = objective
     updateTask(task)
 }
@@ -167,8 +166,7 @@ export function getSalesmanByName(name: string): Salesman {
     return { ...task.salesmen.find(salesman => { return salesman.name === name }) }
 }
 export function setSalesmanByOldName(oldName: string, salesman: Salesman) {
-    let oldSalesman = task.salesmen.find(salesman => { return salesman.name === oldName })
-    let index = task.salesmen.indexOf(oldSalesman)
+    let index = task.salesmen.findIndex(salesman => { return salesman.name === oldName })
     task.salesmen[index] = salesman
     updateTask(task)
 }
